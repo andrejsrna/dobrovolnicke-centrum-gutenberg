@@ -1,47 +1,45 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "create-block/activities",
+	"name": "create-block/recent-posts",
 	"version": "0.1.0",
-	"title": "Aktivity",
+	"title": "Posledné články",
 	"category": "design",
-	"icon": "list-view",
-	"description": "Blok na zobrazenie aktivít s ikonami.",
+	"icon": "admin-post",
+	"description": "Blok na zobrazenie posledných článkov s tlačidlom.",
 	"example": {},
 	"supports": {
 		"html": false,
 		"align": ["wide", "full"]
 	},
 	"attributes": {
-		"activities": {
-			"type": "array",
-			"default": [],
-			"items": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"icon": {
-						"type": "string",
-						"default": "star"
-					},
-					"title": {
-						"type": "string",
-						"source": "html",
-						"selector": ".activity-title"
-					},
-					"description": {
-						"type": "string",
-						"source": "html",
-						"selector": ".activity-description"
-					}
-				}
-			}
+		"sectionTitle": {
+			"type": "string",
+			"default": "Posledné články"
 		},
-		"columns": {
+		"sectionDescription": {
+			"type": "string",
+			"default": "Prečítajte si naše najnovšie aktuality a články."
+		},
+		"postsToShow": {
 			"type": "number",
 			"default": 3
+		},
+		"displayFeaturedImage": {
+			"type": "boolean",
+			"default": true
+		},
+		"displayExcerpt": {
+			"type": "boolean",
+			"default": true
+		},
+		"displayDate": {
+			"type": "boolean",
+			"default": true
+		},
+		"displayAuthor": {
+			"type": "boolean",
+			"default": false
 		},
 		"textAlignment": {
 			"type": "string",
@@ -55,29 +53,21 @@
 			"type": "string",
 			"default": "#fcb722"
 		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "Naše aktivity"
-		},
-		"sectionDescription": {
-			"type": "string",
-			"default": "Zoznámte sa s našimi aktivitami a službami, ktoré poskytujeme."
-		},
 		"useCustomBackground": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		},
 		"backgroundColor": {
 			"type": "string",
-			"default": "#093e52"
+			"default": "#f5f5f5"
 		},
 		"buttonText": {
 			"type": "string",
-			"default": "Zobraziť všetky aktivity"
+			"default": "Všetky články"
 		},
 		"buttonUrl": {
 			"type": "string",
-			"default": "#"
+			"default": "/blog"
 		},
 		"buttonNewTab": {
 			"type": "boolean",

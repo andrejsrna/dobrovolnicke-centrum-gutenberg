@@ -7,9 +7,9 @@ return array(
 		'name' => 'create-block/activities',
 		'version' => '0.1.0',
 		'title' => 'Aktivity',
-		'category' => 'widgets',
-		'icon' => 'grid-view',
-		'description' => 'Block pre zobrazenie aktivít s ikonami a popisom.',
+		'category' => 'design',
+		'icon' => 'list-view',
+		'description' => 'Blok na zobrazenie aktivít s ikonami.',
 		'example' => array(
 			
 		),
@@ -55,7 +55,7 @@ return array(
 			),
 			'textAlignment' => array(
 				'type' => 'string',
-				'default' => 'center'
+				'default' => 'left'
 			),
 			'textColor' => array(
 				'type' => 'string',
@@ -64,6 +64,46 @@ return array(
 			'accentColor' => array(
 				'type' => 'string',
 				'default' => '#fcb722'
+			),
+			'sectionTitle' => array(
+				'type' => 'string',
+				'default' => 'Naše aktivity'
+			),
+			'sectionDescription' => array(
+				'type' => 'string',
+				'default' => 'Zoznámte sa s našimi aktivitami a službami, ktoré poskytujeme.'
+			),
+			'useCustomBackground' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'backgroundColor' => array(
+				'type' => 'string',
+				'default' => '#093e52'
+			),
+			'buttonText' => array(
+				'type' => 'string',
+				'default' => 'Zobraziť všetky aktivity'
+			),
+			'buttonUrl' => array(
+				'type' => 'string',
+				'default' => '#'
+			),
+			'buttonNewTab' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'showButton' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'buttonColor' => array(
+				'type' => 'string',
+				'default' => '#fcb722'
+			),
+			'buttonTextColor' => array(
+				'type' => 'string',
+				'default' => '#ffffff'
 			)
 		),
 		'textdomain' => 'slider',
@@ -188,71 +228,59 @@ return array(
 		'name' => 'create-block/konzultacie',
 		'version' => '0.1.0',
 		'title' => 'Konzultácie',
-		'category' => 'widgets',
-		'icon' => 'format-aside',
-		'description' => 'Blok pre zobrazenie konzultačných služieb s nadpisom, popisom a kontaktnými informáciami.',
+		'category' => 'design',
+		'icon' => 'info',
+		'description' => 'Blok pre zobrazenie konzultačných hodín.',
 		'example' => array(
 			
 		),
 		'supports' => array(
-			'html' => false,
-			'align' => array(
-				'wide',
-				'full'
-			)
+			'html' => false
 		),
 		'attributes' => array(
 			'title' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.konzultacie-title'
+				'default' => 'Konzultačné hodiny'
 			),
 			'description' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.konzultacie-description'
+				'default' => 'Zaujíma vás naša činnosť? Chcete sa niečo poradiť? Navštívte nás počas konzultačných hodín.'
 			),
 			'field1Icon' => array(
 				'type' => 'string',
-				'default' => 'phone'
+				'default' => 'clock'
 			),
 			'field1Bold' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.field-1 .field-bold'
+				'default' => 'Konzultačné hodiny:'
 			),
 			'field1Text' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.field-1 .field-text'
+				'default' => 'Pondelok – Piatok: 9:00 – 15:00'
 			),
 			'field2Icon' => array(
 				'type' => 'string',
-				'default' => 'mail'
+				'default' => 'location'
 			),
 			'field2Bold' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.field-2 .field-bold'
+				'default' => 'Adresa:'
 			),
 			'field2Text' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.field-2 .field-text'
+				'default' => 'Ulica 123, 000 00 Mesto'
 			),
 			'field3Icon' => array(
 				'type' => 'string',
-				'default' => 'location'
+				'default' => 'phone'
 			),
 			'field3Bold' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.field-3 .field-bold'
+				'default' => 'Kontakt:'
 			),
 			'field3Text' => array(
 				'type' => 'string',
-				'source' => 'html',
-				'selector' => '.field-3 .field-text'
+				'default' => '+421 000 000 000'
 			),
 			'buttonText' => array(
 				'type' => 'string',
@@ -260,7 +288,7 @@ return array(
 			),
 			'buttonUrl' => array(
 				'type' => 'string',
-				'default' => ''
+				'default' => '#'
 			),
 			'buttonNewTab' => array(
 				'type' => 'boolean',
@@ -277,6 +305,114 @@ return array(
 			'accentColor' => array(
 				'type' => 'string',
 				'default' => '#fcb722'
+			),
+			'buttonColor' => array(
+				'type' => 'string',
+				'default' => '#fcb722'
+			),
+			'buttonTextColor' => array(
+				'type' => 'string',
+				'default' => '#ffffff'
+			),
+			'imageId' => array(
+				'type' => 'number'
+			),
+			'imageUrl' => array(
+				'type' => 'string'
+			),
+			'imageAlt' => array(
+				'type' => 'string',
+				'default' => ''
+			)
+		),
+		'textdomain' => 'slider',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css'
+	),
+	'recent-posts' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/recent-posts',
+		'version' => '0.1.0',
+		'title' => 'Posledné články',
+		'category' => 'design',
+		'icon' => 'admin-post',
+		'description' => 'Blok na zobrazenie posledných článkov s tlačidlom.',
+		'example' => array(
+			
+		),
+		'supports' => array(
+			'html' => false,
+			'align' => array(
+				'wide',
+				'full'
+			)
+		),
+		'attributes' => array(
+			'sectionTitle' => array(
+				'type' => 'string',
+				'default' => 'Posledné články'
+			),
+			'sectionDescription' => array(
+				'type' => 'string',
+				'default' => 'Prečítajte si naše najnovšie aktuality a články.'
+			),
+			'postsToShow' => array(
+				'type' => 'number',
+				'default' => 3
+			),
+			'displayFeaturedImage' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'displayExcerpt' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'displayDate' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'displayAuthor' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'textAlignment' => array(
+				'type' => 'string',
+				'default' => 'left'
+			),
+			'textColor' => array(
+				'type' => 'string',
+				'default' => '#333333'
+			),
+			'accentColor' => array(
+				'type' => 'string',
+				'default' => '#fcb722'
+			),
+			'useCustomBackground' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'backgroundColor' => array(
+				'type' => 'string',
+				'default' => '#f5f5f5'
+			),
+			'buttonText' => array(
+				'type' => 'string',
+				'default' => 'Všetky články'
+			),
+			'buttonUrl' => array(
+				'type' => 'string',
+				'default' => '/blog'
+			),
+			'buttonNewTab' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'showButton' => array(
+				'type' => 'boolean',
+				'default' => true
 			),
 			'buttonColor' => array(
 				'type' => 'string',

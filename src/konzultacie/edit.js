@@ -7,12 +7,15 @@ import {
 	RichText,
 	InspectorControls,
 	PanelColorSettings,
+	MediaUpload,
+	MediaUploadCheck,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	TextControl,
 	SelectControl,
 	ToggleControl,
+	Button,
 } from '@wordpress/components';
 
 /**
@@ -86,6 +89,9 @@ export default function Edit({ attributes, setAttributes }) {
 		accentColor,
 		buttonColor,
 		buttonTextColor,
+		imageId,
+		imageUrl,
+		imageAlt,
 	} = attributes;
 
 	const blockProps = useBlockProps({
@@ -109,6 +115,74 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
+				<PanelBody title={__('Nastavenia obrázka', 'slider')}>
+					<MediaUploadCheck>
+						<MediaUpload
+							onSelect={(media) => {
+								setAttributes({
+									imageId: media.id,
+									imageUrl: media.url,
+									imageAlt: media.alt || '',
+								});
+							}}
+							allowedTypes={['image']}
+							value={imageId}
+							render={({ open }) => (
+								<div>
+									{!imageUrl ? (
+										<Button
+											onClick={open}
+											variant="secondary"
+											className="editor-konzultacie-image-button"
+										>
+											{__('Vybrať obrázok', 'slider')}
+										</Button>
+									) : (
+										<div>
+											<img
+												src={imageUrl}
+												alt={imageAlt}
+												style={{
+													maxWidth: '100%',
+													marginBottom: '10px',
+													borderRadius: '4px'
+												}}
+											/>
+											<div style={{ display: 'flex', gap: '8px' }}>
+												<Button
+													onClick={open}
+													variant="secondary"
+												>
+													{__('Zmeniť obrázok', 'slider')}
+												</Button>
+												<Button
+													onClick={() => setAttributes({
+														imageId: undefined,
+														imageUrl: undefined,
+														imageAlt: '',
+													})}
+													variant="tertiary"
+													isDestructive
+												>
+													{__('Odstrániť', 'slider')}
+												</Button>
+											</div>
+										</div>
+									)}
+								</div>
+							)}
+						/>
+					</MediaUploadCheck>
+					{imageUrl && (
+						<TextControl
+							label={__('Alternatívny text obrázka', 'slider')}
+							value={imageAlt}
+							onChange={(value) => setAttributes({ imageAlt: value })}
+							help={__('Popis obrázka pre čítačky obrazovky', 'slider')}
+						/>
+					)}
+				</PanelBody>
+
 				<PanelBody title={__('Nastavenia textových polí', 'slider')}>
 					<SelectControl
 						label={__('Ikona pre pole 1', 'slider')}
@@ -185,100 +259,108 @@ export default function Edit({ attributes, setAttributes }) {
 
 			<div {...blockProps}>
 				<div className="konzultacie-container">
-					<RichText
-						tagName="h2"
-						className="konzultacie-title"
-						value={title}
-						onChange={(value) => setAttributes({ title: value })}
-						placeholder={__('Zadajte nadpis...', 'slider')}
-						allowedFormats={['core/bold', 'core/italic']}
-					/>
+					<div className="konzultacie-content">
+						<RichText
+							tagName="h2"
+							className="konzultacie-title"
+							value={title}
+							onChange={(value) => setAttributes({ title: value })}
+							placeholder={__('Zadajte nadpis...', 'slider')}
+							allowedFormats={['core/bold', 'core/italic']}
+						/>
 
-					<RichText
-						tagName="p"
-						className="konzultacie-description"
-						value={description}
-						onChange={(value) => setAttributes({ description: value })}
-						placeholder={__('Zadajte popis...', 'slider')}
-						allowedFormats={['core/bold', 'core/italic', 'core/link']}
-					/>
+						<RichText
+							tagName="p"
+							className="konzultacie-description"
+							value={description}
+							onChange={(value) => setAttributes({ description: value })}
+							placeholder={__('Zadajte popis...', 'slider')}
+							allowedFormats={['core/bold', 'core/italic', 'core/link']}
+						/>
 
-					<div className="konzultacie-fields">
-						<div className="konzultacie-field field-1">
-							{renderIcon(field1Icon)}
-							<div className="field-content">
-								<RichText
-									tagName="span"
-									className="field-bold"
-									value={field1Bold}
-									onChange={(value) => setAttributes({ field1Bold: value })}
-									placeholder={__('Zvýraznený text...', 'slider')}
-									allowedFormats={[]}
-								/>
-								<RichText
-									tagName="span"
-									className="field-text"
-									value={field1Text}
-									onChange={(value) => setAttributes({ field1Text: value })}
-									placeholder={__('Normálny text...', 'slider')}
-									allowedFormats={[]}
-								/>
+						<div className="konzultacie-fields">
+							<div className="konzultacie-field field-1">
+								{renderIcon(field1Icon)}
+								<div className="field-content">
+									<RichText
+										tagName="span"
+										className="field-bold"
+										value={field1Bold}
+										onChange={(value) => setAttributes({ field1Bold: value })}
+										placeholder={__('Zvýraznený text...', 'slider')}
+										allowedFormats={[]}
+									/>
+									<RichText
+										tagName="span"
+										className="field-text"
+										value={field1Text}
+										onChange={(value) => setAttributes({ field1Text: value })}
+										placeholder={__('Normálny text...', 'slider')}
+										allowedFormats={[]}
+									/>
+								</div>
+							</div>
+
+							<div className="konzultacie-field field-2">
+								{renderIcon(field2Icon)}
+								<div className="field-content">
+									<RichText
+										tagName="span"
+										className="field-bold"
+										value={field2Bold}
+										onChange={(value) => setAttributes({ field2Bold: value })}
+										placeholder={__('Zvýraznený text...', 'slider')}
+										allowedFormats={[]}
+									/>
+									<RichText
+										tagName="span"
+										className="field-text"
+										value={field2Text}
+										onChange={(value) => setAttributes({ field2Text: value })}
+										placeholder={__('Normálny text...', 'slider')}
+										allowedFormats={[]}
+									/>
+								</div>
+							</div>
+
+							<div className="konzultacie-field field-3">
+								{renderIcon(field3Icon)}
+								<div className="field-content">
+									<RichText
+										tagName="span"
+										className="field-bold"
+										value={field3Bold}
+										onChange={(value) => setAttributes({ field3Bold: value })}
+										placeholder={__('Zvýraznený text...', 'slider')}
+										allowedFormats={[]}
+									/>
+									<RichText
+										tagName="span"
+										className="field-text"
+										value={field3Text}
+										onChange={(value) => setAttributes({ field3Text: value })}
+										placeholder={__('Normálny text...', 'slider')}
+										allowedFormats={[]}
+									/>
+								</div>
 							</div>
 						</div>
 
-						<div className="konzultacie-field field-2">
-							{renderIcon(field2Icon)}
-							<div className="field-content">
-								<RichText
-									tagName="span"
-									className="field-bold"
-									value={field2Bold}
-									onChange={(value) => setAttributes({ field2Bold: value })}
-									placeholder={__('Zvýraznený text...', 'slider')}
-									allowedFormats={[]}
-								/>
-								<RichText
-									tagName="span"
-									className="field-text"
-									value={field2Text}
-									onChange={(value) => setAttributes({ field2Text: value })}
-									placeholder={__('Normálny text...', 'slider')}
-									allowedFormats={[]}
-								/>
-							</div>
-						</div>
-
-						<div className="konzultacie-field field-3">
-							{renderIcon(field3Icon)}
-							<div className="field-content">
-								<RichText
-									tagName="span"
-									className="field-bold"
-									value={field3Bold}
-									onChange={(value) => setAttributes({ field3Bold: value })}
-									placeholder={__('Zvýraznený text...', 'slider')}
-									allowedFormats={[]}
-								/>
-								<RichText
-									tagName="span"
-									className="field-text"
-									value={field3Text}
-									onChange={(value) => setAttributes({ field3Text: value })}
-									placeholder={__('Normálny text...', 'slider')}
-									allowedFormats={[]}
-								/>
-							</div>
+						<div className="konzultacie-button-container">
+							<button
+								className="konzultacie-button"
+								type="button"
+							>
+								{buttonText || __('Kontaktovať nás', 'slider')}
+							</button>
 						</div>
 					</div>
 
-					<div className="konzultacie-button-container">
-						<button
-							className="konzultacie-button"
-							type="button"
-						>
-							{buttonText || __('Kontaktovať nás', 'slider')}
-						</button>
-					</div>
+					{imageUrl && (
+						<div className="konzultacie-image">
+							<img src={imageUrl} alt={imageAlt} />
+						</div>
+					)}
 				</div>
 			</div>
 		</>

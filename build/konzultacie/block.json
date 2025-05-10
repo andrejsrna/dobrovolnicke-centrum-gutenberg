@@ -4,69 +4,57 @@
   "name": "create-block/konzultacie",
   "version": "0.1.0",
   "title": "Konzultácie",
-  "category": "widgets",
-  "icon": "format-aside",
-  "description": "Blok pre zobrazenie konzultačných služieb s nadpisom, popisom a kontaktnými informáciami.",
+  "category": "design",
+  "icon": "info",
+  "description": "Blok pre zobrazenie konzultačných hodín.",
   "example": {},
   "supports": {
-    "html": false,
-    "align": [
-      "wide",
-      "full"
-    ]
+    "html": false
   },
   "attributes": {
     "title": {
       "type": "string",
-      "source": "html",
-      "selector": ".konzultacie-title"
+      "default": "Konzultačné hodiny"
     },
     "description": {
       "type": "string",
-      "source": "html",
-      "selector": ".konzultacie-description"
+      "default": "Zaujíma vás naša činnosť? Chcete sa niečo poradiť? Navštívte nás počas konzultačných hodín."
     },
     "field1Icon": {
       "type": "string",
-      "default": "phone"
+      "default": "clock"
     },
     "field1Bold": {
       "type": "string",
-      "source": "html",
-      "selector": ".field-1 .field-bold"
+      "default": "Konzultačné hodiny:"
     },
     "field1Text": {
       "type": "string",
-      "source": "html",
-      "selector": ".field-1 .field-text"
+      "default": "Pondelok – Piatok: 9:00 – 15:00"
     },
     "field2Icon": {
       "type": "string",
-      "default": "mail"
+      "default": "location"
     },
     "field2Bold": {
       "type": "string",
-      "source": "html",
-      "selector": ".field-2 .field-bold"
+      "default": "Adresa:"
     },
     "field2Text": {
       "type": "string",
-      "source": "html",
-      "selector": ".field-2 .field-text"
+      "default": "Ulica 123, 000 00 Mesto"
     },
     "field3Icon": {
       "type": "string",
-      "default": "location"
+      "default": "phone"
     },
     "field3Bold": {
       "type": "string",
-      "source": "html",
-      "selector": ".field-3 .field-bold"
+      "default": "Kontakt:"
     },
     "field3Text": {
       "type": "string",
-      "source": "html",
-      "selector": ".field-3 .field-text"
+      "default": "+421 000 000 000"
     },
     "buttonText": {
       "type": "string",
@@ -74,7 +62,7 @@
     },
     "buttonUrl": {
       "type": "string",
-      "default": ""
+      "default": "#"
     },
     "buttonNewTab": {
       "type": "boolean",
@@ -99,6 +87,16 @@
     "buttonTextColor": {
       "type": "string",
       "default": "#ffffff"
+    },
+    "imageId": {
+      "type": "number"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "imageAlt": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "slider",

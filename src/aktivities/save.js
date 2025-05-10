@@ -4,14 +4,14 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 /**
- * React Icons import
+ * React Icons import - importing common icon sets
  */
 import {
 	FaRegStar, FaStar, FaHeart, FaThumbsUp, FaHandsHelping, FaUsers,
 	FaCalendarAlt, FaMapMarkerAlt, FaUniversity, FaBook, FaPencilAlt,
 	FaLaptop, FaGraduationCap, FaChalkboardTeacher, FaChild, FaSeedling,
 	FaLeaf, FaTree, FaBriefcase, FaSmile, FaRocket, FaLink, FaClock,
-	FaBullhorn, FaPhone, FaEnvelope, FaGlobe
+	FaBullhorn, FaPhone, FaEnvelope, FaGlobe, FaArrowRight
 } from 'react-icons/fa';
 
 // Icon component mapping
@@ -38,14 +38,27 @@ export default function save({ attributes }) {
 		columns,
 		textAlignment,
 		textColor,
-		accentColor
+		accentColor,
+		sectionTitle,
+		sectionDescription,
+		useCustomBackground,
+		backgroundColor,
+		buttonText,
+		buttonUrl,
+		buttonNewTab,
+		showButton,
+		buttonColor,
+		buttonTextColor
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
-		className: `text-align-${textAlignment} columns-${columns}`,
+		className: `text-align-${textAlignment} columns-${columns} ${useCustomBackground ? 'has-background' : ''}`,
 		style: {
 			'--activity-text-color': textColor,
 			'--activity-accent-color': accentColor,
+			'--activity-background-color': useCustomBackground ? (backgroundColor || '#093e52') : 'transparent',
+			'--activity-button-color': buttonColor,
+			'--activity-button-text-color': buttonTextColor,
 		}
 	});
 
@@ -54,38 +67,70 @@ export default function save({ attributes }) {
 		const IconComponent = ICON_COMPONENTS[iconName];
 		if (!IconComponent) return null;
 
-		return <IconComponent size={24} />;
+		return <IconComponent />;
 	};
-
-	if (activities.length === 0) {
-		return <div {...blockProps}></div>;
-	}
 
 	return (
 		<div {...blockProps}>
-			<div className="activities-container">
-				{activities.map((activity) => (
-					<div key={activity.id} className="activity-item">
-						<div className="activity-content">
-							<div className="activity-icon">
-								{renderIcon(activity.icon)}
+			{(sectionTitle || sectionDescription) && (
+				<div className="activities-section-header">
+					{sectionTitle && (
+						<RichText.Content
+							tagName="h2"
+							className="activities-section-title"
+							value={sectionTitle}
+						/>
+					)}
+
+					{sectionDescription && (
+						<RichText.Content
+							tagName="p"
+							className="activities-section-description"
+							value={sectionDescription}
+						/>
+					)}
+				</div>
+			)}
+
+			{activities.length > 0 && (
+				<div className="activities-container">
+					{activities.map((activity) => (
+						<div key={activity.id} className="activity-item">
+							<div className="activity-content">
+								<div className="activity-icon">
+									{renderIcon(activity.icon)}
+								</div>
+
+								<RichText.Content
+									tagName="h3"
+									className="activity-title"
+									value={activity.title}
+								/>
+
+								<RichText.Content
+									tagName="p"
+									className="activity-description"
+									value={activity.description}
+								/>
 							</div>
-
-							<RichText.Content
-								tagName="h3"
-								className="activity-title"
-								value={activity.title}
-							/>
-
-							<RichText.Content
-								tagName="p"
-								className="activity-description"
-								value={activity.description}
-							/>
 						</div>
-					</div>
-				))}
-			</div>
+					))}
+				</div>
+			)}
+
+			{showButton && (
+				<div className="activity-button-container">
+					<a
+						href={buttonUrl || '#'}
+						className="activity-button"
+						target={buttonNewTab ? '_blank' : undefined}
+						rel={buttonNewTab ? 'noopener noreferrer' : undefined}
+					>
+						<span>{buttonText || 'Zobraziť všetky aktivity'}</span>
+						<FaArrowRight className="button-icon" />
+					</a>
+				</div>
+			)}
 		</div>
 	);
 }

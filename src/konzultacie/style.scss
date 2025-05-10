@@ -9,8 +9,12 @@
 	--konzultacie-accent-color: #fcb722;
 	--konzultacie-button-color: #fcb722;
 	--konzultacie-button-text: #ffffff;
+	--container-width: 1200px;
 
-	margin: 2rem 0;
+	margin: 2rem auto;
+	max-width: var(--container-width);
+	width: 100%;
+	padding: 0 1rem;
 
 	.konzultacie-container {
 		background-color: var(--konzultacie-background);
@@ -21,6 +25,27 @@
 		position: relative;
 		overflow: hidden;
 		border-top: 4px solid var(--konzultacie-accent-color);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+	}
+
+	.konzultacie-content {
+		flex: 1;
+		min-width: 300px;
+	}
+
+	.konzultacie-image {
+		flex: 0 0 320px;
+		max-width: 100%;
+		align-self: center;
+
+		img {
+			max-width: 100%;
+			height: auto;
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
 	}
 
 	.konzultacie-title {
@@ -124,6 +149,21 @@
 	.wp-block-create-block-konzultacie {
 		.konzultacie-container {
 			padding: 1.5rem;
+			flex-direction: column;
+		}
+
+		.konzultacie-image {
+			order: -1;
+			margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+			flex-basis: auto;
+			border-radius: 8px 8px 0 0;
+			overflow: hidden;
+
+			img {
+				border-radius: 0;
+				width: 100%;
+				box-shadow: none;
+			}
 		}
 
 		.konzultacie-title {

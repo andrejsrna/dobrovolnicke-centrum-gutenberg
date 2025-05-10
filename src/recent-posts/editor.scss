@@ -1,0 +1,19 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.wp-block-create-block-recent-posts {
+	.editor-styles-wrapper & {
+		.post-title {
+			margin-top: 0;
+		}
+
+		.post-item {
+			position: relative;
+		}
+	}
+
+	.post-item:not(:hover) .activity-editor-controls {
+		opacity: 0.6;
+	}
+}

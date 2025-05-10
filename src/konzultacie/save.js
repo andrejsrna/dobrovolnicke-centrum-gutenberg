@@ -55,6 +55,8 @@ export default function save({ attributes }) {
 		accentColor,
 		buttonColor,
 		buttonTextColor,
+		imageUrl,
+		imageAlt,
 	} = attributes;
 
 	const blockProps = useBlockProps.save({
@@ -78,78 +80,86 @@ export default function save({ attributes }) {
 	return (
 		<div {...blockProps}>
 			<div className="konzultacie-container">
-				<RichText.Content
-					tagName="h2"
-					className="konzultacie-title"
-					value={title}
-				/>
+				<div className="konzultacie-content">
+					<RichText.Content
+						tagName="h2"
+						className="konzultacie-title"
+						value={title}
+					/>
 
-				<RichText.Content
-					tagName="p"
-					className="konzultacie-description"
-					value={description}
-				/>
+					<RichText.Content
+						tagName="p"
+						className="konzultacie-description"
+						value={description}
+					/>
 
-				<div className="konzultacie-fields">
-					<div className="konzultacie-field field-1">
-						{renderIcon(field1Icon)}
-						<div className="field-content">
-							<RichText.Content
-								tagName="span"
-								className="field-bold"
-								value={field1Bold}
-							/>
-							<RichText.Content
-								tagName="span"
-								className="field-text"
-								value={field1Text}
-							/>
+					<div className="konzultacie-fields">
+						<div className="konzultacie-field field-1">
+							{renderIcon(field1Icon)}
+							<div className="field-content">
+								<RichText.Content
+									tagName="span"
+									className="field-bold"
+									value={field1Bold}
+								/>
+								<RichText.Content
+									tagName="span"
+									className="field-text"
+									value={field1Text}
+								/>
+							</div>
+						</div>
+
+						<div className="konzultacie-field field-2">
+							{renderIcon(field2Icon)}
+							<div className="field-content">
+								<RichText.Content
+									tagName="span"
+									className="field-bold"
+									value={field2Bold}
+								/>
+								<RichText.Content
+									tagName="span"
+									className="field-text"
+									value={field2Text}
+								/>
+							</div>
+						</div>
+
+						<div className="konzultacie-field field-3">
+							{renderIcon(field3Icon)}
+							<div className="field-content">
+								<RichText.Content
+									tagName="span"
+									className="field-bold"
+									value={field3Bold}
+								/>
+								<RichText.Content
+									tagName="span"
+									className="field-text"
+									value={field3Text}
+								/>
+							</div>
 						</div>
 					</div>
 
-					<div className="konzultacie-field field-2">
-						{renderIcon(field2Icon)}
-						<div className="field-content">
-							<RichText.Content
-								tagName="span"
-								className="field-bold"
-								value={field2Bold}
-							/>
-							<RichText.Content
-								tagName="span"
-								className="field-text"
-								value={field2Text}
-							/>
-						</div>
-					</div>
-
-					<div className="konzultacie-field field-3">
-						{renderIcon(field3Icon)}
-						<div className="field-content">
-							<RichText.Content
-								tagName="span"
-								className="field-bold"
-								value={field3Bold}
-							/>
-							<RichText.Content
-								tagName="span"
-								className="field-text"
-								value={field3Text}
-							/>
-						</div>
+					<div className="konzultacie-button-container">
+						<a
+							className="konzultacie-button"
+							href={buttonUrl || '#'}
+							target={buttonNewTab ? '_blank' : '_self'}
+							rel={buttonNewTab ? 'noopener noreferrer' : undefined}
+						>
+							{buttonText || 'Kontaktovať nás'}
+						</a>
 					</div>
 				</div>
 
-				<div className="konzultacie-button-container">
-					<a
-						className="konzultacie-button"
-						href={buttonUrl || '#'}
-						target={buttonNewTab ? '_blank' : '_self'}
-						rel={buttonNewTab ? 'noopener noreferrer' : undefined}
-					>
-						{buttonText || 'Kontaktovať nás'}
-					</a>
-				</div>
+				{imageUrl && (
+					<div className="konzultacie-image">
+						<img src={imageUrl} alt={imageAlt || ''} />
+					</div>
+				)}
 			</div>
 		</div>
 	);

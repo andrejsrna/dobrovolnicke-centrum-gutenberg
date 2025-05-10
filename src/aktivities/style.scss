@@ -6,6 +6,9 @@
 .wp-block-create-block-activities {
 	--activity-text-color: #333333;
 	--activity-accent-color: #fcb722;
+	--activity-background-color: transparent;
+	--activity-button-color: #fcb722;
+	--activity-button-text-color: #ffffff;
 	padding: 2rem 0;
 
 	&.text-align-center {
@@ -14,6 +17,90 @@
 
 	&.text-align-right {
 		text-align: right;
+	}
+
+	&.has-background {
+		position: relative;
+		margin: 0;
+		padding: 4rem 0;
+		background-color: var(--activity-background-color);
+		width: 100%;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100vw;
+			height: 100%;
+			background-color: var(--activity-background-color);
+			z-index: -1;
+		}
+
+		.activities-section-title,
+		.activities-section-description,
+		.activity-title,
+		.activity-description {
+			color: #fff;
+		}
+
+		.activity-icon {
+			background-color: rgba(255, 255, 255, 0.15);
+			color: #fff;
+		}
+
+		.activity-item {
+			background-color: rgba(255, 255, 255, 0.05);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+		}
+	}
+
+	.activities-section-header {
+		max-width: 800px;
+		margin: 0 auto 3rem;
+		padding: 0 1rem;
+	}
+
+	.activities-section-title {
+		font-size: 2.5rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		line-height: 1.2;
+		color: var(--activity-text-color);
+
+		.has-background & {
+			position: relative;
+			padding-bottom: 1rem;
+
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 80px;
+				height: 4px;
+				background-color: var(--activity-accent-color);
+
+				.text-align-center & {
+					left: 50%;
+					transform: translateX(-50%);
+				}
+
+				.text-align-right & {
+					left: auto;
+					right: 0;
+				}
+			}
+		}
+	}
+
+	.activities-section-description {
+		font-size: 1.2rem;
+		line-height: 1.6;
+		color: var(--activity-text-color);
+		opacity: 0.9;
 	}
 
 	// Column layouts
@@ -49,6 +136,9 @@
 		display: grid;
 		gap: 2rem;
 		width: 100%;
+		padding: 0 1rem;
+		max-width: 1200px;
+		margin: 0 auto;
 	}
 
 	.activity-item {
@@ -113,6 +203,73 @@
 		margin: 0;
 		line-height: 1.6;
 	}
+
+	.activity-button-container {
+		display: flex;
+		justify-content: center;
+		margin-top: 3rem;
+		padding: 0 1rem;
+	}
+
+	.activity-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.9rem 2.2rem;
+		background-color: var(--activity-button-color);
+		color: var(--activity-button-text-color);
+		font-size: 1.1rem;
+		font-weight: 600;
+		border-radius: 50px;
+		border: none;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+		position: relative;
+		overflow: hidden;
+
+		span {
+			position: relative;
+			z-index: 1;
+		}
+
+		.button-icon {
+			margin-left: 0.8rem;
+			font-size: 0.9rem;
+			transition: transform 0.3s ease;
+			position: relative;
+			z-index: 1;
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 0;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.15);
+			transition: width 0.3s ease;
+		}
+
+		&:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+
+			&::before {
+				width: 100%;
+			}
+
+			.button-icon {
+				transform: translateX(3px);
+			}
+		}
+
+		&:active {
+			transform: translateY(-1px);
+		}
+	}
 }
 
 /* Responsive styles */
@@ -120,6 +277,10 @@
 	.wp-block-create-block-activities {
 		&.columns-4 .activities-container {
 			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.activities-section-title {
+			font-size: 2.2rem;
 		}
 	}
 }
@@ -129,6 +290,23 @@
 		&.columns-3 .activities-container,
 		&.columns-4 .activities-container {
 			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.activities-section-title {
+			font-size: 1.8rem;
+		}
+
+		.activities-section-description {
+			font-size: 1.1rem;
+		}
+
+		&.has-background {
+			padding: 3rem 0;
+		}
+
+		.activity-button {
+			padding: 0.8rem 1.8rem;
+			font-size: 1rem;
 		}
 	}
 }
@@ -153,6 +331,23 @@
 
 		.activity-title {
 			font-size: 1.3rem;
+		}
+
+		.activities-section-title {
+			font-size: 1.6rem;
+		}
+
+		&.has-background {
+			padding: 2.5rem 0;
+		}
+
+		.activity-button-container {
+			margin-top: 2rem;
+		}
+
+		.activity-button {
+			width: 100%;
+			padding: 0.8rem 1.5rem;
 		}
 	}
 }

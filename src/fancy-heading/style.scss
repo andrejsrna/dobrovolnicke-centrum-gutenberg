@@ -6,7 +6,12 @@
 .wp-block-create-block-fancy-heading {
 	--fancy-text-color: #333333;
 	--fancy-accent-color: #fcb722;
-	margin: 2rem 0;
+	--container-width: 1200px;
+
+	margin: 2rem auto;
+	max-width: var(--container-width);
+	width: 100%;
+	padding: 0 1rem;
 
 	&.text-align-center {
 		text-align: center;

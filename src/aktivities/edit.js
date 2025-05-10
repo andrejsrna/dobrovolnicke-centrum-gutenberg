@@ -17,6 +17,7 @@ import {
 	TextControl,
 	SelectControl,
 	__experimentalGrid as Grid,
+	ToggleControl,
 } from '@wordpress/components';
 
 /**
@@ -27,7 +28,7 @@ import {
 	FaCalendarAlt, FaMapMarkerAlt, FaUniversity, FaBook, FaPencilAlt,
 	FaLaptop, FaGraduationCap, FaChalkboardTeacher, FaChild, FaSeedling,
 	FaLeaf, FaTree, FaBriefcase, FaSmile, FaRocket, FaLink, FaClock,
-	FaBullhorn, FaPhone, FaEnvelope, FaGlobe
+	FaBullhorn, FaPhone, FaEnvelope, FaGlobe, FaArrowRight
 } from 'react-icons/fa';
 
 /**
@@ -90,14 +91,27 @@ export default function Edit({ attributes, setAttributes }) {
 		columns,
 		textAlignment,
 		textColor,
-		accentColor
+		accentColor,
+		sectionTitle,
+		sectionDescription,
+		useCustomBackground,
+		backgroundColor,
+		buttonText,
+		buttonUrl,
+		buttonNewTab,
+		showButton,
+		buttonColor,
+		buttonTextColor
 	} = attributes;
 
 	const blockProps = useBlockProps({
-		className: `text-align-${textAlignment} columns-${columns}`,
+		className: `text-align-${textAlignment} columns-${columns} ${useCustomBackground ? 'has-background' : ''}`,
 		style: {
 			'--activity-text-color': textColor,
 			'--activity-accent-color': accentColor,
+			'--activity-background-color': useCustomBackground ? (backgroundColor || '#093e52') : 'transparent',
+			'--activity-button-color': buttonColor,
+			'--activity-button-text-color': buttonTextColor,
 		}
 	});
 
@@ -140,6 +154,28 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
+				<PanelBody title={__('Nastavenia sekcie', 'slider')} initialOpen={true}>
+					<ToggleControl
+						label={__('Použiť vlastné pozadie', 'slider')}
+						checked={useCustomBackground}
+						onChange={(value) => setAttributes({ useCustomBackground: value })}
+					/>
+
+					{useCustomBackground && (
+						<PanelColorSettings
+							title={__('Farba pozadia', 'slider')}
+							initialOpen={true}
+							colorSettings={[
+								{
+									value: backgroundColor || '#093e52',
+									onChange: (color) => setAttributes({ backgroundColor: color }),
+									label: __('Farba pozadia sekcie', 'slider'),
+								},
+							]}
+						/>
+					)}
+				</PanelBody>
+
 				<PanelBody title={__('Nastavenia aktivít', 'slider')}>
 					<Button
 						variant="primary"
@@ -174,6 +210,50 @@ export default function Edit({ attributes, setAttributes }) {
 						]}
 					/>
 				</PanelBody>
+
+				<PanelBody title={__('Nastavenia tlačidla', 'slider')}>
+					<ToggleControl
+						label={__('Zobraziť tlačidlo', 'slider')}
+						checked={showButton}
+						onChange={(value) => setAttributes({ showButton: value })}
+					/>
+
+					{showButton && (
+						<>
+							<TextControl
+								label={__('Text tlačidla', 'slider')}
+								value={buttonText}
+								onChange={(value) => setAttributes({ buttonText: value })}
+							/>
+							<TextControl
+								label={__('URL odkazu', 'slider')}
+								value={buttonUrl}
+								onChange={(value) => setAttributes({ buttonUrl: value })}
+							/>
+							<ToggleControl
+								label={__('Otvoriť v novom okne', 'slider')}
+								checked={buttonNewTab}
+								onChange={(value) => setAttributes({ buttonNewTab: value })}
+							/>
+							<PanelColorSettings
+								title={__('Farby tlačidla', 'slider')}
+								initialOpen={true}
+								colorSettings={[
+									{
+										value: buttonColor,
+										onChange: (color) => setAttributes({ buttonColor: color }),
+										label: __('Farba pozadia tlačidla', 'slider'),
+									},
+									{
+										value: buttonTextColor,
+										onChange: (color) => setAttributes({ buttonTextColor: color }),
+										label: __('Farba textu tlačidla', 'slider'),
+									},
+								]}
+							/>
+						</>
+					)}
+				</PanelBody>
 			</InspectorControls>
 
 			<BlockControls>
@@ -184,6 +264,26 @@ export default function Edit({ attributes, setAttributes }) {
 			</BlockControls>
 
 			<div {...blockProps}>
+				<div className="activities-section-header">
+					<RichText
+						tagName="h2"
+						className="activities-section-title"
+						value={sectionTitle}
+						onChange={(content) => setAttributes({ sectionTitle: content })}
+						placeholder={__('Nadpis sekcie...', 'slider')}
+						allowedFormats={['core/bold', 'core/italic']}
+					/>
+
+					<RichText
+						tagName="p"
+						className="activities-section-description"
+						value={sectionDescription}
+						onChange={(content) => setAttributes({ sectionDescription: content })}
+						placeholder={__('Popis sekcie...', 'slider')}
+						allowedFormats={['core/bold', 'core/italic', 'core/link']}
+					/>
+				</div>
+
 				{activities.length === 0 ? (
 					<div className="activities-placeholder">
 						<p>
@@ -243,6 +343,15 @@ export default function Edit({ attributes, setAttributes }) {
 								</div>
 							</div>
 						))}
+					</div>
+				)}
+
+				{showButton && (
+					<div className="activity-button-container">
+						<button type="button" className="activity-button">
+							<span>{buttonText || __('Zobraziť všetky aktivity', 'slider')}</span>
+							<FaArrowRight className="button-icon" />
+						</button>
 					</div>
 				)}
 			</div>
