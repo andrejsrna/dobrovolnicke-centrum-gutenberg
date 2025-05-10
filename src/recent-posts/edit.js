@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
+	RichText,
 	InspectorControls,
 	PanelColorSettings,
 	BlockControls,
@@ -11,6 +12,7 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
+	Button,
 	RangeControl,
 	ToggleControl,
 	TextControl,
@@ -18,7 +20,11 @@ import {
 	Spinner,
 	Notice,
 } from '@wordpress/components';
-import ServerSideRender from '@wordpress/server-side-render';
+import { useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
+import { format, dateI18n, getSettings } from '@wordpress/date';
+import { FaArrowRight, FaCalendarAlt, FaUser } from 'react-icons/fa';
 
 /**
  * Internal dependencies
@@ -56,22 +62,58 @@ export default function Edit({ attributes, setAttributes }) {
 		buttonTextColor
 	} = attributes;
 
-	const blockProps = useBlockProps();
+	const [posts, setPosts] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
+
+	const blockProps = useBlockProps({
+		className: `text-align-${textAlignment} ${useCustomBackground ? 'has-background' : ''}`,
+		style: {
+			'--post-text-color': textColor,
+			'--post-accent-color': accentColor,
+			'--post-background-color': useCustomBackground ? (backgroundColor || '#f5f5f5') : 'transparent',
+			'--post-button-color': buttonColor,
+			'--post-button-text-color': buttonTextColor,
+		}
+	});
+
+	useEffect(() => {
+		setLoading(true);
+		setError(null);
+
+		apiFetch({ path: `/wp/v2/posts?per_page=${postsToShow}&_embed` })
+			.then((fetchedPosts) => {
+				setPosts(fetchedPosts);
+				setLoading(false);
+			})
+			.catch((err) => {
+				setError(err.message);
+				setLoading(false);
+			});
+	}, [postsToShow]);
+
+	// Format date based on WordPress settings
+	const formatDate = (date) => {
+		const settings = getSettings();
+		return dateI18n(settings.formats.date, date);
+	};
+
+	// Extract excerpt safely
+	const getExcerpt = (post) => {
+		if (!post.excerpt || !post.excerpt.rendered) {
+			return '';
+		}
+
+		// Remove HTML tags from excerpt
+		const excerptText = post.excerpt.rendered.replace(/<[^>]*>/g, '');
+		// Trim to 140 chars
+		return excerptText.length > 140 ? excerptText.substring(0, 140) + '...' : excerptText;
+	};
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody title={__('Nastavenia obsahu', 'slider')} initialOpen={true}>
-					<TextControl
-						label={__('Nadpis sekcie', 'slider')}
-						value={sectionTitle}
-						onChange={(value) => setAttributes({ sectionTitle: value })}
-					/>
-					<TextControl
-						label={__('Popis sekcie', 'slider')}
-						value={sectionDescription}
-						onChange={(value) => setAttributes({ sectionDescription: value })}
-					/>
 					<RangeControl
 						label={__('Počet článkov', 'slider')}
 						value={postsToShow}
@@ -193,29 +235,108 @@ export default function Edit({ attributes, setAttributes }) {
 			</BlockControls>
 
 			<div {...blockProps}>
-				<ServerSideRender
-					block="create-block/recent-posts"
-					attributes={attributes}
-					LoadingResponsePlaceholder={() => (
-						<Placeholder label={__('Načítavanie najnovších článkov...', 'slider')}>
-							<Spinner />
-						</Placeholder>
-					)}
-					EmptyResponsePlaceholder={() => (
-						<Placeholder label={__('Žiadne články', 'slider')}>
-							<Notice status="warning" isDismissible={false}>
-								{__('Nenašli sa žiadne články na zobrazenie.', 'slider')}
-							</Notice>
-						</Placeholder>
-					)}
-					ErrorResponsePlaceholder={({ response }) => (
-						<Placeholder label={__('Chyba', 'slider')}>
-							<Notice status="error" isDismissible={false}>
-								{response ? response.message : __('Nastala chyba pri načítavaní článkov.', 'slider')}
-							</Notice>
-						</Placeholder>
-					)}
-				/>
+				<div className="recent-posts-section-header">
+					<RichText
+						tagName="h2"
+						className="recent-posts-section-title"
+						value={sectionTitle}
+						onChange={(content) => setAttributes({ sectionTitle: content })}
+						placeholder={__('Nadpis sekcie...', 'slider')}
+						allowedFormats={['core/bold', 'core/italic']}
+					/>
+
+					<RichText
+						tagName="p"
+						className="recent-posts-section-description"
+						value={sectionDescription}
+						onChange={(content) => setAttributes({ sectionDescription: content })}
+						placeholder={__('Popis sekcie...', 'slider')}
+						allowedFormats={['core/bold', 'core/italic', 'core/link']}
+					/>
+				</div>
+
+				{loading && (
+					<Placeholder>
+						<Spinner />
+						<p>{__('Načítavam posledné články...', 'slider')}</p>
+					</Placeholder>
+				)}
+
+				{error && !loading && (
+					<Notice status="error" isDismissible={false}>
+						{__('Chyba pri načítaní článkov: ', 'slider') + error}
+					</Notice>
+				)}
+
+				{!loading && !error && posts.length === 0 && (
+					<div className="recent-posts-placeholder">
+						<p>{__('Nenašli sa žiadne články.', 'slider')}</p>
+					</div>
+				)}
+
+				{!loading && !error && posts.length > 0 && (
+					<div className="recent-posts-container">
+						{posts.map((post) => {
+							const featuredImage = post._embedded &&
+								post._embedded['wp:featuredmedia'] &&
+								post._embedded['wp:featuredmedia'][0];
+
+							const author = post._embedded &&
+								post._embedded.author &&
+								post._embedded.author[0];
+
+							return (
+								<div key={post.id} className="post-item">
+									{displayFeaturedImage && featuredImage && featuredImage.source_url && (
+										<div className="post-image">
+											<img src={featuredImage.source_url} alt={featuredImage.alt_text || post.title.rendered} />
+										</div>
+									)}
+
+									<div className="post-content">
+										{(displayDate || displayAuthor) && (
+											<div className="post-meta">
+												{displayDate && (
+													<div className="post-date">
+														<FaCalendarAlt className="meta-icon" />
+														<span>{formatDate(post.date)}</span>
+													</div>
+												)}
+												{displayAuthor && author && (
+													<div className="post-author">
+														<FaUser className="meta-icon" />
+														<span>{author.name}</span>
+													</div>
+												)}
+											</div>
+										)}
+
+										<h3 className="post-title" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+
+										{displayExcerpt && (
+											<div className="post-excerpt">
+												<p>{getExcerpt(post)}</p>
+											</div>
+										)}
+
+										<a href={post.link} className="post-read-more">
+											{__('Čítať viac', 'slider')} <FaArrowRight className="read-more-icon" />
+										</a>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				)}
+
+				{showButton && (
+					<div className="post-button-container">
+						<button type="button" className="post-button">
+							<span>{buttonText || __('Všetky články', 'slider')}</span>
+							<FaArrowRight className="button-icon" />
+						</button>
+					</div>
+				)}
 			</div>
 		</>
 	);

@@ -41,12 +41,9 @@ function dctk_gutenberg_block_init() {
 }
 add_action( 'init', 'dctk_gutenberg_block_init' );
 
-// Separate registration for recent-posts - SERVER SIDE RENDER VERSION
+// Separate registration for recent-posts - SIMPLIFIED VERSION
 function register_simple_recent_posts_block() {
-	// Include render callback file
-	require_once plugin_dir_path( __FILE__ ) . 'src/recent-posts/render.php';
-
-	// Register styles
+	// Register styles and scripts
 	wp_register_style(
 		'create-block-recent-posts-style',
 		plugins_url( 'build/recent-posts/style-index.css', __FILE__ ),
@@ -61,12 +58,23 @@ function register_simple_recent_posts_block() {
 		filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.css' )
 	);
 
-	// Register the block using server-side rendering
+	// Include render callback file
+	require_once plugin_dir_path( __FILE__ ) . 'src/recent-posts/render.php';
+
+	// Register the block with minimal settings
 	register_block_type(
 		'create-block/recent-posts',
 		array(
-			'api_version' => 3,
-			'editor_script' => 'create-block-recent-posts-editor-script',
+			'apiVersion' => 3,
+			'title' => 'Posledné články',
+			'category' => 'design',
+			'icon' => 'admin-post',
+			'description' => 'Blok na zobrazenie posledných článkov s tlačidlom.',
+			'supports' => array(
+				'html' => false,
+				'align' => array('wide', 'full'),
+			),
+			'example' => array(),
 			'editor_style' => 'create-block-recent-posts-editor-style',
 			'style' => 'create-block-recent-posts-style',
 			'render_callback' => 'render_recent_posts_block',
@@ -147,14 +155,6 @@ function register_simple_recent_posts_block() {
 		)
 	);
 
-	// Register scripts for editor
-	wp_register_script(
-		'create-block-recent-posts-editor-script',
-		plugins_url( 'build/recent-posts/index.js', __FILE__ ),
-		array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-server-side-render' ),
-		filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.js' )
-	);
-
 	// Ensure styles are loaded on frontend
 	if (!is_admin()) {
 		add_action('wp_enqueue_scripts', function() {
@@ -163,3 +163,34 @@ function register_simple_recent_posts_block() {
 	}
 }
 add_action( 'init', 'register_simple_recent_posts_block', 20 );
+
+// Register the block type in editor without JavaScript (for testing)
+function add_recent_posts_to_available_blocks() {
+    // Make sure block is available in editor
+    wp_register_script(
+        'recent-posts-dummy-editor-script',
+        plugins_url( 'build/recent-posts/index.js', __FILE__ ),
+        array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ),
+        filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.js' )
+    );
+
+    // Force enqueue in editor
+    add_action( 'enqueue_block_editor_assets', function() {
+        wp_enqueue_script( 'recent-posts-dummy-editor-script' );
+    });
+}
+add_action( 'init', 'add_recent_posts_to_available_blocks', 30 );
+
+// Add debug function to help troubleshoot
+function debug_block_registration() {
+	if (current_user_can('manage_options')) {
+		echo '<!-- Recent Posts Block Debug: ';
+		echo 'Block registered: ' . (WP_Block_Type_Registry::get_instance()->is_registered('create-block/recent-posts') ? 'Yes' : 'No') . '<br>';
+		echo 'Render file exists: ' . (file_exists(plugin_dir_path(__FILE__) . 'src/recent-posts/render.php') ? 'Yes' : 'No') . '<br>';
+		echo 'Build file exists: ' . (file_exists(plugin_dir_path(__FILE__) . 'build/recent-posts/index.js') ? 'Yes' : 'No') . '<br>';
+		echo 'Scripts registered: ' . (wp_script_is('recent-posts-dummy-editor-script', 'registered') ? 'Yes' : 'No') . '<br>';
+		echo 'Styles registered: ' . (wp_style_is('create-block-recent-posts-style', 'registered') ? 'Yes' : 'No') . '<br>';
+		echo '-->';
+	}
+}
+add_action('wp_footer', 'debug_block_registration');
