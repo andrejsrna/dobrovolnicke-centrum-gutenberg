@@ -46,3 +46,10 @@ function dctk_gutenberg_block_init() {
 	}
 }
 add_action( 'init', 'dctk_gutenberg_block_init' );
+
+function create_block_recent_posts_block_init() {
+	register_block_type( __DIR__ . '/build/recent-posts', array(
+		'render_callback' => 'render_recent_posts_block',
+	) );
+}
+add_action( 'init', 'create_block_recent_posts_block_init' );

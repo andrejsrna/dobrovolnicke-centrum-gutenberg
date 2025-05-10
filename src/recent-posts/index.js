@@ -10,7 +10,6 @@ import './style.scss';
 import './editor.scss';
 import metadata from './block.json';
 import Edit from './edit';
-import save from './save';
 
 /**
  * Register block
@@ -24,5 +23,5 @@ registerBlockType(metadata.name, {
 	/**
 	 * @see ./save.js
 	 */
-	save,
+	save: () => null
 });
