@@ -30,13 +30,15 @@ export default function save({ attributes }) {
 					{slides.map((slide, index) => (
 						// Each slide
 						<div key={slide.id || index} className="swiper-slide">
-							<RichText.Content tagName="h3" className="slide-title" value={slide.title} />
-							<RichText.Content tagName="p" className="slide-description" value={slide.description} />
-							{slide.buttonText && slide.buttonLink && (
-								<a href={slide.buttonLink} className="slide-button">
-									{slide.buttonText}
-								</a>
-							)}
+							<div className="slide-inner-container">
+								<RichText.Content tagName="h3" className="slide-title" value={slide.title} />
+								<RichText.Content tagName="p" className="slide-description" value={slide.description} />
+								{slide.buttonText && slide.buttonLink && (
+									<a href={slide.buttonLink} className="slide-button">
+										{slide.buttonText}
+									</a>
+								)}
+							</div>
 						</div>
 					))}
 				</div>

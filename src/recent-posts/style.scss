@@ -151,7 +151,7 @@
 
 	.post-meta {
 		display: flex;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 		gap: 1rem;
 		font-size: 0.85rem;
 		margin-bottom: 1rem;
@@ -161,11 +161,15 @@
 		.post-author {
 			display: flex;
 			align-items: center;
+			white-space: nowrap;
 		}
 
 		.meta-icon {
+			width: 14px;
+			height: 14px;
 			color: var(--post-accent-color);
 			margin-right: 0.4rem;
+			flex-shrink: 0;
 		}
 	}
 

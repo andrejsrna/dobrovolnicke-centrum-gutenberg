@@ -2,6 +2,8 @@
  * The following styles get applied inside the editor only.
  */
 
+@import './style.scss';
+
 .wp-block-create-block-recent-posts {
 	.editor-styles-wrapper & {
 		.post-title {
@@ -10,6 +12,28 @@
 
 		.post-item {
 			position: relative;
+		}
+
+		// Fix date icon size in editor
+		.post-meta {
+			.meta-icon {
+				width: 14px !important;
+				height: 14px !important;
+				min-width: 14px !important;
+				min-height: 14px !important;
+				display: inline-block !important;
+			}
+
+			.post-date {
+				display: flex !important;
+				align-items: center !important;
+				white-space: nowrap !important;
+
+				span {
+					white-space: nowrap !important;
+					display: inline-block !important;
+				}
+			}
 		}
 	}
 

@@ -23,6 +23,20 @@ $accent-color: darken($primary-color, 15%);
 		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 	}
 
+	.slide-inner-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 20px;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		position: relative;
+		z-index: 2;
+	}
+
 	.slide, .swiper-slide {
 		box-sizing: border-box;
 		padding: 40px;

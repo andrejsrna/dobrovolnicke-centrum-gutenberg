@@ -174,9 +174,18 @@ function add_recent_posts_to_available_blocks() {
         filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.js' )
     );
 
+    // Register editor styles
+    wp_register_style(
+        'recent-posts-editor-style',
+        plugins_url( 'build/recent-posts/index.css', __FILE__ ),
+        array( 'wp-edit-blocks' ),
+        filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.css' )
+    );
+
     // Force enqueue in editor
     add_action( 'enqueue_block_editor_assets', function() {
         wp_enqueue_script( 'recent-posts-dummy-editor-script' );
+        wp_enqueue_style( 'recent-posts-editor-style' );
     });
 }
 add_action( 'init', 'add_recent_posts_to_available_blocks', 30 );
