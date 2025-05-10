@@ -48,8 +48,23 @@ function dctk_gutenberg_block_init() {
 add_action( 'init', 'dctk_gutenberg_block_init' );
 
 function create_block_recent_posts_block_init() {
+	// Načítanie súboru s render funkciou
+	require_once plugin_dir_path(__FILE__) . 'src/recent-posts/render.php';
+
 	register_block_type( __DIR__ . '/build/recent-posts', array(
 		'render_callback' => 'render_recent_posts_block',
 	) );
 }
-add_action( 'init', 'create_block_recent_posts_block_init' );
+add_action( 'init', 'create_block_recent_posts_block_init', 20 );
+
+function exclude_recent_posts_from_auto_registration($block_types) {
+	// Vylúči blok recent-posts z automatickej registrácie
+	$excluded_blocks = array('recent-posts');
+	foreach ($excluded_blocks as $block) {
+		if (isset($block_types[$block])) {
+			unset($block_types[$block]);
+		}
+	}
+	return $block_types;
+}
+add_filter('wp_block_metadata_collection', 'exclude_recent_posts_from_auto_registration', 10, 1);
