@@ -1,0 +1,45 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.wp-block-create-block-activities {
+	.activity-editor-controls {
+		margin-bottom: 1rem;
+		padding: 1rem;
+		background-color: #f5f5f5;
+		border-radius: 4px;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		.components-base-control {
+			margin-bottom: 8px;
+		}
+
+		.activity-remove-button {
+			align-self: flex-end;
+		}
+	}
+
+	.activity-add-button {
+		margin-bottom: 1rem;
+		width: 100%;
+	}
+
+	// Make sure rich text fields are clearly visible
+	.activity-title, .activity-description {
+		width: 100%;
+		position: relative;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	// Style placeholders for better visibility
+	.activity-title[placeholder]::before,
+	.activity-description[placeholder]::before {
+		opacity: 0.6;
+	}
+}

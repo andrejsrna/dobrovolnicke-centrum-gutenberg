@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/fancy-heading",
+	"version": "0.1.0",
+	"title": "Fancy Heading",
+	"category": "design",
+	"icon": "heading",
+	"description": "A fancy heading block with title and description.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".fancy-heading-title"
+		},
+		"description": {
+			"type": "string",
+			"source": "html",
+			"selector": ".fancy-heading-description"
+		},
+		"textAlignment": {
+			"type": "string",
+			"default": "left"
+		},
+		"textColor": {
+			"type": "string",
+			"default": "#333333"
+		},
+		"accentColor": {
+			"type": "string",
+			"default": "#fcb722"
+		}
+	},
+	"textdomain": "slider",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

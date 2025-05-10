@@ -1,0 +1,108 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/konzultacie",
+  "version": "0.1.0",
+  "title": "Konzultácie",
+  "category": "widgets",
+  "icon": "format-aside",
+  "description": "Blok pre zobrazenie konzultačných služieb s nadpisom, popisom a kontaktnými informáciami.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "source": "html",
+      "selector": ".konzultacie-title"
+    },
+    "description": {
+      "type": "string",
+      "source": "html",
+      "selector": ".konzultacie-description"
+    },
+    "field1Icon": {
+      "type": "string",
+      "default": "phone"
+    },
+    "field1Bold": {
+      "type": "string",
+      "source": "html",
+      "selector": ".field-1 .field-bold"
+    },
+    "field1Text": {
+      "type": "string",
+      "source": "html",
+      "selector": ".field-1 .field-text"
+    },
+    "field2Icon": {
+      "type": "string",
+      "default": "mail"
+    },
+    "field2Bold": {
+      "type": "string",
+      "source": "html",
+      "selector": ".field-2 .field-bold"
+    },
+    "field2Text": {
+      "type": "string",
+      "source": "html",
+      "selector": ".field-2 .field-text"
+    },
+    "field3Icon": {
+      "type": "string",
+      "default": "location"
+    },
+    "field3Bold": {
+      "type": "string",
+      "source": "html",
+      "selector": ".field-3 .field-bold"
+    },
+    "field3Text": {
+      "type": "string",
+      "source": "html",
+      "selector": ".field-3 .field-text"
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Kontaktovať nás"
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#333333"
+    },
+    "accentColor": {
+      "type": "string",
+      "default": "#fcb722"
+    },
+    "buttonColor": {
+      "type": "string",
+      "default": "#fcb722"
+    },
+    "buttonTextColor": {
+      "type": "string",
+      "default": "#ffffff"
+    }
+  },
+  "textdomain": "slider",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

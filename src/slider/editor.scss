@@ -1,0 +1,63 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-create-block-slider {
+	// Attempt to make the block full-width in the editor context
+	// This might be overridden by theme styles or editor layout
+	max-width: none; // Reset max-width if set by theme
+	width: 100vw;    // Full viewport width
+	margin-left: calc(50% - 50vw); // Center it by offsetting half of its width from half of the viewport width
+	padding: 20px;
+	border: 1px dashed #ccc;
+	background-color: #f9f9f9;
+}
+
+.slider-editor-container {
+	.slide-editor-item {
+		border: 1px solid #ddd;
+		padding: 15px;
+		margin-bottom: 15px;
+		background-color: #fff;
+
+		.components-base-control__label {
+			font-weight: bold;
+			margin-bottom: 5px;
+			display: block;
+		}
+
+		.components-text-control__input,
+		.components-textarea-control__input {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+
+		hR {
+			margin-top: 20px;
+			margin-bottom: 20px;
+			border: 0;
+			border-top: 1px solid #eee;
+		}
+
+		.components-button.is-destructive {
+			margin-top: 10px;
+		}
+	}
+
+	// Message for when no slides are present
+	> p {
+		font-style: italic;
+		color: #555;
+		text-align: center;
+		padding: 20px;
+		border: 1px dashed #ddd;
+	}
+}
+
+// Styles for InspectorControls Button
+.components-panel__body .components-button.is-primary {
+    width: 100%;
+    justify-content: center; // Center the text in the button
+}

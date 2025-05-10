@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/call-to-action",
+	"version": "0.1.0",
+	"title": "Call to Action",
+	"category": "widgets",
+	"icon": "megaphone",
+	"description": "Block pre zobrazenie výzvy na akciu s nadpisom a tlačidlom.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".cta-title"
+		},
+		"buttonText": {
+			"type": "string",
+			"default": "Kliknite sem"
+		},
+		"buttonUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"buttonNewTab": {
+			"type": "boolean",
+			"default": false
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "#fcb722"
+		},
+		"textColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"buttonColor": {
+			"type": "string",
+			"default": "#333333"
+		},
+		"buttonTextColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"textAlignment": {
+			"type": "string",
+			"default": "center"
+		}
+	},
+	"textdomain": "slider",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

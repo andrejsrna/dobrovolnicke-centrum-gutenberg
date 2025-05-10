@@ -1,0 +1,28 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.wp-block-create-block-call-to-action {
+	// Editor-specific styling
+	.cta-container {
+		cursor: pointer;
+	}
+
+	.cta-title {
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	// Style placeholder text to be more visible
+	.cta-title[placeholder]::before {
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	// Style button in editor
+	.cta-button {
+		cursor: default;
+		user-select: none;
+	}
+}

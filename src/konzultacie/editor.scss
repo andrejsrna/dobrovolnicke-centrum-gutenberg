@@ -1,0 +1,42 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.wp-block-create-block-konzultacie {
+	// Lepšia viditeľnosť blokov v editore
+	.konzultacie-container {
+		// Pridať jemný okraj pre lepšiu indikáciu editorového módu
+		outline: 1px solid rgba(0, 0, 0, 0.08);
+	}
+
+	// Lepšia viditeľnosť editovateľných polí
+	.konzultacie-title,
+	.konzultacie-description,
+	.field-bold,
+	.field-text {
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	// Zvýraznenie placeholderov v editore
+	[placeholder]::before {
+		opacity: 0.6;
+	}
+
+	// Pridať hover efekt pre pole na vizuálne naznačenie, že je editovateľné
+	.konzultacie-field {
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.02);
+		}
+	}
+
+	// Zabezpečiť, aby tlačidlo vyzeralo klikateľne aj v editore
+	.konzultacie-button {
+		cursor: default;
+		user-select: none;
+	}
+}

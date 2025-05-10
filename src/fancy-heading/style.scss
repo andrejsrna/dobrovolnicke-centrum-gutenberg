@@ -1,0 +1,77 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ */
+
+.wp-block-create-block-fancy-heading {
+	--fancy-text-color: #333333;
+	--fancy-accent-color: #fcb722;
+	margin: 2rem 0;
+
+	&.text-align-center {
+		text-align: center;
+
+		.fancy-heading-title::after {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	&.text-align-right {
+		text-align: right;
+
+		.fancy-heading-title::after {
+			margin-left: auto;
+		}
+	}
+
+	.fancy-heading-container {
+		max-width: 100%;
+	}
+
+	.fancy-heading-title {
+		color: var(--fancy-text-color);
+		font-size: 2.5rem;
+		line-height: 1.2;
+		margin-top: 0;
+		margin-bottom: 0.5rem;
+		position: relative;
+		font-weight: 700;
+
+		&::after {
+			content: '';
+			display: block;
+			width: 80px;
+			height: 4px;
+			background-color: var(--fancy-accent-color);
+			margin-top: 0.6rem;
+		}
+	}
+
+	.fancy-heading-description {
+		color: var(--fancy-text-color);
+		font-size: 1.2rem;
+		line-height: 1.6;
+		margin-top: 1rem;
+		margin-bottom: 0;
+		opacity: 0.85;
+	}
+}
+
+/* Responsive styling */
+@media (max-width: 767px) {
+	.wp-block-create-block-fancy-heading {
+		.fancy-heading-title {
+			font-size: 2rem;
+
+			&::after {
+				width: 60px;
+				height: 3px;
+			}
+		}
+
+		.fancy-heading-description {
+			font-size: 1rem;
+		}
+	}
+}

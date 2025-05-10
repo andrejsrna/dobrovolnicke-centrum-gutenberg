@@ -1,0 +1,24 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.wp-block-create-block-fancy-heading {
+	padding: 1rem;
+	border: 1px dashed #ddd;
+
+	.fancy-heading-title, .fancy-heading-description {
+		// Make sure the RichText containers are clearly editable
+		position: relative;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	// Style placeholders to be more visible
+	.fancy-heading-title[placeholder]::before,
+	.fancy-heading-description[placeholder]::before {
+		opacity: 0.6;
+	}
+}
