@@ -18,18 +18,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 function dctk_gutenberg_block_init() {
 	add_theme_support( 'wp-block-styles' );
 
-	wp_register_style(
-		'swiper-css',
-		plugins_url( 'node_modules/swiper/swiper-bundle.min.css', __FILE__ ),
-		array(),
-		'11.2.6'
-	);
+	// Remove Swiper CSS registration via PHP - rely on JS import
+	// wp_register_style(
+	// 	'swiper-css',
+	// 	plugins_url( 'node_modules/swiper/swiper-bundle.min.css', __FILE__ ),
+	// 	array(),
+	// 	'11.2.6'
+	// );
 
-	if ( ! is_admin() ) {
-		add_action( 'wp_enqueue_scripts', function() {
-			wp_enqueue_style( 'swiper-css' );
-		});
-	}
+	// Remove frontend enqueue via PHP
+	// if ( ! is_admin() ) {
+	// 	add_action( 'wp_enqueue_scripts', function() {
+	// 		wp_enqueue_style( 'swiper-css' );
+	// 	});
+	// }
 
 	// Register other blocks from build directory EXCEPT recent-posts
 	$manifest_data = require __DIR__ . '/build/blocks-manifest.php';
