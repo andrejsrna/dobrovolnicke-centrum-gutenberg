@@ -41,6 +41,19 @@ function dctk_gutenberg_block_init() {
 }
 add_action( 'init', 'dctk_gutenberg_block_init' );
 
+// Function to add editor width constraints
+function dctk_add_editor_styles() {
+	$editor_width_css = ".editor-styles-wrapper { max-width: 1200px; margin-left: auto; margin-right: auto; }";
+	// Attach the style to the slider block's editor script handle
+	// The handle is typically derived from the block name: [namespace]-[block-name]-editor-script
+	wp_add_inline_style( 'create-block-slider-editor-script', $editor_width_css );
+
+	// Optionally, attach to other block scripts if needed, e.g.:
+	// wp_add_inline_style( 'create-block-recent-posts-dummy-editor-script', $editor_width_css );
+}
+// Use the enqueue_block_editor_assets hook
+add_action( 'enqueue_block_editor_assets', 'dctk_add_editor_styles' );
+
 // Separate registration for recent-posts - SIMPLIFIED VERSION
 function register_simple_recent_posts_block() {
 	// Register styles and scripts

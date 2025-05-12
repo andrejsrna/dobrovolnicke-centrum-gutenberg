@@ -1,6 +1,11 @@
 import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 const initSwipers = () => {
     // Select only the main block containers
     const sliderBlocks = document.querySelectorAll('.wp-block-create-block-slider');
