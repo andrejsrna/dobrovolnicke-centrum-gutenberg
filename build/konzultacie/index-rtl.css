@@ -1,1 +1,31 @@
-.wp-block-create-block-konzultacie .konzultacie-container{outline:1px solid rgba(0,0,0,.08)}.wp-block-create-block-konzultacie .field-bold:focus,.wp-block-create-block-konzultacie .field-text:focus,.wp-block-create-block-konzultacie .konzultacie-description:focus,.wp-block-create-block-konzultacie .konzultacie-title:focus{box-shadow:none;outline:none}.wp-block-create-block-konzultacie [placeholder]:before{opacity:.6}.wp-block-create-block-konzultacie .konzultacie-field{transition:background-color .2s ease}.wp-block-create-block-konzultacie .konzultacie-field:hover{background-color:rgba(0,0,0,.02)}.wp-block-create-block-konzultacie .konzultacie-button{cursor:default;-webkit-user-select:none;-moz-user-select:none;user-select:none}
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/konzultacie/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied inside the editor only.
+ */
+.wp-block-create-block-konzultacie .konzultacie-container {
+  outline: 1px solid rgba(0, 0, 0, 0.08);
+}
+.wp-block-create-block-konzultacie .konzultacie-title:focus,
+.wp-block-create-block-konzultacie .konzultacie-description:focus,
+.wp-block-create-block-konzultacie .field-bold:focus,
+.wp-block-create-block-konzultacie .field-text:focus {
+  outline: none;
+  box-shadow: none;
+}
+.wp-block-create-block-konzultacie [placeholder]::before {
+  opacity: 0.6;
+}
+.wp-block-create-block-konzultacie .konzultacie-field {
+  transition: background-color 0.2s ease;
+}
+.wp-block-create-block-konzultacie .konzultacie-field:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.wp-block-create-block-konzultacie .konzultacie-button {
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}

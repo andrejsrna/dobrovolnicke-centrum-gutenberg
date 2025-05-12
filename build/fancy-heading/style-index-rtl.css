@@ -1,1 +1,71 @@
-.wp-block-create-block-fancy-heading{--fancy-text-color:#333;--fancy-accent-color:#fcb722;--container-width:1200px;margin:2rem auto;max-width:var(--container-width);padding:0 1rem;width:100%}.wp-block-create-block-fancy-heading.text-align-center{text-align:center}.wp-block-create-block-fancy-heading.text-align-center .fancy-heading-title:after{margin-right:auto;margin-left:auto}.wp-block-create-block-fancy-heading.text-align-right{text-align:left}.wp-block-create-block-fancy-heading.text-align-right .fancy-heading-title:after{margin-right:auto}.wp-block-create-block-fancy-heading .fancy-heading-container{max-width:100%}.wp-block-create-block-fancy-heading .fancy-heading-title{color:var(--fancy-text-color);font-size:2.5rem;font-weight:700;line-height:1.2;margin-bottom:.5rem;margin-top:0;position:relative}.wp-block-create-block-fancy-heading .fancy-heading-title:after{background-color:var(--fancy-accent-color);content:"";display:block;height:4px;margin-top:.6rem;width:80px}.wp-block-create-block-fancy-heading .fancy-heading-description{color:var(--fancy-text-color);font-size:1.2rem;line-height:1.6;margin-bottom:0;margin-top:1rem;opacity:.85}@media(max-width:767px){.wp-block-create-block-fancy-heading .fancy-heading-title{font-size:2rem}.wp-block-create-block-fancy-heading .fancy-heading-title:after{height:3px;width:60px}.wp-block-create-block-fancy-heading .fancy-heading-description{font-size:1rem}}
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/fancy-heading/style.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ */
+.wp-block-create-block-fancy-heading {
+  --fancy-text-color: #333333;
+  --fancy-accent-color: #fcb722;
+  --container-width: 1200px;
+  margin: 2rem auto;
+  max-width: var(--container-width);
+  width: 100%;
+  padding: 0 1rem;
+}
+.wp-block-create-block-fancy-heading.text-align-center {
+  text-align: center;
+}
+.wp-block-create-block-fancy-heading.text-align-center .fancy-heading-title::after {
+  margin-right: auto;
+  margin-left: auto;
+}
+.wp-block-create-block-fancy-heading.text-align-right {
+  text-align: left;
+}
+.wp-block-create-block-fancy-heading.text-align-right .fancy-heading-title::after {
+  margin-right: auto;
+}
+.wp-block-create-block-fancy-heading .fancy-heading-container {
+  max-width: 100%;
+}
+.wp-block-create-block-fancy-heading .fancy-heading-title {
+  color: var(--fancy-text-color);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  position: relative;
+  font-weight: 700;
+}
+.wp-block-create-block-fancy-heading .fancy-heading-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: var(--fancy-accent-color);
+  margin-top: 0.6rem;
+}
+.wp-block-create-block-fancy-heading .fancy-heading-description {
+  color: var(--fancy-text-color);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  opacity: 0.85;
+}
+
+/* Responsive styling */
+@media (max-width: 767px) {
+  .wp-block-create-block-fancy-heading .fancy-heading-title {
+    font-size: 2rem;
+  }
+  .wp-block-create-block-fancy-heading .fancy-heading-title::after {
+    width: 60px;
+    height: 3px;
+  }
+  .wp-block-create-block-fancy-heading .fancy-heading-description {
+    font-size: 1rem;
+  }
+}

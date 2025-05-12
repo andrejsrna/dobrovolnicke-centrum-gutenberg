@@ -117,6 +117,7 @@
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 		transition: transform 0.3s ease, box-shadow 0.3s ease;
 		border: 1px solid rgba(0, 0, 0, 0.05);
+		border-top: 4px solid #0366d6;
 
 		&:hover {
 			transform: translateY(-5px);

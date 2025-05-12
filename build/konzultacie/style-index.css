@@ -1,1 +1,163 @@
-.wp-block-create-block-konzultacie{--konzultacie-background:#fff;--konzultacie-text-color:#333;--konzultacie-accent-color:#fcb722;--konzultacie-button-color:#fcb722;--konzultacie-button-text:#fff;--container-width:1200px;margin:2rem auto;max-width:var(--container-width);padding:0 1rem;width:100%}.wp-block-create-block-konzultacie .konzultacie-container{background-color:var(--konzultacie-background);border-radius:8px;border-top:4px solid var(--konzultacie-accent-color);box-shadow:0 4px 20px rgba(0,0,0,.08);color:var(--konzultacie-text-color);display:flex;flex-wrap:wrap;gap:2rem;overflow:hidden;padding:2.5rem;position:relative}.wp-block-create-block-konzultacie .konzultacie-content{flex:1;min-width:300px}.wp-block-create-block-konzultacie .konzultacie-image{align-self:center;flex:0 0 320px;max-width:100%}.wp-block-create-block-konzultacie .konzultacie-image img{border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1);height:auto;max-width:100%}.wp-block-create-block-konzultacie .konzultacie-title{color:var(--konzultacie-text-color);font-size:2rem;font-weight:700;line-height:1.2;margin-bottom:1rem;margin-top:0}.wp-block-create-block-konzultacie .konzultacie-title:after{background-color:var(--konzultacie-accent-color);content:"";display:block;height:3px;margin-top:.8rem;width:60px}.wp-block-create-block-konzultacie .konzultacie-description{font-size:1.1rem;line-height:1.6;margin-bottom:2rem;opacity:.9}.wp-block-create-block-konzultacie .konzultacie-fields{margin:2rem 0}.wp-block-create-block-konzultacie .konzultacie-field{align-items:center;border-bottom:1px solid rgba(0,0,0,.06);display:flex;margin-bottom:1.2rem;padding:.8rem 0}.wp-block-create-block-konzultacie .konzultacie-field:last-child{border-bottom:none;margin-bottom:0}.wp-block-create-block-konzultacie .konzultacie-field .field-icon{color:var(--konzultacie-accent-color);flex-shrink:0;font-size:1.5rem;margin-right:1rem}.wp-block-create-block-konzultacie .konzultacie-field .field-content{align-items:center;display:flex;flex-wrap:wrap}.wp-block-create-block-konzultacie .konzultacie-field .field-bold{color:var(--konzultacie-text-color);font-weight:700;margin-right:.5rem}.wp-block-create-block-konzultacie .konzultacie-field .field-text{color:var(--konzultacie-text-color);opacity:.85}.wp-block-create-block-konzultacie .konzultacie-button-container{margin-top:2rem;text-align:center}.wp-block-create-block-konzultacie .konzultacie-button{background-color:var(--konzultacie-button-color);border:none;border-radius:50px;box-shadow:0 3px 10px rgba(0,0,0,.1);color:var(--konzultacie-button-text);cursor:pointer;display:inline-block;font-size:1rem;font-weight:600;padding:.8rem 2.5rem;text-decoration:none;transition:all .3s ease}.wp-block-create-block-konzultacie .konzultacie-button:hover{box-shadow:0 6px 15px rgba(0,0,0,.15);transform:translateY(-3px)}.wp-block-create-block-konzultacie .konzultacie-button:active{transform:translateY(-1px)}@media(max-width:767px){.wp-block-create-block-konzultacie .konzultacie-container{flex-direction:column;padding:1.5rem}.wp-block-create-block-konzultacie .konzultacie-image{border-radius:8px 8px 0 0;flex-basis:auto;margin:-1.5rem -1.5rem 1.5rem;order:-1;overflow:hidden}.wp-block-create-block-konzultacie .konzultacie-image img{border-radius:0;box-shadow:none;width:100%}.wp-block-create-block-konzultacie .konzultacie-title{font-size:1.5rem}.wp-block-create-block-konzultacie .konzultacie-description{font-size:1rem}.wp-block-create-block-konzultacie .konzultacie-field .field-icon{font-size:1.2rem;margin-right:.8rem}.wp-block-create-block-konzultacie .konzultacie-button{padding:.7rem 1.8rem}}
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/konzultacie/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ */
+.wp-block-create-block-konzultacie {
+  --konzultacie-background: #ffffff;
+  --konzultacie-text-color: #333333;
+  --konzultacie-accent-color: #fcb722;
+  --konzultacie-button-color: #fcb722;
+  --konzultacie-button-text: #ffffff;
+  --container-width: 1200px;
+  margin: 2rem auto;
+  max-width: var(--container-width);
+  width: 100%;
+  padding: 0 1rem;
+}
+.wp-block-create-block-konzultacie .konzultacie-container {
+  background-color: var(--konzultacie-background);
+  color: var(--konzultacie-text-color);
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid var(--konzultacie-accent-color);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.wp-block-create-block-konzultacie .konzultacie-content {
+  flex: 1;
+  min-width: 300px;
+}
+.wp-block-create-block-konzultacie .konzultacie-image {
+  flex: 0 0 320px;
+  max-width: 100%;
+  align-self: center;
+}
+.wp-block-create-block-konzultacie .konzultacie-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.wp-block-create-block-konzultacie .konzultacie-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: var(--konzultacie-text-color);
+}
+.wp-block-create-block-konzultacie .konzultacie-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background-color: var(--konzultacie-accent-color);
+  margin-top: 0.8rem;
+}
+.wp-block-create-block-konzultacie .konzultacie-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+.wp-block-create-block-konzultacie .konzultacie-fields {
+  margin: 2rem 0;
+}
+.wp-block-create-block-konzultacie .konzultacie-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.wp-block-create-block-konzultacie .konzultacie-field:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.wp-block-create-block-konzultacie .konzultacie-field .field-icon {
+  color: var(--konzultacie-accent-color);
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+.wp-block-create-block-konzultacie .konzultacie-field .field-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.wp-block-create-block-konzultacie .konzultacie-field .field-bold {
+  font-weight: 700;
+  margin-right: 0.5rem;
+  color: var(--konzultacie-text-color);
+}
+.wp-block-create-block-konzultacie .konzultacie-field .field-text {
+  color: var(--konzultacie-text-color);
+  opacity: 0.85;
+}
+.wp-block-create-block-konzultacie .konzultacie-button-container {
+  margin-top: 2rem;
+  text-align: center;
+}
+.wp-block-create-block-konzultacie .konzultacie-button {
+  display: inline-block;
+  background-color: var(--konzultacie-button-color);
+  color: var(--konzultacie-button-text);
+  font-weight: 600;
+  padding: 0.8rem 2.5rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+.wp-block-create-block-konzultacie .konzultacie-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+.wp-block-create-block-konzultacie .konzultacie-button:active {
+  transform: translateY(-1px);
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .wp-block-create-block-konzultacie .konzultacie-container {
+    padding: 1.5rem;
+    flex-direction: column;
+  }
+  .wp-block-create-block-konzultacie .konzultacie-image {
+    order: -1;
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    flex-basis: auto;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+  }
+  .wp-block-create-block-konzultacie .konzultacie-image img {
+    border-radius: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+  .wp-block-create-block-konzultacie .konzultacie-title {
+    font-size: 1.5rem;
+  }
+  .wp-block-create-block-konzultacie .konzultacie-description {
+    font-size: 1rem;
+  }
+  .wp-block-create-block-konzultacie .konzultacie-field .field-icon {
+    font-size: 1.2rem;
+    margin-right: 0.8rem;
+  }
+  .wp-block-create-block-konzultacie .konzultacie-button {
+    padding: 0.7rem 1.8rem;
+  }
+}
+
+/*# sourceMappingURL=style-index.css.map*/
