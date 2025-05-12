@@ -457,14 +457,10 @@ return array(
 							'type' => 'string'
 						),
 						'title' => array(
-							'type' => 'string',
-							'source' => 'html',
-							'selector' => '.slide-title'
+							'type' => 'string'
 						),
 						'description' => array(
-							'type' => 'string',
-							'source' => 'html',
-							'selector' => '.slide-description'
+							'type' => 'string'
 						),
 						'buttonText' => array(
 							'type' => 'string',
@@ -476,6 +472,33 @@ return array(
 							'source' => 'attribute',
 							'selector' => '.slide-button',
 							'attribute' => 'href'
+						),
+						'imageId' => array(
+							'type' => 'number'
+						),
+						'imageUrl' => array(
+							'type' => 'string',
+							'source' => 'attribute',
+							'selector' => '.slide-image img',
+							'attribute' => 'src'
+						),
+						'defaultIcon' => array(
+							'type' => 'string',
+							'default' => ''
+						),
+						'colorScheme' => array(
+							'type' => 'string',
+							'default' => 'yellow-orange'
+						),
+						'backgroundImageId' => array(
+							'type' => 'number'
+						),
+						'backgroundImageUrl' => array(
+							'type' => 'string'
+						),
+						'useBackgroundImage' => array(
+							'type' => 'boolean',
+							'default' => false
 						)
 					)
 				)

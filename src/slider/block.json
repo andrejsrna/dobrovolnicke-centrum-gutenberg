@@ -22,14 +22,10 @@
 						"type": "string"
 					},
 					"title": {
-						"type": "string",
-						"source": "html",
-						"selector": ".slide-title"
+						"type": "string"
 					},
 					"description": {
-						"type": "string",
-						"source": "html",
-						"selector": ".slide-description"
+						"type": "string"
 					},
 					"buttonText": {
 						"type": "string",
@@ -41,6 +37,33 @@
 						"source": "attribute",
 						"selector": ".slide-button",
 						"attribute": "href"
+					},
+					"imageId": {
+						"type": "number"
+					},
+					"imageUrl": {
+						"type": "string",
+						"source": "attribute",
+						"selector": ".slide-image img",
+						"attribute": "src"
+					},
+					"defaultIcon": {
+						"type": "string",
+						"default": ""
+					},
+					"colorScheme": {
+						"type": "string",
+						"default": "yellow-orange"
+					},
+					"backgroundImageId": {
+						"type": "number"
+					},
+					"backgroundImageUrl": {
+						"type": "string"
+					},
+					"useBackgroundImage": {
+						"type": "boolean",
+						"default": false
 					}
 				}
 			}

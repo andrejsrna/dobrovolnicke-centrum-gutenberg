@@ -1,1 +1,400 @@
-.wp-block-create-block-slider{background-color:transparent;color:#333;max-width:100%;padding:0}.wp-block-create-block-slider .slider-container{border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.1);margin:0 auto;overflow:hidden;position:relative;width:100%}.wp-block-create-block-slider .slide-inner-container{align-items:flex-start;display:flex;flex-direction:column;height:100%;justify-content:center;margin:0 auto;max-width:1200px;padding:0 20px;position:relative;width:100%;z-index:2}.wp-block-create-block-slider .slide,.wp-block-create-block-slider .swiper-slide{align-items:flex-start;background-color:#fee8b9;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;min-height:350px;overflow:hidden;padding:40px;position:relative;text-align:left}.wp-block-create-block-slider .slide:after,.wp-block-create-block-slider .slide:before,.wp-block-create-block-slider .swiper-slide:after,.wp-block-create-block-slider .swiper-slide:before{border-radius:50%;content:"";position:absolute;z-index:0}.wp-block-create-block-slider .slide:before,.wp-block-create-block-slider .swiper-slide:before{background-color:rgba(252,183,34,.2);height:150px;right:-50px;top:-50px;width:150px}.wp-block-create-block-slider .slide:after,.wp-block-create-block-slider .swiper-slide:after{background-color:rgba(252,183,34,.15);bottom:-30px;height:100px;left:30%;width:100px}.wp-block-create-block-slider .slide .slide-title,.wp-block-create-block-slider .swiper-slide .slide-title{color:#cf8e03;font-size:2.2em;font-weight:700;margin-bottom:.5em;max-width:70%;position:relative;z-index:1}.wp-block-create-block-slider .slide .slide-title:after,.wp-block-create-block-slider .swiper-slide .slide-title:after{background-color:#fcb722;content:"";display:block;height:4px;margin-top:10px;width:60px}.wp-block-create-block-slider .slide .slide-description,.wp-block-create-block-slider .swiper-slide .slide-description{color:#333;font-size:1.2em;line-height:1.6;margin-bottom:1.5em;max-width:70%;position:relative;z-index:1}.wp-block-create-block-slider .slide .slide-button,.wp-block-create-block-slider .swiper-slide .slide-button{background-color:#fcb722;border-radius:30px;box-shadow:0 4px 8px rgba(0,0,0,.1);color:#333;display:inline-block;font-size:.9em;font-weight:700;letter-spacing:1px;padding:12px 24px;position:relative;text-decoration:none;text-transform:uppercase;transition:all .3s ease;z-index:1}.wp-block-create-block-slider .slide .slide-button:hover,.wp-block-create-block-slider .swiper-slide .slide-button:hover{background-color:#cf8e03;box-shadow:0 6px 12px rgba(0,0,0,.15);color:#fff;transform:translateY(-2px)}.wp-block-create-block-slider .swiper-pagination-bullet{background:#fcb722;opacity:.5}.wp-block-create-block-slider .swiper-pagination-bullet.swiper-pagination-bullet-active{background:#fcb722;opacity:1}.wp-block-create-block-slider .swiper-button-next,.wp-block-create-block-slider .swiper-button-prev{align-items:center;background-color:hsla(0,0%,100%,.7);border-radius:50%;color:#fcb722;display:flex;height:44px;justify-content:center;transition:all .3s ease;width:44px}.wp-block-create-block-slider .swiper-button-next:after,.wp-block-create-block-slider .swiper-button-prev:after{font-size:20px;font-weight:700}.wp-block-create-block-slider .swiper-button-next:hover,.wp-block-create-block-slider .swiper-button-prev:hover{background-color:#fff;color:#cf8e03}.alignfull.wp-block-create-block-slider{margin-left:calc(50% - 50vw);max-width:100vw;width:100vw}@media(max-width:767px){.wp-block-create-block-slider .slide,.wp-block-create-block-slider .swiper-slide{padding:30px 20px}.wp-block-create-block-slider .slide .slide-description,.wp-block-create-block-slider .slide .slide-title,.wp-block-create-block-slider .swiper-slide .slide-description,.wp-block-create-block-slider .swiper-slide .slide-title{max-width:100%}.wp-block-create-block-slider .slide .slide-title,.wp-block-create-block-slider .swiper-slide .slide-title{font-size:1.8em}.wp-block-create-block-slider .slide .slide-description,.wp-block-create-block-slider .swiper-slide .slide-description{font-size:1em}}
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/slider/style.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+/**
+ * Styles for the slider block - applied both on frontend and in editor
+ */
+.wp-block-create-block-slider {
+  padding: 0;
+  max-width: 100%;
+  background-color: transparent;
+  color: #333333;
+}
+.wp-block-create-block-slider .slider-container {
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.wp-block-create-block-slider .slide-inner-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+.wp-block-create-block-slider .slide-content {
+  flex: 0 0 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-right: 30px;
+}
+.wp-block-create-block-slider .slide-image {
+  flex: 0 0 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 2;
+}
+.wp-block-create-block-slider .slide-image img {
+  max-width: 100%;
+  max-height: 280px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.wp-block-create-block-slider .slide-image .default-icon {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wp-block-create-block-slider .slide-image .default-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.wp-block-create-block-slider .slide, .wp-block-create-block-slider .swiper-slide {
+  box-sizing: border-box;
+  padding: 40px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 350px;
+  position: relative;
+  overflow: hidden;
+  background-color: #fef8e7;
+}
+.wp-block-create-block-slider .slide::before, .wp-block-create-block-slider .slide::after, .wp-block-create-block-slider .swiper-slide::before, .wp-block-create-block-slider .swiper-slide::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
+.wp-block-create-block-slider .slide::before, .wp-block-create-block-slider .swiper-slide::before {
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background-color: rgba(252, 183, 34, 0.2);
+}
+.wp-block-create-block-slider .slide::after, .wp-block-create-block-slider .swiper-slide::after {
+  bottom: -30px;
+  left: 30%;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(252, 183, 34, 0.15);
+}
+.wp-block-create-block-slider .slide.has-background-image, .wp-block-create-block-slider .swiper-slide.has-background-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.wp-block-create-block-slider .slide.has-background-image::before, .wp-block-create-block-slider .slide.has-background-image::after, .wp-block-create-block-slider .swiper-slide.has-background-image::before, .wp-block-create-block-slider .swiper-slide.has-background-image::after {
+  display: none;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-inner-container, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-inner-container {
+  padding: 20px;
+  border-radius: 8px;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-content, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-content {
+  flex: 0 0 100%;
+  padding: 20px;
+  max-width: none;
+  margin: 0;
+  align-items: flex-start;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-title, .wp-block-create-block-slider .slide.has-background-image .slide-description, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-title, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-description {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-title, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-title {
+  font-size: 2.2em;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  color: #ffffff;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-title::after, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-title::after {
+  background-color: #ffffff;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-description, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-description {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 1.5em;
+  color: #ffffff;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-button, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-button {
+  background-color: #ffffff;
+  color: #333333;
+  border: none;
+}
+.wp-block-create-block-slider .slide.has-background-image .slide-button:hover, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-button:hover {
+  background-color: rgb(229.5, 229.5, 229.5);
+  color: #333333;
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange {
+  background-color: #fef8e7;
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange .slide-title, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange .slide-title {
+  color: #8a5a00;
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange .slide-title::after, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange .slide-title::after {
+  background-color: #f9b233;
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange .slide-button, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange .slide-button {
+  background-color: #f9b233;
+  color: #333333;
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange .slide-button:hover, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange .slide-button:hover {
+  background-color: rgb(241.8857142857, 157.7, 7.1142857143);
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange::before, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange::before {
+  background-color: rgba(249, 178, 51, 0.2);
+}
+.wp-block-create-block-slider .slide.color-scheme-yellow-orange::after, .wp-block-create-block-slider .swiper-slide.color-scheme-yellow-orange::after {
+  background-color: rgba(249, 178, 51, 0.15);
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue {
+  background-color: #e6f7ff;
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue .slide-title, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue .slide-title {
+  color: #0366d6;
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue .slide-title::after, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue .slide-title::after {
+  background-color: #90caf9;
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue .slide-button, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue .slide-button {
+  background-color: #90caf9;
+  color: #333333;
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue .slide-button:hover, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue .slide-button:hover {
+  background-color: rgb(95.6153846154, 178.8974358974, 246.3846153846);
+  color: #ffffff;
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue::before, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue::before {
+  background-color: rgba(144, 202, 249, 0.2);
+}
+.wp-block-create-block-slider .slide.color-scheme-light-blue::after, .wp-block-create-block-slider .swiper-slide.color-scheme-light-blue::after {
+  background-color: rgba(144, 202, 249, 0.15);
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue {
+  background-color: #e8eaf6;
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue .slide-title, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue .slide-title {
+  color: #283593;
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue .slide-title::after, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue .slide-title::after {
+  background-color: #3f51b5;
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue .slide-button, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue .slide-button {
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue .slide-button:hover, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue .slide-button:hover {
+  background-color: rgb(49.8319672131, 64.0696721311, 143.1680327869);
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue::before, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue::before {
+  background-color: rgba(63, 81, 181, 0.2);
+}
+.wp-block-create-block-slider .slide.color-scheme-dark-blue::after, .wp-block-create-block-slider .swiper-slide.color-scheme-dark-blue::after {
+  background-color: rgba(63, 81, 181, 0.15);
+}
+.wp-block-create-block-slider .slide .slide-title, .wp-block-create-block-slider .swiper-slide .slide-title {
+  font-size: 2.2em;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  color: rgb(206.6941964286, 142.1607142857, 2.8058035714);
+  position: relative;
+  z-index: 1;
+}
+.wp-block-create-block-slider .slide .slide-title::after, .wp-block-create-block-slider .swiper-slide .slide-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #fcb722;
+  margin-top: 10px;
+}
+.wp-block-create-block-slider .slide .slide-description, .wp-block-create-block-slider .swiper-slide .slide-description {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 1.5em;
+  color: #333333;
+  position: relative;
+  z-index: 1;
+}
+.wp-block-create-block-slider .slide .slide-button, .wp-block-create-block-slider .swiper-slide .slide-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #fcb722;
+  color: #333333;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+.wp-block-create-block-slider .slide .slide-button:hover, .wp-block-create-block-slider .swiper-slide .slide-button:hover {
+  background-color: rgb(206.6941964286, 142.1607142857, 2.8058035714);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.wp-block-create-block-slider .swiper-pagination-bullet {
+  background: #fcb722;
+  opacity: 0.5;
+}
+.wp-block-create-block-slider .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #fcb722;
+}
+.wp-block-create-block-slider .swiper-button-next, .wp-block-create-block-slider .swiper-button-prev {
+  color: #fcb722;
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.wp-block-create-block-slider .swiper-button-next:after, .wp-block-create-block-slider .swiper-button-prev:after {
+  font-size: 20px;
+  font-weight: bold;
+}
+.wp-block-create-block-slider .swiper-button-next:hover, .wp-block-create-block-slider .swiper-button-prev:hover {
+  background-color: #ffffff;
+  color: rgb(206.6941964286, 142.1607142857, 2.8058035714);
+}
+.wp-block-create-block-slider .swiper-wrapper {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.image-source-tabs .components-tab-panel__tabs {
+  display: flex;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+.image-source-tabs .components-tab-panel__tabs .components-tab-panel__tabs-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 12px;
+  background: #f0f0f0;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+}
+.image-source-tabs .components-tab-panel__tabs .components-tab-panel__tabs-item.active-tab {
+  background: #fff;
+  border-bottom: 2px solid #007cba;
+  font-weight: 500;
+}
+
+.slide-background-image-selector {
+  margin-bottom: 20px;
+}
+.slide-background-image-selector p {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.slide-background-image-selector .slide-background-image-preview {
+  margin-top: 10px;
+}
+.slide-background-image-selector .slide-background-image-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.slide-background-image-selector .info-text {
+  color: #666;
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 8px;
+}
+
+.notice-text {
+  color: #d63638;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 0;
+}
+
+.alignfull.wp-block-create-block-slider {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  max-width: 100vw;
+}
+
+@media (max-width: 767px) {
+  .wp-block-create-block-slider .slide, .wp-block-create-block-slider .swiper-slide {
+    padding: 30px 20px;
+    flex-direction: column;
+  }
+  .wp-block-create-block-slider .slide .slide-inner-container, .wp-block-create-block-slider .swiper-slide .slide-inner-container {
+    flex-direction: column;
+  }
+  .wp-block-create-block-slider .slide .slide-content, .wp-block-create-block-slider .slide .slide-image, .wp-block-create-block-slider .swiper-slide .slide-content, .wp-block-create-block-slider .swiper-slide .slide-image {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  .wp-block-create-block-slider .slide .slide-content, .wp-block-create-block-slider .swiper-slide .slide-content {
+    order: 2;
+  }
+  .wp-block-create-block-slider .slide .slide-image, .wp-block-create-block-slider .swiper-slide .slide-image {
+    order: 1;
+    margin-bottom: 20px;
+  }
+  .wp-block-create-block-slider .slide .slide-image img, .wp-block-create-block-slider .swiper-slide .slide-image img {
+    max-height: 180px;
+  }
+  .wp-block-create-block-slider .slide .slide-image .default-icon, .wp-block-create-block-slider .swiper-slide .slide-image .default-icon {
+    width: 80px;
+    height: 80px;
+  }
+  .wp-block-create-block-slider .slide.has-background-image .slide-inner-container, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-inner-container {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .wp-block-create-block-slider .slide.has-background-image .slide-content, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-content {
+    padding: 15px;
+  }
+  .wp-block-create-block-slider .slide.has-background-image .slide-title, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-title {
+    font-size: 1.5em;
+  }
+  .wp-block-create-block-slider .slide.has-background-image .slide-description, .wp-block-create-block-slider .swiper-slide.has-background-image .slide-description {
+    font-size: 1em;
+  }
+  .wp-block-create-block-slider .slide .slide-title, .wp-block-create-block-slider .swiper-slide .slide-title {
+    font-size: 1.8em;
+  }
+  .wp-block-create-block-slider .slide .slide-description, .wp-block-create-block-slider .swiper-slide .slide-description {
+    font-size: 1em;
+  }
+}
+
+/*# sourceMappingURL=style-index.css.map*/

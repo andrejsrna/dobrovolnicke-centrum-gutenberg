@@ -1,26 +1,53 @@
 import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 
-document.addEventListener('DOMContentLoaded', () => {
-	const sliderBlocks = document.querySelectorAll('.wp-block-create-block-slider .swiper');
+const initSwipers = () => {
+    // Select only the main block containers
+    const sliderBlocks = document.querySelectorAll('.wp-block-create-block-slider');
 
-	sliderBlocks.forEach((sliderElement) => {
-		new Swiper(sliderElement, {
-			modules: [Navigation, Pagination],
-			loop: true,
-			grabCursor: true,
-			navigation: {
-				nextEl: '.swiper-button-next',
-				prevEl: '.swiper-button-prev',
-			},
-			pagination: {
-				el: '.swiper-pagination',
-				clickable: true,
-			},
-		});
-	});
+    sliderBlocks.forEach((sliderElement, index) => {
+        // Find the swiper container *within* this block
+        const swiperEl = sliderElement.querySelector('.swiper');
 
-	if (sliderBlocks.length > 0) {
-		console.log(`Slider block(s) initialized with Swiper.js (${sliderBlocks.length} instance(s)).`);
-	}
-});
+        // If no swiper container found, or it's already initialized, skip
+        if (!swiperEl || swiperEl.classList.contains('swiper-initialized')) {
+            return;
+        }
+
+        try {
+            new Swiper(swiperEl, {
+                modules: [Navigation, Pagination],
+                loop: true,
+                grabCursor: true,
+                autoHeight: true,
+                navigation: {
+                    // Ensure buttons are queried within the specific swiperEl
+                    nextEl: swiperEl.querySelector('.swiper-button-next'),
+                    prevEl: swiperEl.querySelector('.swiper-button-prev'),
+                },
+                pagination: {
+                    // Ensure pagination is queried within the specific swiperEl
+                    el: swiperEl.querySelector('.swiper-pagination'),
+                    clickable: true,
+                },
+            });
+
+            // Mark this specific swiper container as initialized
+            swiperEl.classList.add('swiper-initialized');
+
+        } catch (error) {
+            console.error(`Error initializing slider #${index + 1}:`, error);
+        }
+    });
+};
+
+// Remove redundant initialization logic
+// const initSliders = () => {
+// 	initSwipers();
+// 	setTimeout(initSwipers, 500);
+// };
+
+// Initialize only once on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initSwipers);
+// Remove window.load listener
+// window.addEventListener('load', initSwipers);

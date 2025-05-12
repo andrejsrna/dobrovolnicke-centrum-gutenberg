@@ -8,6 +8,19 @@ $text-color: #333333;
 $light-color: #ffffff;
 $accent-color: darken($primary-color, 15%);
 
+// Color scheme variables
+$yellow-orange-bg: #fef8e7;
+$yellow-orange-accent: #f9b233;
+$yellow-orange-text: #8a5a00;
+
+$light-blue-bg: #e6f7ff;
+$light-blue-accent: #90caf9;
+$light-blue-text: #0366d6;
+
+$dark-blue-bg: #e8eaf6;
+$dark-blue-accent: #3f51b5;
+$dark-blue-text: #283593;
+
 .wp-block-create-block-slider {
 	padding: 0;
 	max-width: 100%;
@@ -30,11 +43,49 @@ $accent-color: darken($primary-color, 15%);
 		width: 100%;
 		height: 100%;
 		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+		z-index: 2;
+	}
+
+	.slide-content {
+		flex: 0 0 60%;
+		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: center;
-		position: relative;
+		padding-right: 30px;
+	}
+
+	.slide-image {
+		flex: 0 0 40%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 20px;
 		z-index: 2;
+
+		img {
+			max-width: 100%;
+			max-height: 280px;
+			object-fit: contain;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+		}
+
+		.default-icon {
+			width: 120px;
+			height: 120px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			svg {
+				width: 100%;
+				height: 100%;
+			}
+		}
 	}
 
 	.slide, .swiper-slide {
@@ -42,13 +93,14 @@ $accent-color: darken($primary-color, 15%);
 		padding: 40px;
 		text-align: left;
 		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		justify-content: center;
+		align-items: center;
+		justify-content: space-between;
 		min-height: 350px;
-		background-color: lighten($primary-color, 30%);
 		position: relative;
 		overflow: hidden;
+
+		// Default color scheme (yellow-orange)
+		background-color: $yellow-orange-bg;
 
 		&::before, &::after {
 			content: '';
@@ -73,6 +125,153 @@ $accent-color: darken($primary-color, 15%);
 			background-color: rgba($primary-color, 0.15);
 		}
 
+		// Background image style
+		&.has-background-image {
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+
+			&::before, &::after {
+				display: none; // Hide decorative circles
+			}
+
+			.slide-inner-container {
+				padding: 20px;
+				border-radius: 8px;
+			}
+
+			.slide-content {
+				flex: 0 0 100%;
+				padding: 20px;
+				max-width: none;
+				margin: 0;
+				align-items: flex-start;
+			}
+
+			.slide-title, .slide-description {
+				color: $light-color;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+			}
+
+			.slide-title {
+				font-size: 2.2em;
+				font-weight: 700;
+				margin-bottom: 0.5em;
+				color: $light-color;
+
+				&::after {
+					background-color: $light-color;
+				}
+			}
+
+			.slide-description {
+				font-size: 1.2em;
+				line-height: 1.6;
+				margin-bottom: 1.5em;
+				color: $light-color;
+			}
+
+			.slide-button {
+				background-color: $light-color;
+				color: $text-color;
+				border: none;
+
+				&:hover {
+					background-color: darken($light-color, 10%);
+					color: $text-color;
+				}
+			}
+		}
+
+		// Color scheme variants
+		&.color-scheme-yellow-orange {
+			background-color: $yellow-orange-bg;
+
+			.slide-title {
+				color: $yellow-orange-text;
+
+				&::after {
+					background-color: $yellow-orange-accent;
+				}
+			}
+
+			.slide-button {
+				background-color: $yellow-orange-accent;
+				color: $text-color;
+
+				&:hover {
+					background-color: darken($yellow-orange-accent, 10%);
+				}
+			}
+
+			&::before {
+				background-color: rgba($yellow-orange-accent, 0.2);
+			}
+
+			&::after {
+				background-color: rgba($yellow-orange-accent, 0.15);
+			}
+		}
+
+		&.color-scheme-light-blue {
+			background-color: $light-blue-bg;
+
+			.slide-title {
+				color: $light-blue-text;
+
+				&::after {
+					background-color: $light-blue-accent;
+				}
+			}
+
+			.slide-button {
+				background-color: $light-blue-accent;
+				color: $text-color;
+
+				&:hover {
+					background-color: darken($light-blue-accent, 10%);
+					color: $light-color;
+				}
+			}
+
+			&::before {
+				background-color: rgba($light-blue-accent, 0.2);
+			}
+
+			&::after {
+				background-color: rgba($light-blue-accent, 0.15);
+			}
+		}
+
+		&.color-scheme-dark-blue {
+			background-color: $dark-blue-bg;
+
+			.slide-title {
+				color: $dark-blue-text;
+
+				&::after {
+					background-color: $dark-blue-accent;
+				}
+			}
+
+			.slide-button {
+				background-color: $dark-blue-accent;
+				color: $light-color;
+
+				&:hover {
+					background-color: darken($dark-blue-accent, 10%);
+				}
+			}
+
+			&::before {
+				background-color: rgba($dark-blue-accent, 0.2);
+			}
+
+			&::after {
+				background-color: rgba($dark-blue-accent, 0.15);
+			}
+		}
+
 		.slide-title {
 			font-size: 2.2em;
 			font-weight: 700;
@@ -80,7 +279,6 @@ $accent-color: darken($primary-color, 15%);
 			color: $accent-color;
 			position: relative;
 			z-index: 1;
-			max-width: 70%;
 
 			&::after {
 				content: '';
@@ -99,7 +297,6 @@ $accent-color: darken($primary-color, 15%);
 			color: $text-color;
 			position: relative;
 			z-index: 1;
-			max-width: 70%;
 		}
 
 		.slide-button {
@@ -159,6 +356,77 @@ $accent-color: darken($primary-color, 15%);
 			color: $accent-color;
 		}
 	}
+
+	// Ensure wrapper and slides can fill height
+	.swiper-wrapper {
+		display: flex; // Swiper usually adds this, but good to ensure
+		align-items: stretch; // Make slides stretch vertically
+		height: 100%; // Allow wrapper to have height
+	}
+}
+
+// Image source tabs
+.image-source-tabs {
+	.components-tab-panel__tabs {
+		display: flex;
+		margin-bottom: 15px;
+		border-bottom: 1px solid #ddd;
+
+		.components-tab-panel__tabs-item {
+			flex: 1;
+			text-align: center;
+			padding: 8px 12px;
+			background: #f0f0f0;
+			border: none;
+			border-bottom: 2px solid transparent;
+			border-radius: 0;
+
+			&.active-tab {
+				background: #fff;
+				border-bottom: 2px solid #007cba;
+				font-weight: 500;
+			}
+		}
+	}
+}
+
+// Background image selector styles
+.slide-background-image-selector {
+	margin-bottom: 20px;
+
+	p {
+		font-weight: bold;
+		margin-bottom: 8px;
+	}
+
+	.slide-background-image-preview {
+		margin-top: 10px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			max-height: 200px;
+			object-fit: cover;
+			border-radius: 8px;
+			margin-bottom: 10px;
+		}
+	}
+
+	.info-text {
+		color: #666;
+		font-style: italic;
+		font-size: 0.9em;
+		margin-top: 8px;
+	}
+}
+
+// Notice text
+.notice-text {
+	color: #d63638;
+	font-size: 0.9em;
+	font-style: italic;
+	margin-top: 0;
 }
 
 // Full-width setting
@@ -173,9 +441,52 @@ $accent-color: darken($primary-color, 15%);
 	.wp-block-create-block-slider {
 		.slide, .swiper-slide {
 			padding: 30px 20px;
+			flex-direction: column;
 
-			.slide-title, .slide-description {
+			.slide-inner-container {
+				flex-direction: column;
+			}
+
+			.slide-content, .slide-image {
+				flex: 0 0 100%;
 				max-width: 100%;
+				padding: 0;
+			}
+
+			.slide-content {
+				order: 2;
+			}
+
+			.slide-image {
+				order: 1;
+				margin-bottom: 20px;
+
+				img {
+					max-height: 180px;
+				}
+
+				.default-icon {
+					width: 80px;
+					height: 80px;
+				}
+			}
+
+			&.has-background-image {
+				.slide-inner-container {
+					background-color: rgba(0, 0, 0, 0.6);
+				}
+
+				.slide-content {
+					padding: 15px;
+				}
+
+				.slide-title {
+					font-size: 1.5em;
+				}
+
+				.slide-description {
+					font-size: 1em;
+				}
 			}
 
 			.slide-title {

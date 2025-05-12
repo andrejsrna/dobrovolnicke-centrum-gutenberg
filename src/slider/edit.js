@@ -6,6 +6,9 @@ import {
 	InspectorControls,
 	useBlockProps,
 	RichText,
+	MediaUpload,
+	MediaUploadCheck,
+	PanelColorSettings,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -14,13 +17,52 @@ import {
 	TextareaControl,
 	ToggleControl,
 	TabPanel,
+	SelectControl,
+	__experimentalRadio as Radio,
+	__experimentalRadioGroup as RadioGroup,
+	RadioControl,
+	Dashicon,
+	Card,
+	CardHeader,
+	CardBody,
+	CardFooter,
+	CardDivider,
+	Flex,
+	FlexItem,
+	FlexBlock,
+	Icon,
+	Tooltip,
+	Panel,
+	PanelRow,
+	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
-import { Fragment, useState } from '@wordpress/element';
+import { Fragment, useState, memo, useCallback, useEffect } from '@wordpress/element';
+import { plusCircle, trash, image, update, close, info, formatBold, link } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import defaultIcons from './icons';
+
+// Color options for slides
+const SLIDE_COLORS = [
+	{ value: 'yellow-orange', label: __('Žlto-oranžová', 'slider') },
+	{ value: 'light-blue', label: __('Bledomodrá', 'slider') },
+	{ value: 'dark-blue', label: __('Tmavomodrá', 'slider') },
+];
+
+// Available default icons
+const DEFAULT_ICONS = [
+	{ value: 'volunteer', label: __('Dobrovoľník', 'slider') },
+	{ value: 'heart', label: __('Srdce', 'slider') },
+	{ value: 'people', label: __('Ľudia', 'slider') },
+	{ value: 'handshake', label: __('Podanie rúk', 'slider') },
+	{ value: 'event', label: __('Udalosť', 'slider') },
+	{ value: 'chat', label: __('Chat', 'slider') },
+	{ value: 'idea', label: __('Nápad', 'slider') },
+	{ value: 'education', label: __('Vzdelávanie', 'slider') }
+];
 
 /**
  * Funkcia edit popisuje štruktúru bloku v kontexte editora.
@@ -35,19 +77,29 @@ export default function Edit({ attributes, setAttributes }) {
 	const blockProps = useBlockProps();
 	const { slides = [] } = attributes;
 	const [previewMode, setPreviewMode] = useState(false);
+	const [activeSlideIndex, setActiveSlideIndex] = useState(slides.length > 0 ? 0 : -1);
 
 	const addSlide = () => {
+		const slideId = `slide-${new Date().getTime()}`;
 		const newSlides = [
 			...slides,
 			{
-				id: `slide-${new Date().getTime()}`,
+				id: slideId,
 				title: '',
 				description: '',
 				buttonText: '',
 				buttonLink: '',
+				imageId: 0,
+				imageUrl: '',
+				defaultIcon: '',
+				colorScheme: 'yellow-orange',
+				backgroundImageId: 0,
+				backgroundImageUrl: '',
+				useBackgroundImage: false,
 			},
 		];
 		setAttributes({ slides: newSlides });
+		setActiveSlideIndex(newSlides.length - 1);
 	};
 
 	const updateSlide = (index, key, value) => {
@@ -63,89 +115,600 @@ export default function Edit({ attributes, setAttributes }) {
 	const removeSlide = (index) => {
 		const newSlides = slides.filter((_, i) => i !== index);
 		setAttributes({ slides: newSlides });
+
+		if (activeSlideIndex === index) {
+			if (newSlides.length > 0) {
+				setActiveSlideIndex(Math.min(activeSlideIndex, newSlides.length - 1));
+			} else {
+				setActiveSlideIndex(-1);
+			}
+		} else if (activeSlideIndex > index) {
+			setActiveSlideIndex(activeSlideIndex - 1);
+		}
 	};
+
+	// Stabilize functions with useCallback
+	const updateSlideCallback = useCallback((index, key, value) => {
+		// Create a shallow copy of the slides array from the current state
+		const newSlides = [...slides];
+		// Create a new object for the slide being updated
+		newSlides[index] = { ...newSlides[index], [key]: value };
+		// Set attributes directly
+		setAttributes({ slides: newSlides });
+	}, [slides, setAttributes]);
+
+	// New function for updating multiple attributes at once
+	const updateMultipleSlideAttributes = useCallback((index, updates) => {
+		// Create a shallow copy of the slides array from the current state
+		const newSlides = [...slides];
+		newSlides[index] = { ...newSlides[index], ...updates }; // Merge updates
+		// Set attributes directly
+		setAttributes({ slides: newSlides });
+	}, [slides, setAttributes]);
+
+	const removeSlideCallback = useCallback((index) => {
+		const newSlides = slides.filter((_, i) => i !== index);
+		setAttributes({ slides: newSlides });
+
+		if (activeSlideIndex === index) {
+			if (newSlides.length > 0) {
+				setActiveSlideIndex(Math.min(activeSlideIndex, newSlides.length - 1));
+			} else {
+				setActiveSlideIndex(-1);
+			}
+		} else if (activeSlideIndex > index) {
+			setActiveSlideIndex(activeSlideIndex - 1);
+		}
+	}, [slides, setAttributes, activeSlideIndex]);
+
+	// Function to get the icon component for a specific icon name
+	const getIconComponentCallback = useCallback((iconName) => {
+		return iconName && defaultIcons[iconName] ? defaultIcons[iconName] : null;
+	}, []); // defaultIcons is stable, so empty dependency array is okay
+
+	// Helper for SlideItem component to render appropriate controls based on slide content
+	const SlideEditor = memo(({ slide, index, updateSlide: updateSlideProp, updateMultipleAttributes: updateMultipleAttributesProp, removeSlide: removeSlideProp, getIconComponent: getIconComponentProp, isActive }) => {
+		if (!isActive) return null;
+
+		// Keep tab state local to component
+		const [activeImageTab, setActiveImageTab] = useState('default');
+
+		// Local state ONLY for text-based input fields
+		const [localTitle, setLocalTitle] = useState(slide.title);
+		const [localDescription, setLocalDescription] = useState(slide.description);
+		const [localButtonText, setLocalButtonText] = useState(slide.buttonText);
+		const [localButtonLink, setLocalButtonLink] = useState(slide.buttonLink);
+
+		// Effect to reset local text state if the slide prop changes
+		useEffect(() => {
+			setLocalTitle(slide.title);
+			setLocalDescription(slide.description);
+			setLocalButtonText(slide.buttonText);
+			setLocalButtonLink(slide.buttonLink);
+		}, [slide.id, slide.title, slide.description, slide.buttonText, slide.buttonLink]); // Depend on specific slide props
+
+		return (
+			<>
+				<Card className="slide-editor-card">
+					<CardHeader>
+						<Flex align="center" justify="space-between">
+							<FlexItem>
+								<strong>{__('Základné nastavenia', 'slider')}</strong>
+							</FlexItem>
+						</Flex>
+					</CardHeader>
+					<CardBody>
+						<TextControl
+							label={
+								<Flex align="center">
+									<Icon icon={formatBold} size={18} />
+									<span style={{ marginLeft: 8 }}>{__('Nadpis slidu', 'slider')}</span>
+								</Flex>
+							}
+							value={localTitle}
+							onChange={setLocalTitle}
+							onBlur={() => updateSlideProp(index, 'title', localTitle)}
+							placeholder={__('Zadajte nadpis slidu', 'slider')}
+							className="slide-title-input"
+						/>
+						<TextareaControl
+							label={
+								<Flex align="center">
+									<Dashicon icon="editor-paragraph" />
+									<span style={{ marginLeft: 8 }}>{__('Popis slidu', 'slider')}</span>
+								</Flex>
+							}
+							value={localDescription}
+							onChange={setLocalDescription}
+							onBlur={() => updateSlideProp(index, 'description', localDescription)}
+							placeholder={__('Zadajte popis slidu', 'slider')}
+							rows={3}
+						/>
+
+						<Flex align="stretch" className="button-controls-container">
+							<FlexBlock>
+								<TextControl
+									label={
+										<Flex align="center">
+											<Dashicon icon="button" />
+											<span style={{ marginLeft: 8 }}>{__('Text tlačidla', 'slider')}</span>
+										</Flex>
+									}
+									value={localButtonText}
+									onChange={setLocalButtonText}
+									onBlur={() => updateSlideProp(index, 'buttonText', localButtonText)}
+									placeholder={__('Text tlačidla (voliteľné)', 'slider')}
+									__next40pxDefaultSize={true}
+									__nextHasNoMarginBottom={true}
+								/>
+							</FlexBlock>
+							<FlexBlock>
+								<TextControl
+									label={
+										<Flex align="center">
+											<Icon icon={link} size={20} />
+											<span style={{ marginLeft: 8 }}>{__('Odkaz tlačidla', 'slider')}</span>
+										</Flex>
+									}
+									value={localButtonLink}
+									onChange={setLocalButtonLink}
+									onBlur={() => updateSlideProp(index, 'buttonLink', localButtonLink)}
+									placeholder={__('URL odkazu (voliteľné)', 'slider')}
+									type="url"
+									__next40pxDefaultSize={true}
+									__nextHasNoMarginBottom={true}
+								/>
+							</FlexBlock>
+						</Flex>
+					</CardBody>
+				</Card>
+
+				<Card className="slide-editor-card">
+					<CardHeader>
+						<Flex align="center" justify="space-between">
+							<FlexItem>
+								<strong>{__('Vizuálne nastavenia', 'slider')}</strong>
+							</FlexItem>
+						</Flex>
+					</CardHeader>
+					<CardBody>
+						<RadioControl
+							label={__('Typ pozadia', 'slider')}
+							help={__('Vyberte, či chcete použiť predvolenú farebnú schému alebo vlastný obrázok na pozadí', 'slider')}
+							selected={slide.useBackgroundImage ? 'background-image' : 'color-scheme'}
+							options={[
+								{ label: __('Farebná schéma', 'slider'), value: 'color-scheme' },
+								{ label: __('Obrázok na pozadí', 'slider'), value: 'background-image' },
+							]}
+							onChange={(value) => {
+								const useBg = value === 'background-image';
+								updateSlideProp(index, 'useBackgroundImage', useBg);
+							}}
+						/>
+					</CardBody>
+					<CardDivider />
+
+					{slide.useBackgroundImage ? (
+						<CardBody>
+							<div className="slide-background-image-selector">
+								<div className="editor-section-label">
+									<Flex align="center">
+										<Icon icon={image} size={20} />
+										<span style={{ marginLeft: 8 }}>{__('Obrázok na pozadí', 'slider')}</span>
+									</Flex>
+								</div>
+								<MediaUploadCheck>
+									<MediaUpload
+										onSelect={(media) => {
+											const updates = {
+												backgroundImageId: media.id,
+												backgroundImageUrl: media.url
+											};
+											updateMultipleAttributesProp(index, updates);
+										}}
+										allowedTypes={['image']}
+										value={slide.backgroundImageId}
+										render={({ open }) => (
+											<div>
+												{!slide.backgroundImageUrl ? (
+													<Button
+														onClick={open}
+														variant="secondary"
+														className="upload-button"
+														icon={image}
+													>
+														{__('Vybrať obrázok na pozadie', 'slider')}
+													</Button>
+												) : (
+													<div className="slide-background-image-preview">
+														<img
+															src={slide.backgroundImageUrl}
+															alt={__('Náhľad pozadia', 'slider')}
+														/>
+														<div className="slide-image-actions">
+															<Button
+																onClick={open}
+																variant="secondary"
+																className="image-action-button"
+																icon={update}
+															>
+																{__('Zmeniť obrázok', 'slider')}
+															</Button>
+															<Button
+																onClick={() => {
+																	const updates = {
+																		backgroundImageId: 0,
+																		backgroundImageUrl: ''
+																	};
+																	updateMultipleAttributesProp(index, updates);
+																}}
+																variant="tertiary"
+																className="image-action-button"
+																isDestructive
+																icon={trash}
+															>
+																{__('Odstrániť', 'slider')}
+															</Button>
+														</div>
+													</div>
+												)}
+											</div>
+										)}
+									/>
+								</MediaUploadCheck>
+								<div className="info-message">
+									<Icon icon={info} size={18} />
+									<span>{__('Po nastavení obrázka na pozadí sa deaktivujú možnosti farebnej schémy a ikony/obrázku v pravej časti.', 'slider')}</span>
+								</div>
+							</div>
+						</CardBody>
+					) : (
+						<>
+							{/* Section for Color Scheme Settings */}
+							<CardBody className="color-scheme-settings">
+								<div className="slide-color-selector">
+									<div className="editor-section-label">
+										<Flex align="center">
+											<Dashicon icon="art" />
+											<span style={{ marginLeft: 8 }}>{__('Farebná schéma slidu', 'slider')}</span>
+										</Flex>
+									</div>
+									<div className="color-options-grid">
+										{SLIDE_COLORS.map((color) => (
+											<div
+												key={color.value}
+												className={`color-option-card ${slide.colorScheme === color.value ? 'selected' : ''}`}
+												onClick={() => {
+													updateSlideProp(index, 'colorScheme', color.value);
+												}}
+											>
+												<div className={`color-preview ${color.value}`}></div>
+												<div className="color-label">{color.label}</div>
+											</div>
+										))}
+									</div>
+								</div>
+							</CardBody>
+							<CardDivider />
+							{/* Section for Image/Icon within Color Scheme */}
+							<CardBody className="color-scheme-image-icon-settings">
+								<TabPanel
+									className="image-source-tabs"
+									activeClass="active-tab"
+									onSelect={setActiveImageTab}
+									initialTabName={activeImageTab}
+									tabs={[
+										{
+											name: 'default',
+											title: (
+												<Flex align="center">
+													<Dashicon icon="art" />
+													<span style={{ marginLeft: 5 }}>{__('Predvolené ikony', 'slider')}</span>
+												</Flex>
+											),
+											className: 'tab-default',
+										},
+										{
+											name: 'custom',
+											title: (
+												<Flex align="center">
+													<Icon icon={image} size={18} />
+													<span style={{ marginLeft: 5 }}>{__('Vlastný obrázok', 'slider')}</span>
+												</Flex>
+											),
+											className: 'tab-custom',
+										},
+									]}
+								>
+									{(tab) => {
+										if (tab.name === 'custom') {
+											const isColorSchemeActive = !slide.useBackgroundImage;
+											return (
+												<div className="slide-image-selector">
+													<p className="editor-section-label">{__('Vlastný obrázok slidu', 'slider')}</p>
+													{isColorSchemeActive && (
+														<div className="notice-message notice-info" style={{ marginBottom: '10px' }}>
+															<Icon icon={info} size={18} />
+															<span>{__('Výber/zmena obrázku je deaktivovaná pri použití farebnej schémy.', 'slider')}</span>
+														</div>
+													)}
+													<MediaUploadCheck>
+														<MediaUpload
+															onSelect={(media) => {
+																if (!isColorSchemeActive) {
+																	const updates = {
+																		imageId: media.id,
+																		imageUrl: media.url,
+																		defaultIcon: ''
+																	};
+																	updateMultipleAttributesProp(index, updates);
+																}
+															}}
+															allowedTypes={['image']}
+															value={slide.imageId}
+															render={({ open }) => (
+																<div>
+																	{!slide.imageUrl ? (
+																		<Button
+																			onClick={open}
+																			variant="secondary"
+																			className="upload-button"
+																			icon={image}
+																			disabled={isColorSchemeActive}
+																			aria-disabled={isColorSchemeActive}
+																		>
+																			{__('Vybrať obrázok', 'slider')}
+																		</Button>
+																	) : (
+																		<div className="slide-image-preview">
+																			<img
+																				src={slide.imageUrl}
+																				alt={__('Náhľad obrázku', 'slider')}
+																			/>
+																			<div className="slide-image-actions">
+																				<Button
+																					onClick={open}
+																					variant="secondary"
+																					className="image-action-button"
+																					icon={update}
+																					disabled={isColorSchemeActive}
+																					aria-disabled={isColorSchemeActive}
+																				>
+																					{__('Zmeniť obrázok', 'slider')}
+																				</Button>
+																				<Button
+																					onClick={() => {
+																						const updates = {
+																						imageId: 0,
+																						imageUrl: ''
+																					};
+																					updateMultipleAttributesProp(index, updates);
+																					}}
+																					variant="tertiary"
+																					className="image-action-button"
+																					isDestructive
+																					icon={trash}
+																				>
+																					{__('Odstrániť', 'slider')}
+																				</Button>
+																			</div>
+																		</div>
+																	)}
+																</div>
+															)}
+														/>
+													</MediaUploadCheck>
+												</div>
+											);
+										} else {
+											return (
+												<div className="default-icon-selector">
+													<p className="editor-section-label">{__('Vyberte predvolenú ikonu', 'slider')}</p>
+													{slide.imageUrl && (
+														<div className="notice-message">
+															<Icon icon={info} size={18} />
+															<span>{__('Ikona bude viditeľná iba po odstránení vlastného obrázku.', 'slider')}</span>
+														</div>
+													)}
+													<div className="default-icons-grid">
+														{DEFAULT_ICONS.map((icon) => (
+															<Tooltip text={icon.label} key={icon.value}>
+																<div
+																	className={`icon-option ${slide.defaultIcon === icon.value ? 'selected' : ''}`}
+																	onClick={() => {
+																		const updates = {
+																			defaultIcon: icon.value,
+																			imageId: 0,
+																			imageUrl: ''
+																		};
+																		updateMultipleAttributesProp(index, updates);
+																	}}
+																	aria-label={icon.label}
+																>
+																	{getIconComponentProp(icon.value)}
+																</div>
+															</Tooltip>
+														))}
+													</div>
+												</div>
+											);
+										}
+									}}
+								</TabPanel>
+							</CardBody>
+						</>
+					)}
+					<CardFooter>
+						<Button
+							variant="secondary"
+							onClick={() => removeSlideProp(index)}
+							isDestructive
+							icon={trash}
+						>
+							{__('Odstrániť slide', 'slider')}
+						</Button>
+					</CardFooter>
+				</Card>
+			</>
+		);
+	});
 
 	return (
 		<div {...blockProps}>
 			<InspectorControls>
-				<PanelBody title={__('Nastavenia slidera', 'slider')}>
-					<Button variant="primary" onClick={addSlide}>
-						{__('Pridať slide', 'slider')}
-					</Button>
-					<ToggleControl
-						label={__('Náhľad', 'slider')}
-						checked={previewMode}
-						onChange={() => setPreviewMode(!previewMode)}
-						help={__('Prepnúť medzi úpravou a náhľadom', 'slider')}
-					/>
+				<PanelBody title={__('Nastavenia slidera', 'slider')} initialOpen={true}>
+					<PanelRow>
+						<ToggleControl
+							label={__('Režim náhľadu', 'slider')}
+							checked={previewMode}
+							onChange={() => setPreviewMode(!previewMode)}
+							help={__('Prepnúť medzi úpravou a náhľadom slideru', 'slider')}
+							__nextHasNoMarginBottom={true}
+						/>
+					</PanelRow>
+					<PanelRow>
+						<Button
+							variant="primary"
+							onClick={addSlide}
+							className="add-slide-button"
+							icon={plusCircle}
+						>
+							{__('Pridať nový slide', 'slider')}
+						</Button>
+					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
 
 			{!previewMode ? (
 				<div className="slider-editor-container">
-					{slides.map((slide, index) => (
-						<div key={slide.id} className="slide-editor-item">
-							<TextControl
-								label={__('Nadpis slidu', 'slider')}
-								value={slide.title}
-								onChange={(value) => updateSlide(index, 'title', value)}
-								placeholder={__('Zadajte nadpis slidu', 'slider')}
-							/>
-							<TextareaControl
-								label={__('Popis slidu', 'slider')}
-								value={slide.description}
-								onChange={(value) =>
-									updateSlide(index, 'description', value)
-								}
-								placeholder={__('Zadajte popis slidu', 'slider')}
-							/>
-							<TextControl
-								label={__('Text tlačidla', 'slider')}
-								value={slide.buttonText}
-								onChange={(value) =>
-									updateSlide(index, 'buttonText', value)
-								}
-								placeholder={__('Zadajte text tlačidla (voliteľné)', 'slider')}
-							/>
-							<TextControl
-								label={__('Odkaz tlačidla', 'slider')}
-								value={slide.buttonLink}
-								onChange={(value) =>
-									updateSlide(index, 'buttonLink', value)
-								}
-								placeholder={__('Zadajte odkaz tlačidla (voliteľné)', 'slider')}
-								type="url"
-							/>
-							<Button
-								variant="secondary"
-								onClick={() => removeSlide(index)}
-								isDestructive
-							>
-								{__('Odstrániť slide', 'slider')}
-							</Button>
-							<hr />
+					{slides.length > 0 ? (
+						<div className="slider-editor-interface">
+							<div className="slide-tabs">
+								{slides.map((slide, index) => (
+									<div
+										key={slide.id || index}
+										className={`slide-tab ${index === activeSlideIndex ? 'active' : ''}`}
+										onClick={() => setActiveSlideIndex(index)}
+									>
+										<span className="slide-tab-number">{index + 1}</span>
+										<span className="slide-tab-title">
+											{__('Slide', 'slider')} {index + 1}
+										</span>
+										<Button
+											className="slide-tab-remove"
+											icon={close}
+											onClick={(e) => {
+												e.stopPropagation();
+												removeSlide(index);
+											}}
+											label={__('Odstrániť slide', 'slider')}
+											isSmall
+										/>
+									</div>
+								))}
+								<div className="slide-tab add-slide-tab" onClick={addSlide}>
+									<Icon icon={plusCircle} />
+									<span>{__('Pridať slide', 'slider')}</span>
+								</div>
+							</div>
+
+							<div className="slide-editor-workspace">
+								{activeSlideIndex !== -1 && slides[activeSlideIndex] && (
+									<SlideEditor
+										key={slides[activeSlideIndex].id || activeSlideIndex}
+										slide={slides[activeSlideIndex]}
+										index={activeSlideIndex}
+										updateSlide={updateSlideCallback}
+										updateMultipleAttributes={updateMultipleSlideAttributes}
+										removeSlide={removeSlideCallback}
+										getIconComponent={getIconComponentCallback}
+										isActive={true}
+									/>
+								)}
+
+								{activeSlideIndex === -1 && (
+									<div className="no-slide-selected">
+										<p>{__('Vyberte slide v hornej časti alebo pridajte nový slide', 'slider')}</p>
+										<Button
+											variant="primary"
+											onClick={addSlide}
+											icon={plusCircle}
+										>
+											{__('Pridať nový slide', 'slider')}
+										</Button>
+									</div>
+								)}
+							</div>
 						</div>
-					))}
-					{slides.length === 0 && (
-						<p>{__('Zatiaľ žiadne slidy. Pridajte slidy pomocou tlačidla "Pridať slide" v postrannom paneli.', 'slider')}</p>
+					) : (
+						<div className="no-slides-message">
+							<Icon icon={plusCircle} size={48} />
+							<p>{__('Zatiaľ žiadne slidy. Pridajte prvý slide pomocou tlačidla nižšie.', 'slider')}</p>
+							<Button variant="primary" onClick={addSlide} icon={plusCircle}>
+								{__('Pridať prvý slide', 'slider')}
+							</Button>
+						</div>
 					)}
 				</div>
 			) : (
-				<div className="slider-container">
-					<div className="swiper-wrapper">
-						{slides.map((slide, index) => (
-							<div key={slide.id || index} className="swiper-slide">
-								<div className="slide-inner-container">
-									<h3 className="slide-title">{slide.title}</h3>
-									<p className="slide-description">{slide.description}</p>
-									{slide.buttonText && slide.buttonLink && (
-										<a href="#" className="slide-button">
-											{slide.buttonText}
-										</a>
-									)}
+				<div className="slider-preview-container">
+					<div className="slider-preview-header">
+						<Flex align="center" justify="space-between">
+							<span className="preview-label">{__('Náhľad slidu', 'slider')}</span>
+							<Button
+								variant="secondary"
+								onClick={() => setPreviewMode(false)}
+								icon={update}
+							>
+								{__('Späť na úpravy', 'slider')}
+							</Button>
+						</Flex>
+					</div>
+					<div className="slider-container">
+						<div className="swiper-wrapper">
+							{slides.length > 0 ? (
+								slides.map((slide, index) => (
+									<div
+										key={slide.id || index}
+										className={`swiper-slide ${!slide.useBackgroundImage ? `color-scheme-${slide.colorScheme || 'yellow-orange'}` : 'has-background-image'}`}
+										style={slide.useBackgroundImage && slide.backgroundImageUrl ? {
+											backgroundImage: `url(${slide.backgroundImageUrl})`,
+										} : {}}
+									>
+										<div className="slide-inner-container">
+											<div className="slide-content">
+												<h3 className="slide-title">{slide.title || __('Nadpis slidu', 'slider')}</h3>
+												<p className="slide-description">{slide.description || __('Popis slidu', 'slider')}</p>
+												{(slide.buttonText || slide.buttonLink) && (
+													<a href="#" className="slide-button">
+														{slide.buttonText || __('Tlačidlo', 'slider')}
+													</a>
+												)}
+											</div>
+											{!slide.useBackgroundImage && (
+												<div className="slide-image">
+													{slide.imageUrl ? (
+														<img src={slide.imageUrl} alt={slide.title || __('Obrázok slidu', 'slider')} />
+													) : slide.defaultIcon ? (
+														<div className="default-icon">
+															{getIconComponentCallback(slide.defaultIcon)}
+														</div>
+													) : (
+														<div className="placeholder-image">
+															<Icon icon={image} size={48} />
+														</div>
+													)}
+												</div>
+											)}
+										</div>
+									</div>
+								))
+							) : (
+								<div className="no-slides-preview">
+									<p>{__('Žiadne slidy na zobrazenie. Prepnite späť na režim úprav a pridajte slide.', 'slider')}</p>
 								</div>
-							</div>
-						))}
+							)}
+						</div>
 					</div>
 				</div>
 			)}
