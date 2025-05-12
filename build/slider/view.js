@@ -3277,18 +3277,6 @@ function Mousewheel(_ref) {
 
 /***/ }),
 
-/***/ "./node_modules/swiper/modules/navigation.css":
-/*!****************************************************!*\
-  !*** ./node_modules/swiper/modules/navigation.css ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./node_modules/swiper/modules/navigation.mjs":
 /*!****************************************************!*\
   !*** ./node_modules/swiper/modules/navigation.mjs ***!
@@ -3501,18 +3489,6 @@ function Navigation(_ref) {
 }
 
 
-
-
-/***/ }),
-
-/***/ "./node_modules/swiper/modules/pagination.css":
-/*!****************************************************!*\
-  !*** ./node_modules/swiper/modules/pagination.css ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
 
 
 /***/ }),
@@ -10547,18 +10523,6 @@ function getRotateFix(swiper) {
 
 /***/ }),
 
-/***/ "./node_modules/swiper/swiper.css":
-/*!****************************************!*\
-  !*** ./node_modules/swiper/swiper.css ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./node_modules/swiper/swiper.mjs":
 /*!****************************************!*\
   !*** ./node_modules/swiper/swiper.mjs ***!
@@ -10653,15 +10617,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
 /* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
-/* harmony import */ var swiper_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! swiper/css */ "./node_modules/swiper/swiper.css");
-/* harmony import */ var swiper_css_navigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! swiper/css/navigation */ "./node_modules/swiper/modules/navigation.css");
-/* harmony import */ var swiper_css_pagination__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! swiper/css/pagination */ "./node_modules/swiper/modules/pagination.css");
 
 
 
-// Import Swiper styles
-
-
+// Import Swiper styles are now in style.scss
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import 'swiper/css/pagination';
 
 const initSwipers = () => {
   // Select only the main block containers
