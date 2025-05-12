@@ -2,10 +2,10 @@
  * Styles for the slider block - applied both on frontend and in editor
  */
 
-// Import Swiper styles directly into SCSS using @use
-@use 'swiper/css';
-@use 'swiper/css/navigation';
-@use 'swiper/css/pagination';
+// Import Swiper styles directly into SCSS using @use for the bundle
+@use 'swiper/swiper-bundle.css';
+// @use 'swiper/css/navigation'; // Now included in bundle
+// @use 'swiper/css/pagination'; // Now included in bundle
 
 // Color variables
 $primary-color: #fcb722;
