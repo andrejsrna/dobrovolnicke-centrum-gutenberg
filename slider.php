@@ -69,8 +69,17 @@ function register_simple_recent_posts_block() {
 	wp_register_style(
 		'create-block-recent-posts-editor-style',
 		plugins_url( 'build/recent-posts/index.css', __FILE__ ),
-		array(),
+		array('wp-edit-blocks'),
 		filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.css' )
+	);
+
+	// Register the editor script
+	wp_register_script(
+		'create-block-recent-posts-editor-script',
+		plugins_url( 'build/recent-posts/index.js', __FILE__ ),
+		array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-block-editor', 'wp-components', 'wp-api-fetch', 'wp-date' ),
+		filemtime( plugin_dir_path( __FILE__ ) . 'build/recent-posts/index.js' ),
+		true
 	);
 
 	// Include render callback file
@@ -90,6 +99,7 @@ function register_simple_recent_posts_block() {
 				'align' => array('wide', 'full'),
 			),
 			'example' => array(),
+			'editor_script' => 'create-block-recent-posts-editor-script',
 			'editor_style' => 'create-block-recent-posts-editor-style',
 			'style' => 'create-block-recent-posts-style',
 			'render_callback' => 'render_recent_posts_block',
@@ -180,6 +190,7 @@ function register_simple_recent_posts_block() {
 add_action( 'init', 'register_simple_recent_posts_block', 20 );
 
 // Register the block type in editor without JavaScript (for testing)
+/* Commenting out potentially redundant/conflicting registration
 function add_recent_posts_to_available_blocks() {
     // Make sure block is available in editor
     wp_register_script(
@@ -198,14 +209,16 @@ function add_recent_posts_to_available_blocks() {
     );
 
     // Force enqueue in editor
-    add_action( 'enqueue_block_editor_assets', function() {
-        wp_enqueue_script( 'recent-posts-dummy-editor-script' );
-        wp_enqueue_style( 'recent-posts-editor-style' );
-    });
+    // This is generally not needed if editor_style is set in register_block_type
+    // if (is_admin()) {
+    //     add_action('enqueue_block_editor_assets', function() {
+    //         wp_enqueue_style('recent-posts-editor-style');
+    //     });
+    // }
 }
-add_action( 'init', 'add_recent_posts_to_available_blocks', 30 );
+// add_action( 'init', 'add_recent_posts_to_available_blocks', 25 ); // Also comment out the action hook
+*/
 
-// Add debug function to help troubleshoot
 function debug_block_registration() {
 	if (current_user_can('manage_options')) {
 		echo '<!-- Recent Posts Block Debug: ';

@@ -4,30 +4,149 @@
 
 @import './style.scss';
 
+.editor-styles-wrapper .wp-block-create-block-recent-posts,
 .wp-block-create-block-recent-posts {
+	// Style for admin dashboard
+	border: 2px solid #e0e0e0 !important;
+	background-color: #f9f9f9 !important;
+	border-radius: 8px !important;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+	padding: 1.5rem !important;
+	margin-bottom: 1.5rem !important;
+
+	.recent-posts-section-header {
+		margin-bottom: 1.5rem !important;
+	}
+
+	// Make placeholder more visible and attractive in admin
+	.recent-posts-placeholder {
+		text-align: center !important;
+		padding: 2.5rem !important;
+		background-color: #fff !important;
+		border: 2px dashed #ddd !important;
+		border-radius: 6px !important;
+		max-width: 1200px !important;
+		margin: 1rem auto !important;
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: center !important;
+		justify-content: center !important;
+
+		p {
+			margin: 0.5rem 0 !important;
+			font-size: 1.1rem !important;
+			color: #555 !important;
+		}
+
+		.components-notice {
+			margin: 0 0 1rem !important;
+			width: 100% !important;
+		}
+
+		.components-spinner {
+			margin: 0 auto 1rem !important;
+		}
+	}
+
+	// Show a clear indication in the editor about post container
+	.recent-posts-container {
+		min-height: 150px !important;
+		background-color: rgba(0, 0, 0, 0.03) !important;
+		border-radius: 6px !important;
+		padding: 1rem !important;
+		position: relative !important;
+
+		// Upravené pre lepšiu kompatibilitu prehliadačov
+		&:empty {
+			&::before {
+				content: 'Príspevky budú automaticky načítané na frontend stránke' !important;
+				display: block !important;
+				position: absolute !important;
+				top: 50% !important;
+				left: 50% !important;
+				transform: translate(-50%, -50%) !important;
+				color: #666 !important;
+				font-style: italic !important;
+				text-align: center !important;
+				width: 80% !important;
+			}
+		}
+	}
+
+	// Make the components look better in the editor
+	.post-item {
+		background-color: #fff !important;
+		border-radius: 6px !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+		overflow: hidden !important;
+		transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+		margin-bottom: 1.5rem !important;
+		padding: 1rem !important;
+
+		&:hover {
+			transform: translateY(-3px) !important;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+		}
+
+		.post-content {
+			padding: 1rem !important;
+		}
+
+		.post-title {
+			margin-top: 0 !important;
+			font-size: 1.5rem !important;
+			font-weight: bold !important;
+			color: #333 !important;
+		}
+
+		.post-excerpt p {
+			color: #555 !important;
+			margin: 0.8rem 0 !important;
+		}
+
+		.post-read-more {
+			display: inline-flex !important;
+			align-items: center !important;
+			color: #fcb722 !important;
+			text-decoration: none !important;
+			font-weight: bold !important;
+
+			.read-more-icon {
+				margin-left: 0.5rem !important;
+			}
+		}
+	}
+
 	.editor-styles-wrapper & {
 		.post-title {
-			margin-top: 0;
+			margin-top: 0 !important;
 		}
 
 		.post-item {
-			position: relative;
+			position: relative !important;
 		}
 
 		// Fix date icon size in editor
 		.post-meta {
+			display: flex !important;
+			gap: 1rem !important;
+			margin-bottom: 0.8rem !important;
+
 			.meta-icon {
 				width: 14px !important;
 				height: 14px !important;
 				min-width: 14px !important;
 				min-height: 14px !important;
 				display: inline-block !important;
+				color: #fcb722 !important;
 			}
 
-			.post-date {
+			.post-date, .post-author {
 				display: flex !important;
 				align-items: center !important;
 				white-space: nowrap !important;
+				gap: 0.3rem !important;
+				color: #666 !important;
 
 				span {
 					white-space: nowrap !important;
@@ -38,6 +157,33 @@
 	}
 
 	.post-item:not(:hover) .activity-editor-controls {
-		opacity: 0.6;
+		opacity: 0.6 !important;
+	}
+
+	// Make the button more visible
+	.post-button-container {
+		margin-top: 1.5rem !important;
+		text-align: center !important;
+	}
+
+	.post-button {
+		display: inline-flex !important;
+		align-items: center !important;
+		padding: 0.8rem 1.5rem !important;
+		background-color: #fcb722 !important;
+		color: #fff !important;
+		border-radius: 30px !important;
+		text-decoration: none !important;
+		font-weight: bold !important;
+		transition: all 0.2s ease !important;
+
+		.button-icon {
+			margin-left: 0.5rem !important;
+		}
+
+		&:hover {
+			transform: translateY(-2px) !important;
+			background-color: darken(#fcb722, 5%) !important;
+		}
 	}
 }

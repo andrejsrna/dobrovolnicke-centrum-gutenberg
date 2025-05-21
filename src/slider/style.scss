@@ -441,66 +441,115 @@ $dark-blue-text: #283593;
 	max-width: 100vw;
 }
 
-// Responsive adjustments
+// Responsive adjustments for tablet and mobile
 @media (max-width: 767px) {
 	.wp-block-create-block-slider {
 		.slide, .swiper-slide {
-			padding: 30px 20px;
+			padding: 25px 20px; // Adjusted padding
+			min-height: auto;
 			flex-direction: column;
+			text-align: center;
 
 			.slide-inner-container {
 				flex-direction: column;
-			}
-
-			.slide-content, .slide-image {
-				flex: 0 0 100%;
-				max-width: 100%;
 				padding: 0;
+				width: 100%;
 			}
 
 			.slide-content {
-				order: 2;
+				flex: 1 1 auto; // Take available space
+				width: 100%;
+				padding-right: 0;
+				align-items: center; // Center content horizontally
+				margin-bottom: 0; // Remove bottom margin as image is hidden
+				order: 1; // Ensure text content is visually first
 			}
 
 			.slide-image {
-				order: 1;
-				margin-bottom: 20px;
+				display: none !important; // Force hide image/icon container
+			}
 
-				img {
-					max-height: 180px;
+			// Specifics for slides with a background image on mobile
+			&.has-background-image {
+				.slide-content {
+					background-color: rgba(0, 0, 0, 0.55); // Slightly darker overlay for better contrast
+					padding: 20px;
+					border-radius: 8px;
 				}
-
-				.default-icon {
-					width: 80px;
-					height: 80px;
+				.slide-title,
+				.slide-description {
+					color: $light-color; // Ensure text is light
+					text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65); // Stronger text shadow
+				}
+				.slide-button {
+					background-color: $light-color;
+					color: $text-color;
+					&:hover {
+						background-color: darken($light-color, 10%);
+						color: $text-color;
+					}
 				}
 			}
 
-			&.has-background-image {
-				.slide-inner-container {
-					background-color: rgba(0, 0, 0, 0.6);
-				}
-
-				.slide-content {
-					padding: 15px;
-				}
-
+			// General text styling for mobile for non-background-image slides
+			&:not(.has-background-image) {
 				.slide-title {
-					font-size: 1.5em;
+					// color: $text-color; // Default text color from scheme will apply
 				}
-
 				.slide-description {
-					font-size: 1em;
+					// color: $text-color; // Default text color from scheme will apply
 				}
+				// Button colors are defined by color schemes
 			}
 
 			.slide-title {
-				font-size: 1.8em;
+				font-size: 1.9em; // Adjusted for mobile
+				margin-bottom: 0.6em;
+				&::after {
+					width:100%;
+				}
 			}
 
 			.slide-description {
+				font-size: 1.1em; // Adjusted for mobile
+				line-height: 1.5;
+				margin-bottom: 1.2em;
+			}
+
+			.slide-button {
+				padding: 0.9em 1.8em;
 				font-size: 1em;
 			}
 		}
+		.swiper-button-next, .swiper-button-prev {
+			display: none;
+		}
 	}
 }
+
+// Further adjustments for very small screens (if necessary)
+// Consolidating the 480px rules or ensuring they don't conflict
+// For now, the 767px rules should cover most mobile cases effectively.
+// If specific overrides for <480px are still needed, they can be added here.
+// It's often better to make the 767px rules more robust.
+
+// Remove or comment out the old @media (max-width: 480px) if its rules are now handled by the 767px block
+/*
+@media (max-width: 480px) {
+	.wp-block-create-block-slider {
+		.slide, .swiper-slide {
+			padding: 20px 15px;
+		}
+		.slide-title {
+			font-size: 1.7em;
+		}
+		.slide-description {
+			font-size: 1em;
+		}
+		.slide-button {
+			padding: 0.8em 1.5em;
+			font-size: 0.9em;
+		}
+	}
+}
+*/

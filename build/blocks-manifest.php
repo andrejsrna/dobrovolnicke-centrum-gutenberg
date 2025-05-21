@@ -425,7 +425,10 @@ return array(
 		),
 		'textdomain' => 'slider',
 		'editorScript' => 'file:./index.js',
-		'editorStyle' => 'file:./index.css',
+		'editorStyle' => array(
+			'file:./index.css',
+			'file:./admin.css'
+		),
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
 	),

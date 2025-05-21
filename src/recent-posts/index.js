@@ -8,6 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
+import './admin.css';
 import metadata from './block.json';
 import Edit from './edit';
 
