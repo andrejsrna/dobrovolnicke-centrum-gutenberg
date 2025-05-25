@@ -1,17 +1,17 @@
+@use 'sass:color';
+
 /**
  * Styles for the slider block - applied both on frontend and in editor
  */
 
 // Import Swiper styles directly into SCSS using @use for the bundle
 @use 'swiper/swiper-bundle.css';
-// @use 'swiper/css/navigation'; // Now included in bundle
-// @use 'swiper/css/pagination'; // Now included in bundle
 
 // Color variables
 $primary-color: #fcb722;
 $text-color: #333333;
 $light-color: #ffffff;
-$accent-color: darken($primary-color, 15%);
+$accent-color: color.adjust($primary-color, $lightness: -15%);
 
 // Color scheme variables
 $yellow-orange-bg: #fef8e7;
@@ -86,9 +86,10 @@ $dark-blue-text: #283593;
 			justify-content: center;
 			align-items: center;
 
-			svg {
+			svg, i { // Allow for both SVG (old) and i (FontAwesome)
 				width: 100%;
 				height: 100%;
+				font-size: 100px; // Make FontAwesome icons large like SVGs were
 			}
 		}
 	}
@@ -182,7 +183,7 @@ $dark-blue-text: #283593;
 				border: none;
 
 				&:hover {
-					background-color: darken($light-color, 10%);
+					background-color: color.adjust($light-color, $lightness: -10%);
 					color: $text-color;
 				}
 			}
@@ -202,10 +203,18 @@ $dark-blue-text: #283593;
 
 			.slide-button {
 				background-color: $yellow-orange-accent;
-				color: $text-color;
+				color: $text-color; // Ensuring contrast
 
 				&:hover {
-					background-color: darken($yellow-orange-accent, 10%);
+					background-color: color.adjust($yellow-orange-accent, $lightness: -10%);
+				}
+			}
+
+			// Icon color for yellow-orange scheme
+			.default-icon {
+				svg, i {
+					color: $yellow-orange-accent;
+					fill: $yellow-orange-accent; // For SVG icons
 				}
 			}
 
@@ -231,11 +240,18 @@ $dark-blue-text: #283593;
 
 			.slide-button {
 				background-color: $light-blue-accent;
-				color: $text-color;
+				color: $light-color; // Ensuring contrast
 
 				&:hover {
-					background-color: darken($light-blue-accent, 10%);
-					color: $light-color;
+					background-color: color.adjust($light-blue-accent, $lightness: -10%);
+				}
+			}
+
+			// Icon color for light-blue scheme
+			.default-icon {
+				svg, i {
+					color: $light-blue-accent;
+					fill: $light-blue-accent; // For SVG icons
 				}
 			}
 
@@ -264,7 +280,15 @@ $dark-blue-text: #283593;
 				color: $light-color;
 
 				&:hover {
-					background-color: darken($dark-blue-accent, 10%);
+					background-color: color.adjust($dark-blue-accent, $lightness: -10%);
+				}
+			}
+
+			// Icon color for dark-blue scheme
+			.default-icon {
+				svg, i {
+					color: $dark-blue-accent;
+					fill: $dark-blue-accent; // For SVG icons
 				}
 			}
 
@@ -281,7 +305,7 @@ $dark-blue-text: #283593;
 			font-size: 2.2em;
 			font-weight: 700;
 			margin-bottom: 0.5em;
-			color: $accent-color;
+			// color: $accent-color; // Color is now handled by schemes or background image logic
 			position: relative;
 			z-index: 1;
 
@@ -290,7 +314,7 @@ $dark-blue-text: #283593;
 				display: block;
 				width: 60px;
 				height: 4px;
-				background-color: $primary-color;
+				// background-color: $primary-color; // Color is now handled by schemes
 				margin-top: 10px;
 			}
 		}
@@ -299,7 +323,7 @@ $dark-blue-text: #283593;
 			font-size: 1.2em;
 			line-height: 1.6;
 			margin-bottom: 1.5em;
-			color: $text-color;
+			color: $text-color; // General text color, can be overridden by schemes
 			position: relative;
 			z-index: 1;
 		}
@@ -307,8 +331,8 @@ $dark-blue-text: #283593;
 		.slide-button {
 			display: inline-block;
 			padding: 12px 24px;
-			background-color: $primary-color;
-			color: $text-color;
+			// background-color: $primary-color; // Color is now handled by schemes
+			// color: $text-color; // Color is now handled by schemes
 			text-decoration: none;
 			border-radius: 30px;
 			font-weight: bold;
@@ -321,8 +345,8 @@ $dark-blue-text: #283593;
 			z-index: 1;
 
 			&:hover {
-				background-color: $accent-color;
-				color: $light-color;
+				// background-color: $accent-color; // Hover color is now handled by schemes
+				// color: $light-color; // Hover color is now handled by schemes
 				transform: translateY(-2px);
 				box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 			}
@@ -364,192 +388,147 @@ $dark-blue-text: #283593;
 
 	// Ensure wrapper and slides can fill height
 	.swiper-wrapper {
-		display: flex; // Swiper usually adds this, but good to ensure
-		align-items: stretch; // Make slides stretch vertically
-		height: 100%; // Allow wrapper to have height
-	}
-}
-
-// Image source tabs
-.image-source-tabs {
-	.components-tab-panel__tabs {
 		display: flex;
-		margin-bottom: 15px;
-		border-bottom: 1px solid #ddd;
-
-		.components-tab-panel__tabs-item {
-			flex: 1;
-			text-align: center;
-			padding: 8px 12px;
-			background: #f0f0f0;
-			border: none;
-			border-bottom: 2px solid transparent;
-			border-radius: 0;
-
-			&.active-tab {
-				background: #fff;
-				border-bottom: 2px solid #007cba;
-				font-weight: 500;
-			}
-		}
-	}
-}
-
-// Background image selector styles
-.slide-background-image-selector {
-	margin-bottom: 20px;
-
-	p {
-		font-weight: bold;
-		margin-bottom: 8px;
+		align-items: stretch;
+		height: 100%;
 	}
 
-	.slide-background-image-preview {
-		margin-top: 10px;
-
-		img {
-			display: block;
-			width: 100%;
-			height: auto;
-			max-height: 200px;
-			object-fit: cover;
-			border-radius: 8px;
-			margin-bottom: 10px;
-		}
-	}
-
-	.info-text {
-		color: #666;
-		font-style: italic;
-		font-size: 0.9em;
-		margin-top: 8px;
-	}
-}
-
-// Notice text
-.notice-text {
-	color: #d63638;
-	font-size: 0.9em;
-	font-style: italic;
-	margin-top: 0;
-}
-
-// Full-width setting
-.alignfull.wp-block-create-block-slider {
-	width: 100vw;
-	margin-left: calc(50% - 50vw);
-	max-width: 100vw;
-}
-
-// Responsive adjustments for tablet and mobile
-@media (max-width: 767px) {
-	.wp-block-create-block-slider {
+	// Responsive adjustments for tablet and mobile
+	@media (max-width: 768px) {
 		.slide, .swiper-slide {
 			padding: 25px 20px; // Adjusted padding
-			min-height: auto;
-			flex-direction: column;
-			text-align: center;
+			min-height: auto; // Auto height for mobile
+			// flex-direction: column; // This is handled by .slide-inner-container
+			// text-align: center; // This is handled by .slide-inner-container
 
 			.slide-inner-container {
 				flex-direction: column;
-				padding: 0;
+				text-align: center;
+				padding: 0; // Remove padding from inner if outer has it
 				width: 100%;
 			}
 
 			.slide-content {
-				flex: 1 1 auto; // Take available space
+				flex: 1 1 auto;
 				width: 100%;
 				padding-right: 0;
-				align-items: center; // Center content horizontally
-				margin-bottom: 0; // Remove bottom margin as image is hidden
-				order: 1; // Ensure text content is visually first
+				align-items: center;
+				margin-bottom: 20px; // Space between text and (potentially hidden) image
+				order: 1;
 			}
 
 			.slide-image {
-				display: none !important; // Force hide image/icon container
+				order: 2; // Image below content
+				flex-basis: auto;
+				max-width: 60%; // Control image size on small screens
+				margin: 0 auto; // Center image
+				padding: 0; // Remove padding if not needed
+
+				img {
+					max-height: 180px; // Adjust image height for mobile
+				}
+				.default-icon {
+					width: 80px; // Adjust icon size for mobile
+					height: 80px;
+					svg, i {
+						font-size: 60px; // Adjust FA icon size for mobile
+					}
+				}
 			}
+
+			// If background image, hide the .slide-image container
+			&.has-background-image .slide-image {
+				display: none;
+			}
+
 
 			// Specifics for slides with a background image on mobile
 			&.has-background-image {
 				.slide-content {
-					background-color: rgba(0, 0, 0, 0.55); // Slightly darker overlay for better contrast
+					background-color: rgba(0, 0, 0, 0.55);
 					padding: 20px;
 					border-radius: 8px;
+					margin-bottom: 0; // No margin if it's the only content visible
 				}
 				.slide-title,
 				.slide-description {
-					color: $light-color; // Ensure text is light
-					text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65); // Stronger text shadow
+					color: $light-color;
+					text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
 				}
 				.slide-button {
 					background-color: $light-color;
-					color: $text-color;
+					color: $text-color; // Ensure contrast
 					&:hover {
-						background-color: darken($light-color, 10%);
+						background-color: color.adjust($light-color, $lightness: -10%);
 						color: $text-color;
 					}
 				}
 			}
 
-			// General text styling for mobile for non-background-image slides
-			&:not(.has-background-image) {
-				.slide-title {
-					// color: $text-color; // Default text color from scheme will apply
-				}
-				.slide-description {
-					// color: $text-color; // Default text color from scheme will apply
-				}
-				// Button colors are defined by color schemes
-			}
-
 			.slide-title {
-				font-size: 1.9em; // Adjusted for mobile
+				font-size: 1.9em;
 				margin-bottom: 0.6em;
 				&::after {
-					width:100%;
+					width: 50px; // Adjust underline for centered text
+					margin-left: auto;
+					margin-right: auto;
 				}
 			}
 
 			.slide-description {
-				font-size: 1.1em; // Adjusted for mobile
+				font-size: 1.1em;
 				line-height: 1.5;
 				margin-bottom: 1.2em;
 			}
 
 			.slide-button {
-				padding: 0.9em 1.8em;
-				font-size: 1em;
+				padding: 10px 20px;
+				font-size: 0.9em;
 			}
 		}
 		.swiper-button-next, .swiper-button-prev {
-			display: none;
+			display: none; // Hide navigation buttons on mobile
+		}
+		.swiper-pagination {
+			bottom: 10px !important; // Ensure pagination is visible
+		}
+	}
+
+	// Theming for navigation/pagination on non-background-image slides
+	@mixin set-nav-pagination-colors($nav-color, $pagination-active-color, $pagination-inactive-color) {
+		.swiper-button-next, .swiper-button-prev {
+			color: $nav-color;
+			background-color: rgba(color.invert($nav-color), 0.1); // Light background for dark icons, dark for light
+			&:hover {
+				background-color: rgba(color.invert($nav-color), 0.2);
+			}
+		}
+		.swiper-pagination-bullet {
+			background: $pagination-inactive-color;
+			opacity: 0.6;
+		}
+		.swiper-pagination-bullet-active {
+			background: $pagination-active-color;
+			opacity: 1;
+		}
+	}
+
+	&:not(.has-background-image) { // Apply only when no background image is set at the slide level
+		&.color-scheme-yellow-orange {
+			@include set-nav-pagination-colors($yellow-orange-text, $yellow-orange-accent, color.adjust($yellow-orange-accent, $lightness: +20%, $alpha: -0.5));
+		}
+		&.color-scheme-light-blue {
+			@include set-nav-pagination-colors($light-blue-text, $light-blue-accent, color.adjust($light-blue-accent, $lightness: +20%, $alpha: -0.5));
+		}
+		&.color-scheme-dark-blue {
+			@include set-nav-pagination-colors($dark-blue-text, $dark-blue-accent, color.adjust($dark-blue-accent, $lightness: +20%, $alpha: -0.5));
 		}
 	}
 }
 
-// Further adjustments for very small screens (if necessary)
-// Consolidating the 480px rules or ensuring they don't conflict
-// For now, the 767px rules should cover most mobile cases effectively.
-// If specific overrides for <480px are still needed, they can be added here.
-// It's often better to make the 767px rules more robust.
-
-// Remove or comment out the old @media (max-width: 480px) if its rules are now handled by the 767px block
-/*
-@media (max-width: 480px) {
-	.wp-block-create-block-slider {
-		.slide, .swiper-slide {
-			padding: 20px 15px;
-		}
-		.slide-title {
-			font-size: 1.7em;
-		}
-		.slide-description {
-			font-size: 1em;
-		}
-		.slide-button {
-			padding: 0.8em 1.5em;
-			font-size: 0.9em;
-		}
-	}
-}
-*/
+// Editor specific styles (not duplicated from editor.scss but for context if needed)
+// These styles are for .wp-block-create-block-slider elements within the editor,
+// which might differ from frontend if editor.scss has overrides.
+// The above styles target the block class directly, so should apply in both contexts.
+// If there are editor-only styles for these elements, they would be in editor.scss.
+// For example, .block-editor-block-list__block.wp-block-create-block-slider { ... }

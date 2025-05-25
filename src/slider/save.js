@@ -5,7 +5,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import defaultIcons from './icons';
+// import defaultIcons from './icons'; // Removed old icon import
 
 /**
  * The save function defines the way in which the different attributes should
@@ -22,9 +22,30 @@ export default function save({ attributes }) {
 	const blockProps = useBlockProps.save();
 	const { slides = [] } = attributes;
 
-	// Function to get the icon component for a specific icon name
-	const getIconComponent = (iconName) => {
-		return iconName && defaultIcons[iconName] ? defaultIcons[iconName] : null;
+	// Function to get the icon component for a specific icon name - REMOVED
+	// const getIconComponent = (iconName) => {
+	// 	return iconName && defaultIcons[iconName] ? defaultIcons[iconName] : null;
+	// };
+
+	// Helper function to generate Font Awesome icon HTML
+	const renderFontAwesomeIcon = (iconName) => {
+		if (!iconName || typeof iconName !== 'string') return null;
+
+		let iconClasses = iconName;
+		// If iconName doesn't have a prefix like 'fa-', assume it's just the icon name
+		// and prepend the default 'fas fa-' for solid icons.
+		if (!iconName.includes('fa-') && !iconName.includes(' ')) {
+			iconClasses = `fas fa-${iconName}`;
+		} else if (iconName.includes(' ') && !iconName.startsWith('fa')) {
+		    // Handles cases like "fas coffee" -> should be "fas fa-coffee"
+            const parts = iconName.split(' ');
+            if (parts.length === 2 && !parts[1].startsWith('fa-')) {
+                iconClasses = `${parts[0]} fa-${parts[1]}`;
+            }
+        }
+		// For names like "user" -> <i class="fas fa-user"></i>
+		// For names like "fas fa-coffee" -> <i class="fas fa-coffee"></i>
+		return <i className={iconClasses}></i>;
 	};
 
 	return (
@@ -58,7 +79,7 @@ export default function save({ attributes }) {
 											<img src={slide.imageUrl} alt={slide.title || ''} />
 										) : slide.defaultIcon ? (
 											<div className="default-icon">
-												{getIconComponent(slide.defaultIcon)}
+												{renderFontAwesomeIcon(slide.defaultIcon)}
 											</div>
 										) : null}
 									</div>

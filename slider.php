@@ -33,6 +33,21 @@ function dctk_gutenberg_block_init() {
 	// 	});
 	// }
 
+	// Register Font Awesome for frontend
+	wp_register_style(
+		'font-awesome',
+		'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+		array(),
+		'6.5.1'
+	);
+
+	// Enqueue Font Awesome on frontend
+	if ( ! is_admin() ) {
+		add_action( 'wp_enqueue_scripts', function() {
+			wp_enqueue_style( 'font-awesome' );
+		});
+	}
+
 	// Register other blocks from build directory EXCEPT recent-posts
 	$manifest_data = require __DIR__ . '/build/blocks-manifest.php';
 	unset($manifest_data['recent-posts']); // Remove recent-posts from manifest

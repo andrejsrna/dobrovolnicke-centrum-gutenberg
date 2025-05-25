@@ -38,12 +38,16 @@ import {
 } from '@wordpress/components';
 import { Fragment, useState, memo, useCallback, useEffect } from '@wordpress/element';
 import { plusCircle, trash, image, update, close, info, formatBold, link } from '@wordpress/icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
-import defaultIcons from './icons';
+
+library.add(fas); // Add all free solid icons to the library
 
 // Color options for slides
 const SLIDE_COLORS = [
@@ -52,16 +56,37 @@ const SLIDE_COLORS = [
 	{ value: 'dark-blue', label: __('Tmavomodrá', 'slider') },
 ];
 
-// Available default icons
-const DEFAULT_ICONS = [
-	{ value: 'volunteer', label: __('Dobrovoľník', 'slider') },
-	{ value: 'heart', label: __('Srdce', 'slider') },
-	{ value: 'people', label: __('Ľudia', 'slider') },
-	{ value: 'handshake', label: __('Podanie rúk', 'slider') },
-	{ value: 'event', label: __('Udalosť', 'slider') },
-	{ value: 'chat', label: __('Chat', 'slider') },
-	{ value: 'idea', label: __('Nápad', 'slider') },
-	{ value: 'education', label: __('Vzdelávanie', 'slider') }
+// Popular Font Awesome icons for visual selector
+const POPULAR_ICONS = [
+	'user', 'users', 'heart', 'star', 'home', 'envelope', 'phone', 'calendar',
+	'clock', 'check', 'times', 'search', 'cog', 'trash', 'edit', 'download',
+	'upload', 'share', 'comment', 'comments', 'thumbs-up', 'thumbs-down',
+	'bell', 'bookmark', 'flag', 'lock', 'unlock', 'key', 'camera', 'image',
+	'video', 'music', 'play', 'pause', 'stop', 'forward', 'backward', 'volume-up',
+	'chart-bar', 'chart-line', 'chart-pie', 'dollar-sign', 'euro-sign', 'pound-sign',
+	'credit-card', 'shopping-cart', 'shopping-bag', 'gift', 'birthday-cake', 'coffee',
+	'utensils', 'pizza-slice', 'apple-alt', 'carrot', 'cookie', 'ice-cream',
+	'car', 'bus', 'bicycle', 'motorcycle', 'plane', 'ship', 'rocket', 'globe',
+	'map', 'map-marker-alt', 'compass', 'sun', 'moon', 'cloud', 'cloud-sun', 'cloud-rain',
+	'bolt', 'fire', 'snowflake', 'tree', 'leaf', 'seedling', 'spa',
+	'paw', 'dog', 'cat', 'fish', 'horse', 'dove', 'dragon', 'spider',
+	'book', 'graduation-cap', 'school', 'chalkboard-teacher', 'university', 'laptop',
+	'desktop', 'mobile-alt', 'tablet-alt', 'keyboard', 'mouse', 'headphones',
+	'gamepad', 'tv', 'wifi', 'battery-full', 'plug', 'lightbulb',
+	'brain', 'tooth', 'eye', 'hand-paper', 'hand-rock', 'hand-scissors', 'hand-peace',
+	'handshake', 'praying-hands', 'fist-raised', 'smile', 'laugh', 'grin', 'sad-tear',
+	'angry', 'surprise', 'meh', 'medal', 'trophy', 'award', 'crown', 'gem',
+	'ring', 'magic', 'hat-wizard', 'wand-magic-sparkles', 'palette', 'paint-brush',
+	'pen', 'pencil-alt', 'marker', 'highlighter', 'eraser', 'ruler', 'scissors',
+	'paperclip', 'thumbtack', 'sticky-note', 'clipboard', 'folder', 'folder-open',
+	'file', 'file-alt', 'copy', 'cut', 'paste', 'save', 'print', 'undo', 'redo',
+	'sync', 'database', 'server', 'cloud-upload-alt', 'cloud-download-alt',
+	'shield-alt', 'exclamation-triangle', 'exclamation-circle', 'question-circle',
+	'info-circle', 'check-circle', 'times-circle', 'plus-circle', 'minus-circle',
+	'arrow-up', 'arrow-down', 'arrow-left', 'arrow-right', 'arrows-alt',
+	'expand', 'compress', 'external-link-alt', 'link', 'unlink', 'anchor',
+	'hashtag', 'at', 'percent', 'divide', 'equals', 'not-equal', 'less-than',
+	'greater-than', 'code', 'terminal', 'bug', 'robot', 'ghost'
 ];
 
 /**
@@ -163,8 +188,22 @@ export default function Edit({ attributes, setAttributes }) {
 
 	// Function to get the icon component for a specific icon name
 	const getIconComponentCallback = useCallback((iconName) => {
-		return iconName && defaultIcons[iconName] ? defaultIcons[iconName] : null;
-	}, []); // defaultIcons is stable, so empty dependency array is okay
+		if (!iconName) return null;
+		try {
+			// FontAwesomeIcon expects an icon definition or an array like ['fas', 'coffee']
+			let iconProp = iconName;
+			if (typeof iconName === 'string' && iconName.includes(' ')) {
+				iconProp = iconName.split(' '); // Handles cases like "fas fa-coffee"
+			} else if (typeof iconName === 'string' && !iconName.includes(' ')) {
+				// Assumes 'fas' prefix if only name is provided, e.g. "coffee"
+				iconProp = ['fas', iconName];
+			}
+			return <FontAwesomeIcon icon={iconProp} />;
+		} catch (e) {
+			console.warn(`Font Awesome icon not found or invalid: ${iconName}`, e);
+			return <FontAwesomeIcon icon={['fas', 'question-circle']} />; // Fallback icon
+		}
+	}, []); // Empty dependency array since it doesn't depend on any props or state
 
 	// Helper for SlideItem component to render appropriate controls based on slide content
 	const SlideEditor = memo(({ slide, index, updateSlide: updateSlideProp, updateMultipleAttributes: updateMultipleAttributesProp, removeSlide: removeSlideProp, getIconComponent: getIconComponentProp, isActive }) => {
@@ -178,6 +217,7 @@ export default function Edit({ attributes, setAttributes }) {
 		const [localDescription, setLocalDescription] = useState(slide.description);
 		const [localButtonText, setLocalButtonText] = useState(slide.buttonText);
 		const [localButtonLink, setLocalButtonLink] = useState(slide.buttonLink);
+		const [localIconSearch, setLocalIconSearch] = useState(''); // Add search state
 
 		// Effect to reset local text state if the slide prop changes
 		useEffect(() => {
@@ -422,27 +462,18 @@ export default function Edit({ attributes, setAttributes }) {
 								>
 									{(tab) => {
 										if (tab.name === 'custom') {
-											const isColorSchemeActive = !slide.useBackgroundImage;
 											return (
 												<div className="slide-image-selector">
 													<p className="editor-section-label">{__('Vlastný obrázok slidu', 'slider')}</p>
-													{isColorSchemeActive && (
-														<div className="notice-message notice-info" style={{ marginBottom: '10px' }}>
-															<Icon icon={info} size={18} />
-															<span>{__('Výber/zmena obrázku je deaktivovaná pri použití farebnej schémy.', 'slider')}</span>
-														</div>
-													)}
 													<MediaUploadCheck>
 														<MediaUpload
 															onSelect={(media) => {
-																if (!isColorSchemeActive) {
-																	const updates = {
-																		imageId: media.id,
-																		imageUrl: media.url,
-																		defaultIcon: ''
-																	};
-																	updateMultipleAttributesProp(index, updates);
-																}
+																const updates = {
+																	imageId: media.id,
+																	imageUrl: media.url,
+																	defaultIcon: ''
+																};
+																updateMultipleAttributesProp(index, updates);
 															}}
 															allowedTypes={['image']}
 															value={slide.imageId}
@@ -454,8 +485,6 @@ export default function Edit({ attributes, setAttributes }) {
 																			variant="secondary"
 																			className="upload-button"
 																			icon={image}
-																			disabled={isColorSchemeActive}
-																			aria-disabled={isColorSchemeActive}
 																		>
 																			{__('Vybrať obrázok', 'slider')}
 																		</Button>
@@ -471,8 +500,6 @@ export default function Edit({ attributes, setAttributes }) {
 																					variant="secondary"
 																					className="image-action-button"
 																					icon={update}
-																					disabled={isColorSchemeActive}
-																					aria-disabled={isColorSchemeActive}
 																				>
 																					{__('Zmeniť obrázok', 'slider')}
 																				</Button>
@@ -510,25 +537,75 @@ export default function Edit({ attributes, setAttributes }) {
 															<span>{__('Ikona bude viditeľná iba po odstránení vlastného obrázku.', 'slider')}</span>
 														</div>
 													)}
-													<div className="default-icons-grid">
-														{DEFAULT_ICONS.map((icon) => (
-															<Tooltip text={icon.label} key={icon.value}>
-																<div
-																	className={`icon-option ${slide.defaultIcon === icon.value ? 'selected' : ''}`}
-																	onClick={() => {
-																		const updates = {
-																			defaultIcon: icon.value,
-																			imageId: 0,
-																			imageUrl: ''
-																		};
-																		updateMultipleAttributesProp(index, updates);
-																	}}
-																	aria-label={icon.label}
-																>
-																	{getIconComponentProp(icon.value)}
+													<div className="font-awesome-icon-selector">
+														{/* Search input for filtering icons */}
+														<TextControl
+															label={__('Hľadať ikonu', 'slider')}
+															value={localIconSearch || ''}
+															onChange={(value) => setLocalIconSearch(value)}
+															placeholder={__('Zadajte názov ikony...', 'slider')}
+															className="icon-search-input"
+														/>
+
+														{/* Visual icon grid */}
+														<div className="icon-grid-container">
+															<div className="icon-grid">
+																{POPULAR_ICONS
+																	.filter(iconName =>
+																		!localIconSearch ||
+																		iconName.toLowerCase().includes(localIconSearch.toLowerCase())
+																	)
+																	.map((iconName) => (
+																		<Tooltip text={iconName} key={iconName}>
+																			<button
+																				className={`icon-grid-item ${slide.defaultIcon === iconName ? 'selected' : ''}`}
+																				onClick={() => {
+																					const updates = {
+																						defaultIcon: iconName,
+																						imageId: 0,
+																						imageUrl: ''
+																					};
+																					updateMultipleAttributesProp(index, updates);
+																				}}
+																				type="button"
+																				aria-label={iconName}
+																			>
+																				{getIconComponentProp(iconName)}
+																			</button>
+																		</Tooltip>
+																	))
+																}
+															</div>
+														</div>
+
+														{/* Manual input option */}
+														<details className="manual-icon-input">
+															<summary>{__('Alebo zadajte názov ikony manuálne', 'slider')}</summary>
+															<TextControl
+																label={__('Názov ikony (Font Awesome)', 'slider')}
+																value={slide.defaultIcon}
+																onChange={(value) => {
+																	const updates = {
+																		defaultIcon: value.trim(),
+																		imageId: 0,
+																		imageUrl: ''
+																	};
+																	updateMultipleAttributesProp(index, updates);
+																}}
+																placeholder={__('napr. coffee, user, heart', 'slider')}
+																help={__("Zadajte názov ikony z Font Awesome. Viac ikon nájdete na fontawesome.com/icons", 'slider')}
+															/>
+														</details>
+
+														{/* Current selection preview */}
+														{slide.defaultIcon && (
+															<div className="current-icon-preview">
+																<p>{__('Vybraná ikona:', 'slider')} <strong>{slide.defaultIcon}</strong></p>
+																<div className="icon-preview-large">
+																	{getIconComponentProp(slide.defaultIcon)}
 																</div>
-															</Tooltip>
-														))}
+															</div>
+														)}
 													</div>
 												</div>
 											);
