@@ -174,6 +174,22 @@ return array(
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css'
 	),
+	'extensions' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'slider/paragraph-spacing-loader',
+		'version' => '0.1.0',
+		'title' => 'Paragraph Spacing Loader (Internal)',
+		'category' => 'text',
+		'description' => 'Internal block to load paragraph spacing controls. Should not be inserted.',
+		'supports' => array(
+			'inserter' => false,
+			'reusable' => false,
+			'html' => false
+		),
+		'textdomain' => 'slider',
+		'editorScript' => 'file:./paragraph-spacing.js'
+	),
 	'fancy-heading' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,

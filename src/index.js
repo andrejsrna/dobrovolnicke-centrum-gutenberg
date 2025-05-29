@@ -6,3 +6,4 @@ import './call-to-action';
 import './konzultacie';
 import './aktivities';
 import './recent-posts';
+import './extensions';
