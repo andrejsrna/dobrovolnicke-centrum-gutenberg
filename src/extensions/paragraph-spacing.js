@@ -62,7 +62,7 @@ const withSpacingControl = createHigherOrderComponent((BlockEdit) => {
 		return (
 			<Fragment>
 				<BlockEdit {...props} />
-				<InspectorControls group="dimensions">
+				<InspectorControls>
 					<PanelBody title={__('Odsadenie', 'slider')} initialOpen={false}>
 						<BoxControl
 							label={__('Margin', 'slider')}
