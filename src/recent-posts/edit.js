@@ -394,9 +394,10 @@ export default function Edit({ attributes, setAttributes }) {
 												style={{
 													width: '100%',
 													height: 'auto',
-													maxHeight: '200px',
-													objectFit: 'cover',
-													borderRadius: '4px'
+													aspectRatio: '1/1',
+													objectFit: 'contain',
+													borderRadius: '4px',
+													backgroundColor: '#f0f0f0'
 												}}
 											/>
 										</div>

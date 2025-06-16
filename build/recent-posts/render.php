@@ -45,7 +45,7 @@ function render_recent_posts_block($attributes) {
                 $excerpt = get_the_excerpt($post->ID);
                 $date = get_the_date('', $post->ID);
                 $author = get_the_author_meta('display_name', $post->post_author);
-                $featured_image = get_the_post_thumbnail_url($post->ID, 'medium');
+                $featured_image = get_the_post_thumbnail_url($post->ID, 'large');
             ?>
                 <div class="post-item">
                     <?php if (isset($attributes['displayFeaturedImage']) && $attributes['displayFeaturedImage'] && $featured_image): ?>
