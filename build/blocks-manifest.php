@@ -501,6 +501,10 @@ return array(
 							'selector' => '.slide-image img',
 							'attribute' => 'src'
 						),
+						'illustration' => array(
+							'type' => 'string',
+							'default' => ''
+						),
 						'defaultIcon' => array(
 							'type' => 'string',
 							'default' => ''

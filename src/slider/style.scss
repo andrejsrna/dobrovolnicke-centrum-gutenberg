@@ -8,23 +8,23 @@
 @use 'swiper/swiper-bundle.css';
 
 // Color variables
-$primary-color: #fcb722;
-$text-color: #333333;
+$primary-color: #003b4f;
+$text-color: #000000;
 $light-color: #ffffff;
-$accent-color: color.adjust($primary-color, $lightness: -15%);
+$accent-color: color.adjust($primary-color, $lightness: -10%);
 
 // Color scheme variables
-$yellow-orange-bg: #fef8e7;
-$yellow-orange-accent: #f9b233;
-$yellow-orange-text: #8a5a00;
+$yellow-orange-bg: #e7d9be;
+$yellow-orange-accent: $primary-color;
+$yellow-orange-text: $primary-color;
 
-$light-blue-bg: #e6f7ff;
-$light-blue-accent: #90caf9;
-$light-blue-text: #0366d6;
+$light-blue-bg: #bec8ca;
+$light-blue-accent: $primary-color;
+$light-blue-text: $primary-color;
 
-$dark-blue-bg: #e8eaf6;
-$dark-blue-accent: #3f51b5;
-$dark-blue-text: #283593;
+$dark-blue-bg: #e7d9be;
+$dark-blue-accent: $primary-color;
+$dark-blue-text: $primary-color;
 
 .wp-block-create-block-slider {
 	padding: 0;
@@ -75,8 +75,8 @@ $dark-blue-text: #283593;
 			max-width: 100%;
 			max-height: 280px;
 			object-fit: contain;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-			border-radius: 8px;
+			box-shadow: none;
+			border-radius: 0;
 		}
 
 		.default-icon {
@@ -90,6 +90,8 @@ $dark-blue-text: #283593;
 				width: 100%;
 				height: 100%;
 				font-size: 100px; // Make FontAwesome icons large like SVGs were
+				color: $primary-color;
+				fill: $primary-color;
 			}
 		}
 	}
@@ -178,13 +180,13 @@ $dark-blue-text: #283593;
 			}
 
 			.slide-button {
-				background-color: $light-color;
-				color: $text-color;
+				background-color: $primary-color;
+				color: $light-color;
 				border: none;
 
 				&:hover {
-					background-color: color.adjust($light-color, $lightness: -10%);
-					color: $text-color;
+					background-color: $accent-color;
+					color: $light-color;
 				}
 			}
 		}
@@ -193,111 +195,57 @@ $dark-blue-text: #283593;
 		&.color-scheme-yellow-orange {
 			background-color: $yellow-orange-bg;
 
-			.slide-title {
-				color: $yellow-orange-text;
-
-				&::after {
-					background-color: $yellow-orange-accent;
-				}
-			}
-
-			.slide-button {
-				background-color: $yellow-orange-accent;
-				color: $text-color; // Ensuring contrast
-
-				&:hover {
-					background-color: color.adjust($yellow-orange-accent, $lightness: -10%);
-				}
-			}
-
-			// Icon color for yellow-orange scheme
 			.default-icon {
 				svg, i {
-					color: $yellow-orange-accent;
-					fill: $yellow-orange-accent; // For SVG icons
+					color: $primary-color;
+					fill: $primary-color;
 				}
 			}
 
 			&::before {
-				background-color: rgba($yellow-orange-accent, 0.2);
+				background-color: rgba($primary-color, 0.12);
 			}
 
 			&::after {
-				background-color: rgba($yellow-orange-accent, 0.15);
+				background-color: rgba($primary-color, 0.08);
 			}
 		}
 
 		&.color-scheme-light-blue {
 			background-color: $light-blue-bg;
 
-			.slide-title {
-				color: $light-blue-text;
-
-				&::after {
-					background-color: $light-blue-accent;
-				}
-			}
-
-			.slide-button {
-				background-color: $light-blue-accent;
-				color: $light-color; // Ensuring contrast
-
-				&:hover {
-					background-color: color.adjust($light-blue-accent, $lightness: -10%);
-				}
-			}
-
-			// Icon color for light-blue scheme
 			.default-icon {
 				svg, i {
-					color: $light-blue-accent;
-					fill: $light-blue-accent; // For SVG icons
+					color: $primary-color;
+					fill: $primary-color;
 				}
 			}
 
 			&::before {
-				background-color: rgba($light-blue-accent, 0.2);
+				background-color: rgba($primary-color, 0.12);
 			}
 
 			&::after {
-				background-color: rgba($light-blue-accent, 0.15);
+				background-color: rgba($primary-color, 0.08);
 			}
 		}
 
 		&.color-scheme-dark-blue {
 			background-color: $dark-blue-bg;
 
-			.slide-title {
-				color: $dark-blue-text;
-
-				&::after {
-					background-color: $dark-blue-accent;
-				}
-			}
-
-			.slide-button {
-				background-color: $dark-blue-accent;
-				color: $light-color;
-
-				&:hover {
-					background-color: color.adjust($dark-blue-accent, $lightness: -10%);
-				}
-			}
-
-			// Icon color for dark-blue scheme
 			.default-icon {
 				svg, i {
-					color: $dark-blue-accent;
-					fill: $dark-blue-accent; // For SVG icons
+					color: $primary-color;
+					fill: $primary-color;
 				}
 			}
 
 			&::before {
-				background-color: rgba($dark-blue-accent, 0.2);
+				background-color: rgba($primary-color, 0.12);
 			}
 
 			&::after {
-				background-color: rgba($dark-blue-accent, 0.15);
+				background-color: rgba($primary-color, 0.08);
 			}
 		}
 
@@ -305,16 +253,17 @@ $dark-blue-text: #283593;
 			font-size: 2.2em;
 			font-weight: 700;
 			margin-bottom: 0.5em;
-			// color: $accent-color; // Color is now handled by schemes or background image logic
+			color: $primary-color;
+			text-transform: uppercase;
 			position: relative;
 			z-index: 1;
 
 			&::after {
 				content: '';
 				display: block;
-				width: 60px;
-				height: 4px;
-				// background-color: $primary-color; // Color is now handled by schemes
+				width: 40px;
+				height: 2px;
+				background-color: #000000;
 				margin-top: 10px;
 			}
 		}
@@ -323,7 +272,7 @@ $dark-blue-text: #283593;
 			font-size: 1.2em;
 			line-height: 1.6;
 			margin-bottom: 1.5em;
-			color: $text-color; // General text color, can be overridden by schemes
+			color: #000000;
 			position: relative;
 			z-index: 1;
 		}
@@ -331,8 +280,8 @@ $dark-blue-text: #283593;
 		.slide-button {
 			display: inline-block;
 			padding: 12px 24px;
-			// background-color: $primary-color; // Color is now handled by schemes
-			// color: $text-color; // Color is now handled by schemes
+			background-color: $primary-color;
+			color: $light-color;
 			text-decoration: none;
 			border-radius: 30px;
 			font-weight: bold;
@@ -345,8 +294,8 @@ $dark-blue-text: #283593;
 			z-index: 1;
 
 			&:hover {
-				// background-color: $accent-color; // Hover color is now handled by schemes
-				// color: $light-color; // Hover color is now handled by schemes
+				background-color: $accent-color;
+				color: $light-color;
 				transform: translateY(-2px);
 				box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 			}

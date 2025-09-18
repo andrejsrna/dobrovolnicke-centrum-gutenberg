@@ -60,13 +60,40 @@ add_action( 'init', 'dctk_gutenberg_block_init' );
 
 // Function to add editor width constraints
 function dctk_add_editor_styles() {
-	$editor_width_css = ".editor-styles-wrapper { max-width: 1200px; margin-left: auto; margin-right: auto; }";
-	// Attach the style to the slider block's editor script handle
-	// The handle is typically derived from the block name: [namespace]-[block-name]-editor-script
-	wp_add_inline_style( 'create-block-slider-editor-script', $editor_width_css );
+	$editor_width_css = <<<CSS
+body.block-editor-page .editor-styles-wrapper,
+body.block-editor-page .block-editor-block-list__layout.is-root-container {
+	--dctk-editor-max-width: 1200px;
+	--dctk-editor-side-padding: clamp(16px, 3vw, 40px);
+	max-width: var(--dctk-editor-max-width);
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--dctk-editor-side-padding);
+	padding-right: var(--dctk-editor-side-padding);
+	box-sizing: border-box;
+}
 
-	// Optionally, attach to other block scripts if needed, e.g.:
-	// wp_add_inline_style( 'create-block-recent-posts-dummy-editor-script', $editor_width_css );
+body.block-editor-page .editor-styles-wrapper .wp-block,
+body.block-editor-page .block-editor-block-list__layout.is-root-container .wp-block {
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+body.block-editor-page .editor-styles-wrapper .wp-block[data-align="wide"],
+body.block-editor-page .block-editor-block-list__layout.is-root-container > .wp-block[data-align="wide"] {
+	max-width: calc(var(--dctk-editor-max-width) + var(--dctk-editor-side-padding) * 2);
+}
+
+body.block-editor-page .editor-styles-wrapper .wp-block[data-align="full"],
+body.block-editor-page .block-editor-block-list__layout.is-root-container > .wp-block[data-align="full"] {
+	max-width: none;
+	width: calc(100% + var(--dctk-editor-side-padding) * 2);
+	margin-left: calc(var(--dctk-editor-side-padding) * -1);
+	margin-right: calc(var(--dctk-editor-side-padding) * -1);
+}
+CSS;
+
+	wp_add_inline_style( 'wp-edit-blocks', $editor_width_css );
 }
 // Use the enqueue_block_editor_assets hook
 add_action( 'enqueue_block_editor_assets', 'dctk_add_editor_styles' );

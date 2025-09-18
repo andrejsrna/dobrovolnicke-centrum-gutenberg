@@ -5,6 +5,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { getIllustrationById } from './illustrations';
 // import defaultIcons from './icons'; // Removed old icon import
 
 /**
@@ -48,6 +49,21 @@ export default function save({ attributes }) {
 		return <i className={iconClasses}></i>;
 	};
 
+	const getImageAlt = (slide) => {
+		if (slide.title) {
+			return slide.title;
+		}
+
+		if (slide.illustration) {
+			const illustration = getIllustrationById(slide.illustration);
+			if (illustration) {
+				return illustration.label;
+			}
+		}
+
+		return '';
+	};
+
 	return (
 		<div {...blockProps}>
 			{/* Main Swiper container */}
@@ -75,8 +91,8 @@ export default function save({ attributes }) {
 								</div>
 								{!slide.useBackgroundImage && (
 									<div className="slide-image">
-										{slide.imageUrl ? (
-											<img src={slide.imageUrl} alt={slide.title || ''} />
+									{slide.imageUrl ? (
+										<img src={slide.imageUrl} alt={getImageAlt(slide)} />
 										) : slide.defaultIcon ? (
 											<div className="default-icon">
 												{renderFontAwesomeIcon(slide.defaultIcon)}

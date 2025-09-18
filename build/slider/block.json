@@ -47,6 +47,10 @@
             "selector": ".slide-image img",
             "attribute": "src"
           },
+          "illustration": {
+            "type": "string",
+            "default": ""
+          },
           "defaultIcon": {
             "type": "string",
             "default": ""

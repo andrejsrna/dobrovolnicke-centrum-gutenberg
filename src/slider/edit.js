@@ -46,6 +46,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  * Internal dependencies
  */
 import './editor.scss';
+import illustrations from './illustrations';
 
 library.add(fas); // Add all free solid icons to the library
 
@@ -116,6 +117,7 @@ export default function Edit({ attributes, setAttributes }) {
 				buttonLink: '',
 				imageId: 0,
 				imageUrl: '',
+				illustration: '',
 				defaultIcon: '',
 				colorScheme: 'yellow-orange',
 				backgroundImageId: 0,
@@ -210,7 +212,15 @@ export default function Edit({ attributes, setAttributes }) {
 		if (!isActive) return null;
 
 		// Keep tab state local to component
-		const [activeImageTab, setActiveImageTab] = useState('default');
+		const [activeImageTab, setActiveImageTab] = useState(() => {
+			if (slide.illustration) {
+				return 'illustrations';
+			}
+			if (slide.imageUrl) {
+				return 'custom';
+			}
+			return 'default';
+		});
 
 		// Local state ONLY for text-based input fields
 		const [localTitle, setLocalTitle] = useState(slide.title);
@@ -218,6 +228,9 @@ export default function Edit({ attributes, setAttributes }) {
 		const [localButtonText, setLocalButtonText] = useState(slide.buttonText);
 		const [localButtonLink, setLocalButtonLink] = useState(slide.buttonLink);
 		const [localIconSearch, setLocalIconSearch] = useState(''); // Add search state
+		const currentIllustration = slide.illustration
+			? illustrations.find((item) => item.id === slide.illustration)
+			: null;
 
 		// Effect to reset local text state if the slide prop changes
 		useEffect(() => {
@@ -448,16 +461,26 @@ export default function Edit({ attributes, setAttributes }) {
 											),
 											className: 'tab-default',
 										},
-										{
-											name: 'custom',
-											title: (
-												<Flex align="center">
-													<Icon icon={image} size={18} />
-													<span style={{ marginLeft: 5 }}>{__('Vlastný obrázok', 'slider')}</span>
-												</Flex>
-											),
-											className: 'tab-custom',
-										},
+									{
+										name: 'custom',
+										title: (
+											<Flex align="center">
+												<Icon icon={image} size={18} />
+												<span style={{ marginLeft: 5 }}>{__('Vlastný obrázok', 'slider')}</span>
+											</Flex>
+										),
+										className: 'tab-custom',
+									},
+									{
+										name: 'illustrations',
+										title: (
+											<Flex align="center">
+												<Dashicon icon="format-gallery" />
+												<span style={{ marginLeft: 5 }}>{__('Ilustrácie', 'slider')}</span>
+											</Flex>
+										),
+										className: 'tab-illustrations',
+									},
 									]}
 								>
 									{(tab) => {
@@ -471,7 +494,8 @@ export default function Edit({ attributes, setAttributes }) {
 																const updates = {
 																	imageId: media.id,
 																	imageUrl: media.url,
-																	defaultIcon: ''
+																	illustration: '',
+																	defaultIcon: '',
 																};
 																updateMultipleAttributesProp(index, updates);
 															}}
@@ -507,10 +531,11 @@ export default function Edit({ attributes, setAttributes }) {
 																					onClick={() => {
 																						const updates = {
 																						imageId: 0,
-																						imageUrl: ''
+																						imageUrl: '',
+																						illustration: ''
 																					};
 																					updateMultipleAttributesProp(index, updates);
-																					}}
+																				}}
 																					variant="tertiary"
 																					className="image-action-button"
 																					isDestructive
@@ -524,92 +549,144 @@ export default function Edit({ attributes, setAttributes }) {
 																</div>
 															)}
 														/>
-													</MediaUploadCheck>
-												</div>
+												</MediaUploadCheck>
+											</div>
 											);
-										} else {
+										} else if (tab.name === 'illustrations') {
 											return (
-												<div className="default-icon-selector">
-													<p className="editor-section-label">{__('Vyberte predvolenú ikonu', 'slider')}</p>
-													{slide.imageUrl && (
-														<div className="notice-message">
-															<Icon icon={info} size={18} />
-															<span>{__('Ikona bude viditeľná iba po odstránení vlastného obrázku.', 'slider')}</span>
-														</div>
-													)}
-													<div className="font-awesome-icon-selector">
-														{/* Search input for filtering icons */}
-														<TextControl
-															label={__('Hľadať ikonu', 'slider')}
-															value={localIconSearch || ''}
-															onChange={(value) => setLocalIconSearch(value)}
-															placeholder={__('Zadajte názov ikony...', 'slider')}
-															className="icon-search-input"
-														/>
-
-														{/* Visual icon grid */}
-														<div className="icon-grid-container">
-															<div className="icon-grid">
-																{POPULAR_ICONS
-																	.filter(iconName =>
-																		!localIconSearch ||
-																		iconName.toLowerCase().includes(localIconSearch.toLowerCase())
-																	)
-																	.map((iconName) => (
-																		<Tooltip text={iconName} key={iconName}>
-																			<button
-																				className={`icon-grid-item ${slide.defaultIcon === iconName ? 'selected' : ''}`}
-																				onClick={() => {
-																					const updates = {
-																						defaultIcon: iconName,
-																						imageId: 0,
-																						imageUrl: ''
-																					};
-																					updateMultipleAttributesProp(index, updates);
-																				}}
-																				type="button"
-																				aria-label={iconName}
-																			>
-																				{getIconComponentProp(iconName)}
-																			</button>
-																		</Tooltip>
-																	))
-																}
-															</div>
-														</div>
-
-														{/* Manual input option */}
-														<details className="manual-icon-input">
-															<summary>{__('Alebo zadajte názov ikony manuálne', 'slider')}</summary>
-															<TextControl
-																label={__('Názov ikony (Font Awesome)', 'slider')}
-																value={slide.defaultIcon}
-																onChange={(value) => {
-																	const updates = {
-																		defaultIcon: value.trim(),
-																		imageId: 0,
-																		imageUrl: ''
-																	};
+												<div className="illustration-selector">
+													<p className="editor-section-label">{__('Vyberte ilustráciu', 'slider')}</p>
+													<div className="illustration-grid">
+														{illustrations.map((item) => {
+															const isSelected = slide.illustration === item.id;
+															return (
+																<button
+																	type="button"
+																	key={item.id}
+																	className={`illustration-card ${isSelected ? 'selected' : ''}`}
+																	onClick={() => {
+																		const updates = {
+																			illustration: item.id,
+																			imageId: 0,
+																			imageUrl: item.src,
+																			defaultIcon: '',
+																		};
+																		updateMultipleAttributesProp(index, updates);
+																}}
+																>
+																	<img src={item.src} alt={item.label} />
+																	<span className="illustration-label">{item.label}</span>
+																</button>
+															);
+														})}
+													</div>
+													{currentIllustration && (
+														<div className="slide-image-actions">
+															<Button
+																variant="tertiary"
+																className="image-action-button"
+																onClick={() => {
+																const updates = {
+																	illustration: '',
+																	imageId: 0,
+																	imageUrl: '',
+																};
 																	updateMultipleAttributesProp(index, updates);
 																}}
-																placeholder={__('napr. coffee, user, heart', 'slider')}
-																help={__("Zadajte názov ikony z Font Awesome. Viac ikon nájdete na fontawesome.com/icons", 'slider')}
-															/>
-														</details>
-
-														{/* Current selection preview */}
-														{slide.defaultIcon && (
-															<div className="current-icon-preview">
-																<p>{__('Vybraná ikona:', 'slider')} <strong>{slide.defaultIcon}</strong></p>
-																<div className="icon-preview-large">
-																	{getIconComponentProp(slide.defaultIcon)}
-																</div>
-															</div>
-														)}
-													</div>
+																icon={trash}
+																isDestructive
+															>
+																	{__('Odstrániť ilustráciu', 'slider')}
+															</Button>
+														</div>
+													)}
 												</div>
 											);
 										}
+
+										return (
+											<div className="default-icon-selector">
+												<p className="editor-section-label">{__('Vyberte predvolenú ikonu', 'slider')}</p>
+												{slide.imageUrl && (
+													<div className="notice-message">
+														<Icon icon={info} size={18} />
+														<span>{__('Ikona bude viditeľná iba po odstránení vlastného obrázku.', 'slider')}</span>
+													</div>
+												)}
+												<div className="font-awesome-icon-selector">
+													{/* Search input for filtering icons */}
+													<TextControl
+														label={__('Hľadať ikonu', 'slider')}
+														value={localIconSearch || ''}
+														onChange={(value) => setLocalIconSearch(value)}
+														placeholder={__('Zadajte názov ikony...', 'slider')}
+														className="icon-search-input"
+													/>
+
+													{/* Visual icon grid */}
+													<div className="icon-grid-container">
+														<div className="icon-grid">
+															{POPULAR_ICONS
+																.filter(iconName =>
+																	!localIconSearch ||
+																	iconName.toLowerCase().includes(localIconSearch.toLowerCase())
+																)
+															.map((iconName) => (
+																<Tooltip text={iconName} key={iconName}>
+																	<button
+																		className={`icon-grid-item ${slide.defaultIcon === iconName ? 'selected' : ''}`}
+																		onClick={() => {
+																		const updates = {
+																			defaultIcon: iconName,
+																			imageId: 0,
+																			imageUrl: '',
+																			illustration: ''
+																		};
+																		updateMultipleAttributesProp(index, updates);
+																}}
+																		type="button"
+																		aria-label={iconName}
+																	>
+																		{getIconComponentProp(iconName)}
+																	</button>
+																</Tooltip>
+															))
+															}
+														</div>
+													</div>
+
+													{/* Manual input option */}
+													<details className="manual-icon-input">
+														<summary>{__('Alebo zadajte názov ikony manuálne', 'slider')}</summary>
+														<TextControl
+															label={__('Názov ikony (Font Awesome)', 'slider')}
+															value={slide.defaultIcon}
+															onChange={(value) => {
+																const updates = {
+																	defaultIcon: value.trim(),
+																	imageId: 0,
+																	imageUrl: '',
+																	illustration: ''
+																};
+																updateMultipleAttributesProp(index, updates);
+															}}
+															placeholder={__('napr. coffee, user, heart', 'slider')}
+															help={__("Zadajte názov ikony z Font Awesome. Viac ikon nájdete na fontawesome.com/icons", 'slider')}
+														/>
+													</details>
+
+													{/* Current selection preview */}
+													{slide.defaultIcon && (
+														<div className="current-icon-preview">
+															<p>{__('Vybraná ikona:', 'slider')} <strong>{slide.defaultIcon}</strong></p>
+															<div className="icon-preview-large">
+																{getIconComponentProp(slide.defaultIcon)}
+															</div>
+														</div>
+													)}
+												</div>
+											</div>
+										);
 									}}
 								</TabPanel>
 							</CardBody>

@@ -5,14 +5,13 @@
  */
 
 .wp-block-create-block-slider {
-	// Attempt to make the block full-width in the editor context
-	// This might be overridden by theme styles or editor layout
-	max-width: none; // Reset max-width if set by theme
-	width: 100vw;    // Full viewport width
-	margin-left: calc(50% - 50vw); // Center it by offsetting half of its width from half of the viewport width
+	max-width: 100%;
+	width: 100%;
+	margin: 0 auto;
 	padding: 20px;
 	border: 1px dashed #ccc;
 	background-color: #f9f9f9;
+	box-sizing: border-box;
 }
 
 // Main editor container
@@ -233,6 +232,56 @@
 	}
 }
 
+.illustration-selector {
+	.illustration-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+		gap: 12px;
+	}
+
+	.illustration-card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 0;
+		border: none;
+		border-radius: 0;
+		background: transparent;
+		cursor: pointer;
+		opacity: 0.85;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+
+		img {
+			width: 100%;
+			height: auto;
+			max-height: 120px;
+			object-fit: contain;
+		}
+
+		&:hover {
+			transform: translateY(-2px);
+			opacity: 1;
+		}
+
+		&.selected {
+			opacity: 1;
+			transform: translateY(-2px);
+		}
+	}
+
+	.illustration-label {
+		font-size: 13px;
+		font-weight: 500;
+		text-align: center;
+		color: #003b4f;
+	}
+
+	.slide-image-actions {
+		margin-top: 16px;
+	}
+}
+
 // Info and notice messages
 .info-message,
 .notice-message {
@@ -262,55 +311,55 @@
 }
 
 // Improved color options
-.color-options-grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 12px;
-	margin-top: 16px;
+	.color-options-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 12px;
+		margin-top: 16px;
 
-	.color-option-card {
-		border: 2px solid transparent;
-		border-radius: 6px;
-		padding: 8px;
-		cursor: pointer;
-		transition: all 0.2s ease;
+		.color-option-card {
+			border: 2px solid transparent;
+			border-radius: 6px;
+			padding: 8px;
+			cursor: pointer;
+			transition: all 0.2s ease;
 
-		.color-preview {
-			height: 40px;
-			border-radius: 4px;
-			margin-bottom: 8px;
+			.color-preview {
+				height: 40px;
+				border-radius: 4px;
+				margin-bottom: 8px;
 
-			&.yellow-orange {
-				background-color: #fff3d5;
-				border: 1px solid #f9b233;
+				&.yellow-orange {
+					background-color: #e7d9be;
+					border: 1px solid #003b4f;
+				}
+
+				&.light-blue {
+					background-color: #bec8ca;
+					border: 1px solid #003b4f;
+				}
+
+				&.dark-blue {
+					background-color: #e7d9be;
+					border: 1px solid #003b4f;
+				}
 			}
 
-			&.light-blue {
-				background-color: #e6f7ff;
-				border: 1px solid #90caf9;
+			.color-label {
+				text-align: center;
+				font-size: 13px;
 			}
 
-			&.dark-blue {
-				background-color: #e8eaf6;
-				border: 1px solid #3f51b5;
+			&:hover {
+				background-color: rgba(0, 59, 79, 0.08);
 			}
-		}
 
-		.color-label {
-			text-align: center;
-			font-size: 13px;
-		}
-
-		&:hover {
-			background-color: #f9f9f9;
-		}
-
-		&.selected {
-			border-color: #007cba;
-			background-color: #f0f6fc;
+			&.selected {
+				border-color: #003b4f;
+				background-color: rgba(0, 59, 79, 0.12);
+			}
 		}
 	}
-}
 
 // Improved icon grid
 .default-icons-grid {
@@ -471,39 +520,24 @@
 				}
 
 				.slide-button {
-					background-color: #fff;
-					color: #333;
+					background-color: #003b4f;
+					color: #fff;
 				}
 			}
 
 			&.color-scheme-yellow-orange {
-				background-color: #fef8e7;
-				border: 2px solid #f9b233;
-
-				.slide-button {
-					background-color: #f9b233;
-					color: #333;
-				}
+				background-color: #e7d9be;
+				border: 2px solid #003b4f;
 			}
 
 			&.color-scheme-light-blue {
-				background-color: #e6f7ff;
-				border: 2px solid #90caf9;
-
-				.slide-button {
-					background-color: #90caf9;
-					color: #fff;
-				}
+				background-color: #bec8ca;
+				border: 2px solid #003b4f;
 			}
 
 			&.color-scheme-dark-blue {
-				background-color: #e8eaf6;
-				border: 2px solid #3f51b5;
-
-				.slide-button {
-					background-color: #3f51b5;
-					color: #fff;
-				}
+				background-color: #e7d9be;
+				border: 2px solid #003b4f;
 			}
 
 			.slide-inner-container {
@@ -552,10 +586,24 @@
 				margin-top: 0;
 				margin-bottom: 10px;
 				font-size: 1.5rem;
+				font-weight: 700;
+				color: #003b4f;
+				text-transform: uppercase;
+				position: relative;
+
+				&::after {
+					content: '';
+					display: block;
+					width: 40px;
+					height: 2px;
+					background-color: #000;
+					margin-top: 6px;
+				}
 			}
 
 			.slide-description {
 				margin-bottom: 15px;
+				color: #000;
 			}
 
 			.slide-button {
@@ -564,6 +612,9 @@
 				border-radius: 4px;
 				text-decoration: none;
 				font-weight: bold;
+				background-color: #003b4f;
+				color: #fff;
+				text-transform: uppercase;
 			}
 		}
 	}
