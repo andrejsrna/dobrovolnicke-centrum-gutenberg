@@ -158,7 +158,7 @@ function dctk_support_button_settings_page() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Podporte nás', 'slider' ); ?></h1>
-		<p><?php esc_html_e( 'Použite túto voľbu na zobrazenie alebo skrytie tmavomodrého tlačidla Podporte nás v pravom dolnom rohu všetkých stránok.', 'slider' ); ?></p>
+		<p><?php esc_html_e( 'Použite túto voľbu na zobrazenie alebo skrytie tmavomodrého tlačidla Podporte nás v pravom hornom rohu všetkých stránok (relatívne k obsahu).', 'slider' ); ?></p>
 		<form method="post" action="options.php">
 			<?php
 			settings_fields( 'dctk_support_button_group' );
@@ -205,10 +205,10 @@ function dctk_support_button_render() {
 	$button_text   = __( 'Podporte nás', 'slider' );
 	$button_html   = <<<HTML
 	<style id="dctk-support-button-style">
-		.dctk-support-button {
-			position: fixed;
-			bottom: clamp(1rem, 2vw, 1.5rem);
-			right: clamp(1rem, 2vw, 1.5rem);
+				.dctk-support-button {
+					position: absolute;
+					top: clamp(1rem, 2vw, 1.5rem);
+					right: clamp(1rem, 2vw, 1.5rem);
 			background: #08254d;
 			color: #ffffff;
 			font-weight: 600;
