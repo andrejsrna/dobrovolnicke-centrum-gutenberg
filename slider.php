@@ -15,6 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! defined( 'DCTK_SUPPORT_BUTTON_OPTION' ) ) {
+	define( 'DCTK_SUPPORT_BUTTON_OPTION', 'dctk_support_button_enabled' );
+}
+
 function dctk_gutenberg_block_init() {
 	add_theme_support( 'wp-block-styles' );
 
@@ -97,6 +101,163 @@ CSS;
 }
 // Use the enqueue_block_editor_assets hook
 add_action( 'enqueue_block_editor_assets', 'dctk_add_editor_styles' );
+
+/**
+ * Returns true when the sticky support button should be visible.
+ *
+ * @return bool
+ */
+function dctk_support_button_is_enabled() {
+	return '0' !== get_option( DCTK_SUPPORT_BUTTON_OPTION, '1' );
+}
+
+/**
+ * Sanitize the stored option value.
+ *
+ * @param mixed $value
+ * @return string
+ */
+function dctk_support_button_sanitize_option( $value ) {
+	return $value ? '1' : '0';
+}
+
+/**
+ * Registers the admin setting that toggles the support button visibility.
+ */
+function dctk_support_button_register_setting() {
+	register_setting(
+		'dctk_support_button_group',
+		DCTK_SUPPORT_BUTTON_OPTION,
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => 'dctk_support_button_sanitize_option',
+			'default'           => '1',
+		)
+	);
+}
+add_action( 'admin_init', 'dctk_support_button_register_setting' );
+
+/**
+ * Adds the settings page under Settings > Podporte nás.
+ */
+function dctk_support_button_add_admin_menu() {
+	add_options_page(
+		__( 'Podporte nás', 'slider' ),
+		__( 'Podporte nás', 'slider' ),
+		'manage_options',
+		'dctk-support-button',
+		'dctk_support_button_settings_page'
+	);
+}
+add_action( 'admin_menu', 'dctk_support_button_add_admin_menu' );
+
+/**
+ * Renders the settings form for the sticky support button.
+ */
+function dctk_support_button_settings_page() {
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Podporte nás', 'slider' ); ?></h1>
+		<p><?php esc_html_e( 'Použite túto voľbu na zobrazenie alebo skrytie tmavomodrého tlačidla Podporte nás v pravom dolnom rohu všetkých stránok.', 'slider' ); ?></p>
+		<form method="post" action="options.php">
+			<?php
+			settings_fields( 'dctk_support_button_group' );
+			do_settings_sections( 'dctk_support_button_group' );
+			$current_value = dctk_support_button_is_enabled();
+			?>
+			<table class="form-table">
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( DCTK_SUPPORT_BUTTON_OPTION ); ?>"><?php esc_html_e( 'Podporte nás tlačidlo', 'slider' ); ?></label>
+					</th>
+					<td>
+						<label>
+							<input
+								type="checkbox"
+								id="<?php echo esc_attr( DCTK_SUPPORT_BUTTON_OPTION ); ?>"
+								name="<?php echo esc_attr( DCTK_SUPPORT_BUTTON_OPTION ); ?>"
+								value="1"
+								<?php checked( true, $current_value ); ?>
+							/>
+							<?php esc_html_e( 'Zobraziť plávajúce tlačidlo Podporte nás na verejnej časti webu.', 'slider' ); ?>
+						</label>
+						<p class="description">
+							<?php esc_html_e( 'Tlačidlo vedie na darcovskú stránku DCTK a je optimalizované pre telefóny aj desktop.', 'slider' ); ?>
+						</p>
+					</td>
+				</tr>
+			</table>
+			<?php submit_button(); ?>
+		</form>
+	</div>
+	<?php
+}
+
+/**
+ * Outputs the sticky support button markup and inline styling on the frontend.
+ */
+function dctk_support_button_render() {
+	if ( is_admin() || ! dctk_support_button_is_enabled() ) {
+		return;
+	}
+
+	$donation_link = 'https://dctk.darujme.sk/podporte-dobrovolnicke-centrum-trnavskeho-kraja-b1476/?referral_tag_id=2c996ac9-1236-4d77-a147-5e475abb50c9';
+	$button_text   = __( 'Podporte nás', 'slider' );
+	$button_html   = <<<HTML
+	<style id="dctk-support-button-style">
+		.dctk-support-button {
+			position: fixed;
+			bottom: clamp(1rem, 2vw, 1.5rem);
+			right: clamp(1rem, 2vw, 1.5rem);
+			background: #08254d;
+			color: #ffffff;
+			font-weight: 600;
+			font-size: clamp(0.95rem, 1vw, 1.1rem);
+			padding: 0.75rem 1.2rem;
+			border-radius: 999px;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.65rem;
+			box-shadow: 0 10px 30px rgba(5, 10, 30, 0.35);
+			text-decoration: none;
+			transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+			z-index: 9999;
+		}
+		.dctk-support-button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 15px 30px rgba(5, 10, 30, 0.45);
+			background: #0b3c76;
+		}
+		.dctk-support-button .dctk-support-icon {
+			width: 2rem;
+			height: 2rem;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.1);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1rem;
+		}
+		@media (max-width: 480px) {
+			.dctk-support-button {
+				padding: 0.65rem 1rem;
+				gap: 0.5rem;
+			}
+			.dctk-support-button .dctk-support-icon {
+				width: 1.8rem;
+				height: 1.8rem;
+			}
+		}
+	</style>
+	<a class="dctk-support-button" href="{$donation_link}" target="_blank" rel="noopener noreferrer" aria-label="{$button_text}">
+		<span class="dctk-support-icon"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></span>
+		<span>{$button_text}</span>
+	</a>
+	HTML;
+
+	echo $button_html;
+}
+add_action( 'wp_footer', 'dctk_support_button_render', 20 );
 
 // Separate registration for recent-posts - SIMPLIFIED VERSION
 function register_simple_recent_posts_block() {
